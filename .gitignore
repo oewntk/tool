@@ -1,0 +1,16 @@
+/target/
+/build/
+/yaml*/
+/yaml*
+/ser*/
+/ser*
+/plus*/
+/plus*
+**/*.ser
+**/*.info
+**/_*/
+**/_*
+/dependency-reduced-pom.xml
+/oewn-grind.jar
+/out*/
+/out*
