@@ -8,7 +8,7 @@
     <groupId>io.github.oewntk</groupId>
     <artifactId>grind</artifactId>
     <version>2.3.2</version>
-    <name>yaml_grind</name>
+    <name>grind</name>
     <description>Read Wordnet model and convert.</description>
     <url>https://github.com/oewntk/grind</url>
 
