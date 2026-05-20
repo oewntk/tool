@@ -88,7 +88,7 @@ object Grind {
         // Supply model
         progress("before model is supplied,", startTime)
         val model = if (inPlus)
-            FactoryPlus(input, input2, generated = !outMerge).get()!!
+            FactoryPlus(input, input2).get()!!
         else when (inFormat) {
             "ser" -> SerFactory(input).get()!!
             "yaml" -> YamlFactory(input, input2, verbose).get()!!
@@ -106,7 +106,7 @@ object Grind {
             "yaml" -> {
                 if (outMerge)
                     File(outFile, "entries-generated.yaml").delete()
-                YamlModelConsumer(outFile, !outOne).accept(model)
+                YamlModelConsumer(outFile, !outOne, generated = !outMerge).accept(model)
             }
 
             else -> throw IllegalArgumentException("Unsupported output format")
