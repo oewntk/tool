@@ -106,7 +106,7 @@ object Grind {
             "yaml" -> {
                 if (outMerge)
                     File(outFile, "entries-generated.yaml").delete()
-                YamlModelConsumer(outFile, !outOne, generated = !outMerge).accept(model)
+                YamlModelConsumer(outFile, split=!outOne, generated = !outMerge).accept(model)
             }
 
             else -> throw IllegalArgumentException("Unsupported output format")
