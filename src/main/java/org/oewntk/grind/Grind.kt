@@ -39,23 +39,23 @@ object Grind {
 
         // Options (start with - or --)
         // @formatter:off
-        val yaml by parser.argument(        ArgType.String,                                             description = "Input YAML dir")
+        val in1 by parser.argument(         ArgType.String,                                             description = "Input dir or file")
         val out by parser.argument(         ArgType.String,                                             description = "Output dir or file")
-        val yaml2 by parser.option(         ArgType.String,  shortName = "y2", fullName = "YAML2",      description = "Input YAML dir2")                 .default("yaml2")
+        val in2 by parser.option(           ArgType.String,  shortName = "i2", fullName = "in2",        description = "Extra Input dir or file")         .default("yaml2")
         val operation by parser.option(     ArgType.String,  shortName = "do", fullName = "operation",  description = "Operation")                       .default("nothing")
-        val inFormat by parser.option(      ArgType.String,  shortName = "if", fullName = "in format",  description = "In format")                       .default("yaml")
+        val inFormat by parser.option(      ArgType.String,  shortName = "if", fullName = "in_format",  description = "In format")                       .default("yaml")
         val inPlus by parser.option(        ArgType.Boolean, shortName = "p",  fullName = "plus",       description = "Plus input")                      .default(false)
-        val outFormat by parser.option(     ArgType.String,  shortName = "of", fullName = "out format", description = "Output format")                   .default("yaml")
-        val outInfo by parser.option(       ArgType.String,  shortName = "i",  fullName = "out info",   description = "Output info")                     .default("oewn.info")
-        val outOne by parser.option(        ArgType.Boolean, shortName = "1",  fullName = "out one",    description = "Output one file")                 .default(false)
+        val outFormat by parser.option(     ArgType.String,  shortName = "of", fullName = "out_format", description = "Output format")                   .default("yaml")
+        val outInfo by parser.option(       ArgType.String,  shortName = "i",  fullName = "out_info",   description = "Output info")                     .default("oewn.info")
+        val outOne by parser.option(        ArgType.Boolean, shortName = "1",  fullName = "out_one",    description = "Output one file")                 .default(false)
         val outMerge by parser.option(      ArgType.Boolean, shortName = "m",  fullName = "merge",      description = "Do not group generated entries")  .default(false)
         val verbose by parser.option(       ArgType.Boolean, shortName = "v",  fullName = "verbose",    description = "Verbose output")                  .default(false)
         // @formatter:on
 
         parser.parse(args)
         if (verbose) {
-            System.err.println("yaml: $yaml")
-            System.err.println("yaml2: $yaml2")
+            System.err.println("in: $in1")
+            System.err.println("in2: $in2")
             System.err.println("out: $out")
             System.err.println("operation: $operation")
             System.err.println("plus: $inPlus")
@@ -68,11 +68,11 @@ object Grind {
         val startTime = start()
 
         // Input
-        val input = File(yaml)
+        val input = File(in1)
         Tracing.psInfo.println("[Input] " + input.absolutePath)
 
         // Input2
-        val input2 = File(yaml2)
+        val input2 = File(in2)
         Tracing.psInfo.println("[Input2] " + input2.absolutePath)
 
         // Processing
@@ -91,7 +91,7 @@ object Grind {
             FactoryPlus(input, input2).get()!!
         else when (inFormat) {
             "ser" -> SerFactory(input).get()!!
-            "yaml" -> YamlFactory(input, input2, verbose).get()!!
+            "yaml" -> YamlFactory(input, input2, verbose=verbose).get()!!
             else -> throw IllegalArgumentException("Unsupported input format")
         }
         //Tracing.psInfo.printf("[Model] %s%n%s%n%n", Arrays.toString(model.getSources()), model.info());
