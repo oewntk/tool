@@ -14,6 +14,8 @@ import java.io.File
 import org.oewntk.json.out.ModelConsumer as JsonModelConsumer
 import org.oewntk.ser.`in`.Factory as SerFactory
 import org.oewntk.ser.out.ModelConsumer as SerModelConsumer
+import org.oewntk.wndb.`in`.Factory as WndbFactory
+import org.oewntk.xml.`in`.Factory as XmlFactory
 import org.oewntk.yaml.`in`.Factory as YamlFactory
 import org.oewntk.yaml.out.ModelConsumer as YamlModelConsumer
 
@@ -92,6 +94,8 @@ object Grind {
         else when (inFormat) {
             "ser" -> SerFactory(input).get()!!
             "yaml" -> YamlFactory(input, input2, verbose=verbose).get()!!
+            "xml" -> XmlFactory(input, input2, verbose=verbose).get()!!
+            "wndb" -> WndbFactory(input, input2, verbose=verbose).get()!!
             else -> throw IllegalArgumentException("Unsupported input format")
         }
         //Tracing.psInfo.printf("[Model] %s%n%s%n%n", Arrays.toString(model.getSources()), model.info());
