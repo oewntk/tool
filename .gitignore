@@ -10,7 +10,7 @@
 **/*.info
 **/_*/
 **/_*
+**/*.jar
 /dependency-reduced-pom.xml
-/oewn-grind.jar
 /out*/
 /out*
