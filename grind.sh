@@ -10,13 +10,12 @@ if [ "$*" == "" ]; then
   echo "
 in1          String,                                         Input dir or file
 out          String,                                         Output dir or file
-in2          String,  shortName = i2, fullName = in2,        Extra Input dir or file         default=yaml2
-operation    String,  shortName = do, fullName = operation,  Operation                       default=nothing
+in2          String,  shortName = i2, fullName = in2,        Extra input dir or file         default=
 inFormat     String,  shortName = if, fullName = in_format,  In format                       default=yaml
 inPlus       Boolean, shortName = p,  fullName = plus,       Plus input                      default=false
 outFormat    String,  shortName = of, fullName = out_format, Output format                   default=yaml
-outInfo      String,  shortName = i,  fullName = out_info,   Output info                     default=oewn.info
-outOne       Boolean, shortName = 1,  fullName = out_one,    Output one file                 default=false
+out2         String,  shortName = o2, fullName = out2,       Extra input dir or file         default=
+outOne       Boolean, shortName = o1, fullName = out_one,    Output one file                 default=false
 outMerge     Boolean, shortName = m,  fullName = merge,      Do not group generated entries  default=false
 verbose      Boolean, shortName = v,  fullName = verbose,    Verbose output                  default=false
 "
@@ -35,4 +34,4 @@ if [ ! -e "${jar}" ]; then
   echo "Non existing uber jar" >&2
   exit 2
   fi
-java -ea -jar "${jar}" "$*"
+eval java -ea -jar "${jar}" "$*"
