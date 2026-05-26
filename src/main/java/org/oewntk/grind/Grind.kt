@@ -130,8 +130,14 @@ object Grind {
         val modelCounts = ModelInfo.counts(model)
         val modelInfo2 = "$modelInfo\n$modelCounts"
         Tracing.psInfo.println(modelInfo2)
-        if (out2.isNotEmpty())
-            File(out2).writeText(modelInfo2)
+        if (out2.isNotEmpty()) {
+            val file = File(out2)
+            val outDir = file.parentFile
+            if (!outDir.exists()) {
+                outDir.mkdirs()
+            }
+            file.writeText(modelInfo2)
+        }
     }
 
     private fun wndbFlags(wndCompatPointers: Boolean, wndCompatLexId: Boolean, wndCompatVFrames: Boolean): Int {
