@@ -9,12 +9,15 @@ import kotlinx.cli.default
 import org.oewntk.grind.Tracing.progress
 import org.oewntk.grind.Tracing.start
 import org.oewntk.model.ModelInfo
+import org.oewntk.wndb.out.Flags
 import org.oewntk.yaml.`in`.FactoryPlus
 import java.io.File
 import org.oewntk.json.out.ModelConsumer as JsonModelConsumer
 import org.oewntk.ser.`in`.Factory as SerFactory
 import org.oewntk.ser.out.ModelConsumer as SerModelConsumer
+import org.oewntk.sql.out.ModelConsumer as SqlModelConsumer
 import org.oewntk.wndb.`in`.Factory as WndbFactory
+import org.oewntk.wndb.out.ModelConsumer as WndbModelConsumer
 import org.oewntk.xml.`in`.Factory as XmlFactory
 import org.oewntk.yaml.`in`.Factory as YamlFactory
 import org.oewntk.yaml.out.ModelConsumer as YamlModelConsumer
@@ -41,17 +44,20 @@ object Grind {
 
         // Options (start with - or --)
         // @formatter:off
-        val in1 by parser.argument(         ArgType.String,                                             description = "Input dir or file")
-        val out by parser.argument(         ArgType.String,                                             description = "Output dir or file")
-        val in2 by parser.option(           ArgType.String,  shortName = "i2", fullName = "in2",        description = "Extra Input dir or file")         .default("yaml2")
-        val operation by parser.option(     ArgType.String,  shortName = "do", fullName = "operation",  description = "Operation")                       .default("nothing")
-        val inFormat by parser.option(      ArgType.String,  shortName = "if", fullName = "in_format",  description = "In format")                       .default("yaml")
-        val inPlus by parser.option(        ArgType.Boolean, shortName = "p",  fullName = "plus",       description = "Plus input")                      .default(false)
-        val outFormat by parser.option(     ArgType.String,  shortName = "of", fullName = "out_format", description = "Output format")                   .default("yaml")
-        val outInfo by parser.option(       ArgType.String,  shortName = "i",  fullName = "out_info",   description = "Output info")                     .default("oewn.info")
-        val outOne by parser.option(        ArgType.Boolean, shortName = "1",  fullName = "out_one",    description = "Output one file")                 .default(false)
-        val outMerge by parser.option(      ArgType.Boolean, shortName = "m",  fullName = "merge",      description = "Do not group generated entries")  .default(false)
-        val verbose by parser.option(       ArgType.Boolean, shortName = "v",  fullName = "verbose",    description = "Verbose output")                  .default(false)
+        val in1 by parser.argument(            ArgType.String,                                                   description = "Input dir or file")
+        val out by parser.argument(            ArgType.String,                                                   description = "Output dir or file")
+        val in2 by parser.option(              ArgType.String,  shortName = "i2", fullName = "in2",              description = "Extra input dir or file")         .default("")
+        val inFormat by parser.option(         ArgType.String,  shortName = "if", fullName = "in_format",        description = "In format")                       .default("yaml")
+        val inPlus by parser.option(           ArgType.Boolean, shortName = "p",  fullName = "plus",             description = "Plus input")                      .default(false)
+        val outFormat by parser.option(        ArgType.String,  shortName = "of", fullName = "out_format",       description = "Output format")                   .default("yaml")
+        val out2 by parser.option(             ArgType.String,  shortName = "o2", fullName = "out2",             description = "Extra output dir or file")        .default("")
+        val outOne by parser.option(           ArgType.Boolean, shortName = "o1", fullName = "out_one",          description = "Output one file")                 .default(false)
+        val outMerge by parser.option(         ArgType.Boolean, shortName = "m",  fullName = "merge",            description = "Do not group generated entries")  .default(false)
+        val verbose by parser.option(          ArgType.Boolean, shortName = "v",  fullName = "verbose",          description = "Verbose output")                  .default(false)
+
+        val wndCompatPointers by parser.option(ArgType.Boolean, shortName = "wp", fullName = "compat:pointer",   description = "WNDB pointer compat")             .default(false)
+        val wndCompatLexId by parser.option(   ArgType.Boolean, shortName = "wl", fullName = "compat:lexid",     description = "WNDB lexid compat")               .default(false)
+        val wndCompatVFrames by parser.option( ArgType.Boolean, shortName = "wv", fullName = "compat:verbframe", description = "WNDB vframe compat")              .default(false)
         // @formatter:on
 
         parser.parse(args)
@@ -59,7 +65,7 @@ object Grind {
             System.err.println("in: $in1")
             System.err.println("in2: $in2")
             System.err.println("out: $out")
-            System.err.println("operation: $operation")
+            System.err.println("out2: $out2")
             System.err.println("plus: $inPlus")
             System.err.println("in format: $inFormat")
             System.err.println("out format: $outFormat")
@@ -77,9 +83,6 @@ object Grind {
         val input2 = File(in2)
         Tracing.psInfo.println("[Input2] " + input2.absolutePath)
 
-        // Processing
-        Tracing.psInfo.println("[Op] $operation")
-
         // Output
         val outFile = File(out)
         if (outFile.exists() && !outFile.isDirectory) {
@@ -93,9 +96,9 @@ object Grind {
             FactoryPlus(input, input2).get()!!
         else when (inFormat) {
             "ser" -> SerFactory(input).get()!!
-            "yaml" -> YamlFactory(input, input2, verbose=verbose).get()!!
-            "xml" -> XmlFactory(input, input2, verbose=verbose).get()!!
-            "wndb" -> WndbFactory(input, input2, verbose=verbose).get()!!
+            "yaml" -> YamlFactory(input, input2, verbose = verbose).get()!!
+            "xml" -> XmlFactory(input, input2, verbose = verbose).get()!!
+            "wndb" -> WndbFactory(input, input2, verbose = verbose).get()!!
             else -> throw IllegalArgumentException("Unsupported input format")
         }
         //Tracing.psInfo.printf("[Model] %s%n%s%n%n", Arrays.toString(model.getSources()), model.info());
@@ -107,10 +110,12 @@ object Grind {
         when (outFormat) {
             "ser" -> SerModelConsumer(outFile).accept(model)
             "json" -> JsonModelConsumer(outFile).accept(model)
+            "sql" -> SqlModelConsumer(outFile).accept(model)
+            "wndb" -> WndbModelConsumer(outFile, wndbFlags(wndCompatPointers, wndCompatLexId, wndCompatVFrames)).accept(model)
             "yaml" -> {
                 if (outMerge)
                     File(outFile, "entries-generated.yaml").delete()
-                YamlModelConsumer(outFile, split=!outOne, generated = !outMerge).accept(model)
+                YamlModelConsumer(outFile, split = !outOne, generated = !outMerge).accept(model)
             }
 
             else -> throw IllegalArgumentException("Unsupported output format")
@@ -125,6 +130,18 @@ object Grind {
         val modelCounts = ModelInfo.counts(model)
         val modelInfo2 = "$modelInfo\n$modelCounts"
         Tracing.psInfo.println(modelInfo2)
-        File(outInfo).writeText(modelInfo2)
+        if (out2.isNotEmpty())
+            File(out2).writeText(modelInfo2)
+    }
+
+    private fun wndbFlags(wndCompatPointers: Boolean, wndCompatLexId: Boolean, wndCompatVFrames: Boolean): Int {
+        var flags = 0
+        if (wndCompatPointers)
+            flags = flags or Flags.POINTER_COMPAT
+        if (wndCompatLexId)
+            flags = flags or Flags.LEXID_COMPAT
+        if (wndCompatVFrames)
+            flags = flags or Flags.VERBFRAME_COMPAT
+        return flags
     }
 }
