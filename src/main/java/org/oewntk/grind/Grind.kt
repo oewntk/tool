@@ -11,6 +11,8 @@ import org.oewntk.grind.Tracing.start
 import org.oewntk.model.ModelInfo
 import org.oewntk.wndb.out.Flags
 import org.oewntk.yaml.`in`.FactoryPlus
+import org.oewntk.yaml.out.YamlDump
+import org.yaml.snakeyaml.DumperOptions
 import java.io.File
 import org.oewntk.json.out.ModelConsumer as JsonModelConsumer
 import org.oewntk.ser.`in`.Factory as SerFactory
@@ -29,6 +31,32 @@ import org.oewntk.yaml.out.ModelConsumer as YamlModelConsumer
  * @see "https://sqlunet.sourceforge.net/schema.html"
  */
 object Grind {
+
+    enum class YamlDumpMode(val options: DumperOptions) {
+        AUTO(YamlDump.autoDumperOptions),
+        BLOCK(YamlDump.blockDumperOptions),
+        FLOW(YamlDump.flowDumperOptions),
+
+        DEFAULT(YamlDump.defaultDumperOptions),
+        COMPAT(YamlDump.jsonDumperOptions),
+        JSON(YamlDump.jsonDumperOptions),
+    }
+
+    val yamlDumpModeArg = ArgType.Choice(
+        choices = YamlDumpMode.entries,
+        variantToString = { it.name.lowercase() },   // DEV -> "dev", PROD -> "prod"
+        toVariant = { raw ->
+            when (raw.lowercase()) {
+                "a", "auto" -> YamlDumpMode.BLOCK
+                "b", "block" -> YamlDumpMode.BLOCK
+                "f", "flow" -> YamlDumpMode.FLOW
+                "j", "json" -> YamlDumpMode.JSON
+                "d", "default" -> YamlDumpMode.DEFAULT
+                "c", "compat" -> YamlDumpMode.COMPAT
+                else -> error("Unknown mode: $raw")
+            }
+        }
+    )
 
     /**
      * Main entry point
@@ -53,6 +81,7 @@ object Grind {
         val out2 by parser.option(             ArgType.String,  shortName = "o2", fullName = "out2",             description = "Extra output dir or file")        .default("")
         val outOne by parser.option(           ArgType.Boolean, shortName = "o1", fullName = "out_one",          description = "Output one file")                 .default(false)
         val outMerge by parser.option(         ArgType.Boolean, shortName = "m",  fullName = "merge",            description = "Do not group generated entries")  .default(false)
+        val outYaml by parser.option(          yamlDumpModeArg, shortName = "y",  fullName = "yaml",             description = "YAML format")                     .default(YamlDumpMode.AUTO)
         val verbose by parser.option(          ArgType.Boolean, shortName = "v",  fullName = "verbose",          description = "Verbose output")                  .default(false)
 
         val wndCompatPointers by parser.option(ArgType.Boolean, shortName = "wp", fullName = "compat:pointer",   description = "WNDB pointer compat")             .default(false)
@@ -115,7 +144,7 @@ object Grind {
             "yaml" -> {
                 if (outMerge)
                     File(outFile, "entries-generated.yaml").delete()
-                YamlModelConsumer(outFile, split = !outOne, generated = !outMerge).accept(model)
+                YamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, generated = !outMerge).accept(model)
             }
 
             else -> throw IllegalArgumentException("Unsupported output format")
