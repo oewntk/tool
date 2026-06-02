@@ -9,9 +9,12 @@
 /plus*
 /out*/
 /out*
+
 **/*.ser
 **/*.info
 **/_*/
 **/_*
 **/*.jar
+**/build
+
 /dependency-reduced-pom.xml
