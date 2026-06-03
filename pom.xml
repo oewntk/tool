@@ -7,7 +7,7 @@
 
     <groupId>io.github.oewntk</groupId>
     <artifactId>grind</artifactId>
-    <version>2.4.0</version>
+    <version>3.0.1</version>
     <name>grind</name>
     <description>Read Wordnet model and convert.</description>
     <url>https://github.com/oewntk/grind</url>
@@ -23,52 +23,52 @@
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>model</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>fromser</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>fromyaml</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>fromxml</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>fromwndb</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>toyaml</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>tojson</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>toser</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>towndb</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
             <artifactId>tosql</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -259,7 +259,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Build-Number>2.4.0</Build-Number>
+                                        <Build-Number>3.0.1</Build-Number>
                                     </manifestEntries>
                                     <mainClass>org.oewntk.grind.Grind</mainClass>
                                 </transformer>
