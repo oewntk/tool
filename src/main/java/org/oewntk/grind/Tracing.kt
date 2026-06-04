@@ -24,15 +24,15 @@ object Tracing {
 
     private val psTime: PrintStream = System.out
 
-    private const val TRACE_HEAP: Boolean = false
+    var traceHeap: Boolean = false
 
-    private const val TRACE_TIME: Boolean = false
+    var traceTime: Boolean = false
 
     fun start(): Long {
         val startTime = System.currentTimeMillis()
 
         // heap state
-        if (TRACE_HEAP) {
+        if (traceHeap) {
             psHeap.println("[Memory]: " + Memory.memoryInfo("before,", Memory.Unit.M))
             psHeap.println("[Heap]: " + Memory.heapInfo("before,", Memory.Unit.M))
         }
@@ -40,13 +40,13 @@ object Tracing {
     }
 
     fun progress(message: String, startTime: Long) {
-        if (TRACE_TIME) {
+        if (traceTime) {
             val endTime = System.currentTimeMillis()
             psTime.println("[Time]: " + (endTime - startTime) / 1000 + "s")
         }
 
         // heap state
-        if (TRACE_HEAP) {
+        if (traceHeap) {
             psHeap.println("[Heap]: " + Memory.heapInfo(message, Memory.Unit.M))
         }
     }
