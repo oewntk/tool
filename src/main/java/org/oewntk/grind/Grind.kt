@@ -14,7 +14,7 @@ import org.oewntk.yaml.`in`.FactoryPlus
 import org.oewntk.yaml.out.YamlDump
 import org.yaml.snakeyaml.DumperOptions
 import java.io.File
-import org.oewntk.json.out.ModelConsumer as JsonModelConsumer
+import org.oewntk.json.out.model.ModelConsumer as JsonModelConsumer
 import org.oewntk.ser.`in`.Factory as SerFactory
 import org.oewntk.ser.out.ModelConsumer as SerModelConsumer
 import org.oewntk.sql.out.ModelConsumer as SqlModelConsumer
