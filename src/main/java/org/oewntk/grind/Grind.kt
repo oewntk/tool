@@ -22,7 +22,7 @@ import org.oewntk.wndb.`in`.Factory as WndbFactory
 import org.oewntk.wndb.out.ModelConsumer as WndbModelConsumer
 import org.oewntk.xml.`in`.Factory as XmlFactory
 import org.oewntk.yaml.`in`.Factory as YamlFactory
-import org.oewntk.yaml.out.ModelConsumer as YamlModelConsumer
+import org.oewntk.yaml.out.oewn.ModelConsumer as YamlModelConsumer
 
 /**
  * Main class that generates the OEWN plus database
