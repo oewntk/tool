@@ -14,7 +14,6 @@ import org.oewntk.yaml.`in`.FactoryPlus
 import org.oewntk.yaml.out.YamlDump
 import org.yaml.snakeyaml.DumperOptions
 import java.io.File
-import org.oewntk.json.out.model.ModelConsumer as JsonModelConsumer
 import org.oewntk.ser.`in`.Factory as SerFactory
 import org.oewntk.ser.out.ModelConsumer as SerModelConsumer
 import org.oewntk.sql.out.ModelConsumer as SqlModelConsumer
@@ -22,7 +21,11 @@ import org.oewntk.wndb.`in`.Factory as WndbFactory
 import org.oewntk.wndb.out.ModelConsumer as WndbModelConsumer
 import org.oewntk.xml.`in`.Factory as XmlFactory
 import org.oewntk.yaml.`in`.Factory as YamlFactory
-import org.oewntk.yaml.out.oewn.ModelConsumer as YamlModelConsumer
+import org.oewntk.yaml.out.oewn.ModelConsumer as OEWNYamlModelConsumer
+import org.oewntk.yaml.out.data.ModelConsumer as DataYamlModelConsumer
+import org.oewntk.json.out.oewn.ModelConsumer as OEWNJsonModelConsumer
+import org.oewntk.json.out.data.ModelConsumer as DataJsonModelConsumer
+import org.oewntk.json.out.model.ModelConsumer as ModelJsonModelConsumer
 
 /**
  * Main class that generates the OEWN plus database
@@ -44,7 +47,7 @@ object Grind {
 
     val yamlDumpModeArg = ArgType.Choice(
         choices = YamlDumpMode.entries,
-        variantToString = { it.name.lowercase() },   // DEV -> "dev", PROD -> "prod"
+        variantToString = { it.name.lowercase() },
         toVariant = { raw ->
             when (raw.lowercase()) {
                 "a", "auto" -> YamlDumpMode.BLOCK
@@ -53,6 +56,25 @@ object Grind {
                 "j", "json" -> YamlDumpMode.JSON
                 "d", "default" -> YamlDumpMode.DEFAULT
                 "c", "compat" -> YamlDumpMode.COMPAT
+                else -> error("Unknown yaml dump mode: $raw")
+            }
+        }
+    )
+
+    enum class SerializationMode {
+        OEWN,
+        DATA,
+        MODEL
+    }
+
+    val serializationModeArg = ArgType.Choice(
+        choices = YamlDumpMode.entries,
+        variantToString = { it.name.lowercase() },
+        toVariant = { raw ->
+            when (raw.lowercase()) {
+                "o", "oewn" -> SerializationMode.OEWN
+                "d", "data" -> SerializationMode.DATA
+                "m", "model" -> SerializationMode.MODEL
                 else -> error("Unknown mode: $raw")
             }
         }
@@ -72,21 +94,24 @@ object Grind {
 
         // Options (start with - or --)
         // @formatter:off
-        val in1 by parser.argument(            ArgType.String,                                                   description = "Input dir or file")
-        val out by parser.argument(            ArgType.String,                                                   description = "Output dir or file")
-        val in2 by parser.option(              ArgType.String,  shortName = "i2", fullName = "in2",              description = "Extra input dir or file")         .default("")
-        val inFormat by parser.option(         ArgType.String,  shortName = "if", fullName = "in_format",        description = "In format")                       .default("yaml")
-        val inPlus by parser.option(           ArgType.Boolean, shortName = "p",  fullName = "plus",             description = "Plus input")                      .default(false)
-        val outFormat by parser.option(        ArgType.String,  shortName = "of", fullName = "out_format",       description = "Output format")                   .default("yaml")
-        val out2 by parser.option(             ArgType.String,  shortName = "o2", fullName = "out2",             description = "Extra output dir or file")        .default("")
-        val outOne by parser.option(           ArgType.Boolean, shortName = "o1", fullName = "out_one",          description = "Output one file")                 .default(false)
-        val outMerge by parser.option(         ArgType.Boolean, shortName = "m",  fullName = "merge",            description = "Do not group generated entries")  .default(false)
-        val outYaml by parser.option(          yamlDumpModeArg, shortName = "y",  fullName = "yaml",             description = "YAML format")                     .default(YamlDumpMode.AUTO)
-        val verbose by parser.option(          ArgType.Boolean, shortName = "v",  fullName = "verbose",          description = "Verbose output")                  .default(false)
+        val in1 by parser.argument(            ArgType.String,                                                         description = "Input dir or file")
+        val out by parser.argument(            ArgType.String,                                                         description = "Output dir or file")
+        val in2 by parser.option(              ArgType.String,        shortName = "i2", fullName = "in2",              description = "Extra input dir or file")         .default("")
+        val inFormat by parser.option(         ArgType.String,        shortName = "if", fullName = "in_format",        description = "In format")                       .default("yaml")
+        val inPlus by parser.option(           ArgType.Boolean,       shortName = "p",  fullName = "plus",             description = "Plus input")                      .default(false)
+        val outFormat by parser.option(        ArgType.String,        shortName = "of", fullName = "out_format",       description = "Output format")                   .default("yaml")
+        val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",             description = "Extra output dir or file")        .default("")
+        val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",          description = "Output one file")                 .default(false)
+        val outMerge by parser.option(         ArgType.Boolean,       shortName = "m",  fullName = "merge",            description = "Do not group generated entries")  .default(false)
+        val outYaml by parser.option(          yamlDumpModeArg,       shortName = "y",  fullName = "yaml",             description = "YAML format")                     .default(YamlDumpMode.AUTO)
+        val outPretty by parser.option(        ArgType.Boolean,       shortName = "op", fullName = "pretty",           description = "JSON pretty print")               .default(true)
+        val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",          description = "Verbose output")                  .default(false)
 
-        val wndCompatPointers by parser.option(ArgType.Boolean, shortName = "wp", fullName = "compat:pointer",   description = "WNDB pointer compat")             .default(false)
-        val wndCompatLexId by parser.option(   ArgType.Boolean, shortName = "wl", fullName = "compat:lexid",     description = "WNDB lexid compat")               .default(false)
-        val wndCompatVFrames by parser.option( ArgType.Boolean, shortName = "wv", fullName = "compat:verbframe", description = "WNDB vframe compat")              .default(false)
+        val outSerialization by parser.option( serializationModeArg,  shortName = "os", fullName = "serialization",    description = "Serialization mode")              .default(SerializationMode.OEWN)
+
+        val wndCompatPointers by parser.option(ArgType.Boolean,       shortName = "wp", fullName = "compat:pointer",   description = "WNDB pointer compat")             .default(false)
+        val wndCompatLexId by parser.option(   ArgType.Boolean,       shortName = "wl", fullName = "compat:lexid",     description = "WNDB lexid compat")               .default(false)
+        val wndCompatVFrames by parser.option( ArgType.Boolean,       shortName = "wv", fullName = "compat:verbframe", description = "WNDB vframe compat")              .default(false)
         // @formatter:on
 
         parser.parse(args)
@@ -100,6 +125,7 @@ object Grind {
             System.err.println("out format: $outFormat")
             System.err.println("out merge: $outMerge")
             System.err.println("out one: $outOne")
+            System.err.println("out serialization: $outSerialization")
         }
         // Tracing
         val startTime = start()
@@ -138,13 +164,23 @@ object Grind {
 
         when (outFormat) {
             "ser" -> SerModelConsumer(outFile).accept(model)
-            "json" -> JsonModelConsumer(outFile).accept(model)
             "sql" -> SqlModelConsumer(outFile).accept(model)
             "wndb" -> WndbModelConsumer(outFile, wndbFlags(wndCompatPointers, wndCompatLexId, wndCompatVFrames)).accept(model)
             "yaml" -> {
                 if (outMerge)
                     File(outFile, "entries-generated.yaml").delete()
-                YamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, generated = !outMerge).accept(model)
+                when (outSerialization) {
+                    SerializationMode.OEWN -> OEWNYamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, generated = !outMerge).accept(model)
+                    SerializationMode.DATA -> DataYamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options).accept(model)
+                }
+            }
+
+            "json" -> {
+                when (outSerialization) {
+                    SerializationMode.OEWN -> OEWNJsonModelConsumer(outFile, split = !outOne, prettyPrint = outPretty, generated = !outMerge).accept(model)
+                    SerializationMode.DATA -> DataJsonModelConsumer(outFile, split = !outOne, prettyPrint = outPretty).accept(model)
+                    SerializationMode.MODEL -> ModelJsonModelConsumer(outFile, prettyPrint = outPretty).accept(model)
+                }
             }
 
             else -> throw IllegalArgumentException("Unsupported output format")
