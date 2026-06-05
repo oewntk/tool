@@ -62,6 +62,19 @@ object Grind {
         }
     )
 
+    val jsonMethodArg = ArgType.Choice(
+        choices = JsonMethod.entries,
+        variantToString = { it.name.lowercase() },
+        toVariant = { raw ->
+            when (raw.lowercase()) {
+                "v", "value_wrapper" -> JsonMethod.VALUE_WRAPPER
+                "j", "json_element" -> JsonMethod.JSON_ELEMENT
+                "a", "any_serializer" -> JsonMethod.ANY_SERIALIZER
+                else -> error("Unknown json method: $raw")
+            }
+        }
+    )
+
     enum class SerializationMode {
         OEWN,
         DATA,
