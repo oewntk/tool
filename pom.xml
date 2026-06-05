@@ -37,6 +37,11 @@
         </dependency>
         <dependency>
             <groupId>io.github.oewntk</groupId>
+            <artifactId>fromjson</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.oewntk</groupId>
             <artifactId>fromxml</artifactId>
             <version>3.0.1</version>
         </dependency>

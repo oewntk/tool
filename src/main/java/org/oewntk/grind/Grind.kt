@@ -15,6 +15,9 @@ import org.oewntk.yaml.`in`.FactoryPlus
 import org.oewntk.yaml.out.YamlDump
 import org.yaml.snakeyaml.DumperOptions
 import java.io.File
+import org.oewntk.json.`in`.data.Factory as DataJsonFactory
+import org.oewntk.json.`in`.model.Factory as ModelJsonFactory
+import org.oewntk.json.`in`.oewn.Factory as OEWNJsonFactory
 import org.oewntk.json.out.data.ModelConsumer as DataJsonModelConsumer
 import org.oewntk.json.out.model.ModelConsumer as ModelJsonModelConsumer
 import org.oewntk.json.out.oewn.ModelConsumer as OEWNJsonModelConsumer
@@ -107,27 +110,29 @@ object Grind {
         val parser = ArgParser("grind")
         // Options (start with - or --)
         // @formatter:off
-        val in1 by parser.argument(            ArgType.String,                                                         description = "Input dir or file")
-        val out by parser.argument(            ArgType.String,                                                         description = "Output dir or file")
-        val in2 by parser.option(              ArgType.String,        shortName = "i2", fullName = "in2",              description = "Extra input dir or file")         .default("")
-        val inFormat by parser.option(         ArgType.String,        shortName = "if", fullName = "in_format",        description = "In format")                       .default("yaml")
-        val inPlus by parser.option(           ArgType.Boolean,       shortName = "p",  fullName = "plus",             description = "Plus input")                      .default(false)
-        val outFormat by parser.option(        ArgType.String,        shortName = "of", fullName = "out_format",       description = "Output format")                   .default("yaml")
-        val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",             description = "Extra output dir or file")        .default("")
-        val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",          description = "Output one file")                 .default(false)
-        val outMerge by parser.option(         ArgType.Boolean,       shortName = "m",  fullName = "merge",            description = "Do not group generated entries")  .default(false)
-        val outSerialization by parser.option( serializationModeArg,  shortName = "os", fullName = "serialization",    description = "Serialization mode")              .default(SerializationMode.OEWN)
-        val outYaml by parser.option(          yamlDumpModeArg,       shortName = "y",  fullName = "yaml",             description = "YAML format")                     .default(YamlDumpMode.AUTO)
-        val outJson by parser.option(          jsonMethodArg,         shortName = "j",  fullName = "json",             description = "JSON method")                     .default(JsonMethod.ANY_SERIALIZER)
-        val outPretty by parser.option(        ArgType.Boolean,       shortName = "op", fullName = "pretty",           description = "JSON pretty print")               .default(true)
-        val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",          description = "Verbose output")                  .default(false)
+        val in1 by parser.argument(            ArgType.String,                                                           description = "Input dir or file")
+        val out by parser.argument(            ArgType.String,                                                           description = "Output dir or file")
+        val in2 by parser.option(              ArgType.String,        shortName = "i2", fullName = "in2",                description = "Extra input dir or file")         .default("")
+        val inSerialization by parser.option(  serializationModeArg,  shortName = "is", fullName = "in_serialization",   description = "Serialization mode")              .default(SerializationMode.OEWN)
+        val inJson by parser.option(           jsonMethodArg,         shortName = "ij", fullName = "in_json",            description = "JSON input method")               .default(JsonMethod.ANY_SERIALIZER)
+        val inFormat by parser.option(         ArgType.String,        shortName = "if", fullName = "in_format",          description = "In format")                       .default("yaml")
+        val inPlus by parser.option(           ArgType.Boolean,       shortName = "p",  fullName = "plus",               description = "Plus input")                      .default(false)
+        val outFormat by parser.option(        ArgType.String,        shortName = "of", fullName = "out_format",         description = "Output format")                   .default("yaml")
+        val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",               description = "Extra output dir or file")        .default("")
+        val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",            description = "Output one file")                 .default(false)
+        val outMerge by parser.option(         ArgType.Boolean,       shortName = "m",  fullName = "merge",              description = "Do not group generated entries")  .default(false)
+        val outSerialization by parser.option( serializationModeArg,  shortName = "os", fullName = "out_serialization",  description = "Serialization mode")              .default(SerializationMode.OEWN)
+        val outYaml by parser.option(          yamlDumpModeArg,       shortName = "y",  fullName = "yaml",               description = "YAML format")                     .default(YamlDumpMode.AUTO)
+        val outJson by parser.option(          jsonMethodArg,         shortName = "oj", fullName = "out_json",           description = "JSON output method")              .default(JsonMethod.ANY_SERIALIZER)
+        val outPretty by parser.option(        ArgType.Boolean,       shortName = "op", fullName = "pretty",             description = "JSON pretty print")               .default(true)
+        val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",            description = "Verbose output")                  .default(false)
 
-        val wndCompatPointers by parser.option(ArgType.Boolean,       shortName = "wp", fullName = "compat:pointer",   description = "WNDB pointer compat")             .default(false)
-        val wndCompatLexId by parser.option(   ArgType.Boolean,       shortName = "wl", fullName = "compat:lexid",     description = "WNDB lexid compat")               .default(false)
-        val wndCompatVFrames by parser.option( ArgType.Boolean,       shortName = "wv", fullName = "compat:verbframe", description = "WNDB vframe compat")              .default(false)
+        val wndCompatPointers by parser.option(ArgType.Boolean,       shortName = "wp", fullName = "compat:pointer",     description = "WNDB pointer compat")             .default(false)
+        val wndCompatLexId by parser.option(   ArgType.Boolean,       shortName = "wl", fullName = "compat:lexid",       description = "WNDB lexid compat")               .default(false)
+        val wndCompatVFrames by parser.option( ArgType.Boolean,       shortName = "wv", fullName = "compat:verbframe",   description = "WNDB vframe compat")              .default(false)
 
-        val traceTime by parser.option(        ArgType.Boolean,       shortName = "tt", fullName = "trace:time",       description = "trace time")                      .default(false)
-        val traceHeap by parser.option(        ArgType.Boolean,       shortName = "th", fullName = "trace:heap",       description = "trace heap")                      .default(false)
+        val traceTime by parser.option(        ArgType.Boolean,       shortName = "tt", fullName = "trace:time",         description = "trace time")                      .default(false)
+        val traceHeap by parser.option(        ArgType.Boolean,       shortName = "th", fullName = "trace:heap",         description = "trace heap")                      .default(false)
         // @formatter:on
         parser.parse(args)
         if (verbose) {
@@ -175,6 +180,14 @@ object Grind {
             "yaml" -> YamlFactory(input, input2, verbose = verbose).get()!!
             "xml" -> XmlFactory(input, input2, verbose = verbose).get()!!
             "wndb" -> WndbFactory(input, input2, verbose = verbose).get()!!
+            "json" -> {
+                when (inSerialization) {
+                    SerializationMode.OEWN -> OEWNJsonFactory(input, split = !outOne, jsonMethod = inJson, verbose = verbose).get()!!
+                    SerializationMode.DATA -> DataJsonFactory(input, split = !outOne, jsonMethod = inJson, verbose = verbose).get()!!
+                    SerializationMode.MODEL -> ModelJsonFactory(outFile, verbose = verbose).get()!!
+                }
+            }
+
             else -> throw IllegalArgumentException("Unsupported input format")
         }
         progress("after model is supplied,", startTime)

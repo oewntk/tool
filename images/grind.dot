@@ -2,6 +2,7 @@ digraph "io.github.oewntk:grind:jar:3.0.1" {
 	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:model:jar:3.0.1:compile" ; 
 	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromser:jar:3.0.1:compile" ; 
 	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromyaml:jar:3.0.1:compile" ; 
+	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromjson:jar:3.0.1:compile" ; 
 	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromxml:jar:3.0.1:compile" ; 
 	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromwndb:jar:3.0.1:compile" ; 
 	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:toyaml:jar:3.0.1:compile" ; 
@@ -16,9 +17,10 @@ digraph "io.github.oewntk:grind:jar:3.0.1" {
 	"io.github.oewntk:model:jar:3.0.1:compile" -> "org.jetbrains.kotlinx:kotlinx-serialization-core:jar:1.6.3:compile" ; 
 	"org.jetbrains.kotlinx:kotlinx-serialization-core:jar:1.6.3:compile" -> "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:1.6.3:compile" ; 
 	"io.github.oewntk:fromyaml:jar:3.0.1:compile" -> "org.yaml:snakeyaml:jar:2.6:compile" ; 
-	"io.github.oewntk:fromwndb:jar:3.0.1:compile" -> "io.github.oewntk:parse_wndb:jar:3.0.1:compile" ; 
-	"io.github.oewntk:tojson:jar:3.0.1:compile" -> "org.jetbrains.kotlinx:kotlinx-serialization-json:jar:1.6.3:compile" ; 
+	"io.github.oewntk:fromjson:jar:3.0.1:compile" -> "io.github.oewntk:json:jar:3.0.1:compile" ; 
+	"io.github.oewntk:fromjson:jar:3.0.1:compile" -> "org.jetbrains.kotlinx:kotlinx-serialization-json:jar:1.6.3:compile" ; 
 	"org.jetbrains.kotlinx:kotlinx-serialization-json:jar:1.6.3:compile" -> "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:jar:1.6.3:compile" ; 
+	"io.github.oewntk:fromwndb:jar:3.0.1:compile" -> "io.github.oewntk:parse_wndb:jar:3.0.1:compile" ; 
 	"org.jetbrains.kotlin:kotlin-stdlib:jar:2.1.0:compile" -> "org.jetbrains:annotations:jar:13.0:compile" ; 
 	"org.jetbrains.kotlinx:kotlinx-cli-jvm:jar:0.3.6:compile" -> "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.9.10:runtime" ; 
 	"org.jetbrains.kotlinx:kotlinx-cli-jvm:jar:0.3.6:compile" -> "org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.9.10:compile" ; 
