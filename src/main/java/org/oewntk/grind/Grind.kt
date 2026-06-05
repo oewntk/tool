@@ -102,9 +102,10 @@ object Grind {
         val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",             description = "Extra output dir or file")        .default("")
         val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",          description = "Output one file")                 .default(false)
         val outMerge by parser.option(         ArgType.Boolean,       shortName = "m",  fullName = "merge",            description = "Do not group generated entries")  .default(false)
-        val outYaml by parser.option(          yamlDumpModeArg,       shortName = "y",  fullName = "yaml",             description = "YAML format")                     .default(YamlDumpMode.AUTO)
-        val outPretty by parser.option(        ArgType.Boolean,       shortName = "op", fullName = "pretty",           description = "JSON pretty print")               .default(true)
         val outSerialization by parser.option( serializationModeArg,  shortName = "os", fullName = "serialization",    description = "Serialization mode")              .default(SerializationMode.OEWN)
+        val outYaml by parser.option(          yamlDumpModeArg,       shortName = "y",  fullName = "yaml",             description = "YAML format")                     .default(YamlDumpMode.AUTO)
+        val outJson by parser.option(          jsonMethodArg,         shortName = "j",  fullName = "json",             description = "JSON method")                     .default(JsonMethod.ANY_SERIALIZER)
+        val outPretty by parser.option(        ArgType.Boolean,       shortName = "op", fullName = "pretty",           description = "JSON pretty print")               .default(true)
         val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",          description = "Verbose output")                  .default(false)
 
         val wndCompatPointers by parser.option(ArgType.Boolean,       shortName = "wp", fullName = "compat:pointer",   description = "WNDB pointer compat")             .default(false)
@@ -126,6 +127,8 @@ object Grind {
             System.err.println("out merge: $outMerge")
             System.err.println("out one: $outOne")
             System.err.println("out serialization: $outSerialization")
+            System.err.println("out YAML: $outYaml")
+            System.err.println("out JSON: $outJson")
         }
 
         // Tracing
@@ -181,8 +184,8 @@ object Grind {
 
             "json" -> {
                 when (outSerialization) {
-                    SerializationMode.OEWN -> OEWNJsonModelConsumer(outFile, split = !outOne, prettyPrint = outPretty, generated = !outMerge, verbose = verbose).accept(model)
-                    SerializationMode.DATA -> DataJsonModelConsumer(outFile, split = !outOne, prettyPrint = outPretty, verbose = verbose).accept(model)
+                    SerializationMode.OEWN -> OEWNJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, generated = !outMerge, verbose = verbose).accept(model)
+                    SerializationMode.DATA -> DataJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, verbose = verbose).accept(model)
                     SerializationMode.MODEL -> ModelJsonModelConsumer(outFile, prettyPrint = outPretty, verbose = verbose).accept(model)
                 }
             }
