@@ -8,6 +8,7 @@ import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import org.oewntk.grind.Tracing.progress
 import org.oewntk.grind.Tracing.start
+import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.ModelInfo
 import org.oewntk.wndb.out.Flags
 import org.oewntk.yaml.`in`.FactoryPlus
