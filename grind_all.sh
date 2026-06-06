@@ -44,7 +44,7 @@ OUT_SQL=sql/data
 
 declare -A BY_KEY
 export BY_KEY=(
-#[YAM_SER]="        -v              -if yaml -i2 ${IN_YAML2}  -of ser  -o2 ${OUT}/${OUT_SER2}                  ${IN_YAML}      ${OUT}/${OUT_SER}"
+[YAM_SER]="        -v              -if yaml -i2 ${IN_YAML2}  -of ser  -o2 ${OUT}/${OUT_SER2}                  ${IN_YAML}      ${OUT}/${OUT_SER}"
 #[YAM_YAM]="        -v              -if yaml -i2 ${IN_YAML2}  -of yaml -o2 ${OUT}/${OUT_YAML}/${OUT_INFO}      ${IN_YAML}      ${OUT}/${OUT_YAML}"
 #[YAM_SQL]="        -v              -if yaml -i2 ${IN_YAML2}  -of sql  -o2 ${OUT}/${OUT_SQL}/${OUT_INFO}       ${IN_YAML}      ${OUT}/${OUT_SQL}"
 #[YAM_WNB]="        -v              -if yaml -i2 ${IN_YAML2}  -of wndb -o2 ${OUT}/${OUT_WNDB}/${OUT_INFO}      ${IN_YAML}      ${OUT}/${OUT_WNDB}"
