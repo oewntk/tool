@@ -6,14 +6,17 @@ package org.oewntk.grind
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
+import org.oewntk.grind.Args.SerializationMode
+import org.oewntk.grind.Args.YamlDumpMode
+import org.oewntk.grind.Args.jsonMethodArg
+import org.oewntk.grind.Args.serializationModeArg
+import org.oewntk.grind.Args.yamlDumpModeArg
 import org.oewntk.grind.Tracing.progress
 import org.oewntk.grind.Tracing.start
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.ModelInfo
 import org.oewntk.wndb.out.Flags
 import org.oewntk.yaml.`in`.FactoryPlus
-import org.oewntk.yaml.out.YamlDump
-import org.yaml.snakeyaml.DumperOptions
 import java.io.File
 import org.oewntk.json.`in`.data.Factory as DataJsonFactory
 import org.oewntk.json.`in`.model.Factory as ModelJsonFactory
@@ -39,64 +42,6 @@ import org.oewntk.yaml.out.oewn.ModelConsumer as OEWNYamlModelConsumer
  */
 object Grind {
 
-    enum class YamlDumpMode(val options: DumperOptions) {
-        AUTO(YamlDump.autoDumperOptions),
-        BLOCK(YamlDump.blockDumperOptions),
-        FLOW(YamlDump.flowDumperOptions),
-
-        DEFAULT(YamlDump.defaultDumperOptions),
-        COMPAT(YamlDump.jsonDumperOptions),
-        JSON(YamlDump.jsonDumperOptions),
-    }
-
-    val yamlDumpModeArg = ArgType.Choice(
-        choices = YamlDumpMode.entries,
-        variantToString = { it.name.lowercase() },
-        toVariant = { raw ->
-            when (raw.lowercase()) {
-                "a", "auto" -> YamlDumpMode.BLOCK
-                "b", "block" -> YamlDumpMode.BLOCK
-                "f", "flow" -> YamlDumpMode.FLOW
-                "j", "json" -> YamlDumpMode.JSON
-                "d", "default" -> YamlDumpMode.DEFAULT
-                "c", "compat" -> YamlDumpMode.COMPAT
-                else -> error("Unknown yaml dump mode: $raw")
-            }
-        }
-    )
-
-    val jsonMethodArg = ArgType.Choice(
-        choices = JsonMethod.entries,
-        variantToString = { it.name.lowercase() },
-        toVariant = { raw ->
-            when (raw.lowercase()) {
-                "v", "value_wrapper" -> JsonMethod.VALUE_WRAPPER
-                "j", "json_element" -> JsonMethod.JSON_ELEMENT
-                "a", "any_serializer" -> JsonMethod.ANY_SERIALIZER
-                else -> error("Unknown json method: $raw")
-            }
-        }
-    )
-
-    enum class SerializationMode {
-        OEWN,
-        DATA,
-        MODEL
-    }
-
-    val serializationModeArg = ArgType.Choice(
-        choices = SerializationMode.entries,
-        variantToString = { it.name.lowercase() },
-        toVariant = { raw ->
-            when (raw.lowercase()) {
-                "o", "oewn" -> SerializationMode.OEWN
-                "d", "data" -> SerializationMode.DATA
-                "m", "model" -> SerializationMode.MODEL
-                else -> error("Unknown mode: $raw")
-            }
-        }
-    )
-
     /**
      * Main entry point
      *
@@ -113,9 +58,10 @@ object Grind {
         val in1 by parser.argument(            ArgType.String,                                                           description = "Input dir or file")
         val out by parser.argument(            ArgType.String,                                                           description = "Output dir or file")
         val in2 by parser.option(              ArgType.String,        shortName = "i2", fullName = "in2",                description = "Extra input dir or file")         .default("")
+        val inFormat by parser.option(         ArgType.String,        shortName = "if", fullName = "in_format",          description = "In format")                       .default("yaml")
         val inSerialization by parser.option(  serializationModeArg,  shortName = "is", fullName = "in_serialization",   description = "Serialization mode")              .default(SerializationMode.OEWN)
         val inJson by parser.option(           jsonMethodArg,         shortName = "ij", fullName = "in_json",            description = "JSON input method")               .default(JsonMethod.ANY_SERIALIZER)
-        val inFormat by parser.option(         ArgType.String,        shortName = "if", fullName = "in_format",          description = "In format")                       .default("yaml")
+        val inOne by parser.option(            ArgType.Boolean,       shortName = "i1", fullName = "in_one",             description = "Input one file")                  .default(false)
         val inPlus by parser.option(           ArgType.Boolean,       shortName = "p",  fullName = "plus",               description = "Plus input")                      .default(false)
         val outFormat by parser.option(        ArgType.String,        shortName = "of", fullName = "out_format",         description = "Output format")                   .default("yaml")
         val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",               description = "Extra output dir or file")        .default("")
@@ -142,6 +88,8 @@ object Grind {
             System.err.println("out2: $out2")
             System.err.println("plus: $inPlus")
             System.err.println("in format: $inFormat")
+            System.err.println("in serialization: $inSerialization")
+            System.err.println("in JSON: $inJson")
             System.err.println("out format: $outFormat")
             System.err.println("out merge: $outMerge")
             System.err.println("out one: $outOne")
@@ -172,7 +120,7 @@ object Grind {
         Tracing.psInfo.println("[Output] " + outFile.absolutePath)
 
         // Supply model
-        progress("before model is supplied,", startTime)
+        progress("before model is supplied,", startTime, verbose = verbose)
         val model = if (inPlus)
             FactoryPlus(input, input2).get()!!
         else when (inFormat) {
@@ -182,18 +130,18 @@ object Grind {
             "wndb" -> WndbFactory(input, input2, verbose = verbose).get()!!
             "json" -> {
                 when (inSerialization) {
-                    SerializationMode.OEWN -> OEWNJsonFactory(input, split = !outOne, jsonMethod = inJson, verbose = verbose).get()!!
-                    SerializationMode.DATA -> DataJsonFactory(input, split = !outOne, jsonMethod = inJson, verbose = verbose).get()!!
-                    SerializationMode.MODEL -> ModelJsonFactory(outFile, verbose = verbose).get()!!
+                    SerializationMode.OEWN -> OEWNJsonFactory(input, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
+                    SerializationMode.DATA -> DataJsonFactory(input, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
+                    SerializationMode.MODEL -> ModelJsonFactory(input, verbose = verbose).get()!!
                 }
             }
 
             else -> throw IllegalArgumentException("Unsupported input format")
         }
-        progress("after model is supplied,", startTime)
+        progress("after model is supplied,", startTime, verbose = verbose)
 
         // Consume model
-        progress("before model is consumed,", startTime)
+        progress("before model is consumed,", startTime, verbose = verbose)
 
         when (outFormat) {
             "ser" -> SerModelConsumer(outFile).accept(model)
@@ -219,10 +167,10 @@ object Grind {
 
             else -> throw IllegalArgumentException("Unsupported output format")
         }
-        progress("after model is consumed,", startTime)
+        progress("after model is consumed,", startTime, verbose = verbose)
 
         // End
-        progress("total,", startTime)
+        progress("end, ", startTime, verbose = verbose)
 
         // info
         val modelInfo = model.info()

@@ -17,7 +17,6 @@ object Tracing {
 
     val psInfo: PrintStream = System.out
 
-    @Suppress("unused")
     val psErr: PrintStream = System.err
 
     private val psHeap: PrintStream = System.out
@@ -39,7 +38,9 @@ object Tracing {
         return startTime
     }
 
-    fun progress(message: String, startTime: Long) {
+    fun progress(message: String, startTime: Long, verbose: Boolean) {
+        if (verbose)
+            psInfo.println(message)
         if (traceTime) {
             val endTime = System.currentTimeMillis()
             psTime.println("[Time]: " + (endTime - startTime) / 1000 + "s")
