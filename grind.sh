@@ -24,7 +24,7 @@ verbose           Boolean, shortName = v,  fullName = verbose,           Verbose
 exit 1
 fi
 
-jar=grind-3.0.1-uber.jar
+jar=tool-3.0.1-uber.jar
 if [ ! -e "${jar}" ]; then
   if [ ! -e "target/${jar}" ]; then
     echo "Non existing uber jar" >&2

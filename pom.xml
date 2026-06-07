@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.oewntk</groupId>
-    <artifactId>grind</artifactId>
+    <artifactId>tool</artifactId>
     <version>3.0.1</version>
     <name>grind</name>
     <description>Read Wordnet model and convert.</description>
