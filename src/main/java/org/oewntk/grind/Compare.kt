@@ -11,18 +11,11 @@ import org.oewntk.grind.Args.jsonMethodArg
 import org.oewntk.grind.Args.serializationModeArg
 import org.oewntk.grind.Tracing.progress
 import org.oewntk.grind.Tracing.start
+import org.oewntk.grind.Utils.getModel
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.DataCoreModel
 import org.oewntk.model.ModelInfo
-import org.oewntk.yaml.`in`.FactoryPlus
 import java.io.File
-import org.oewntk.json.`in`.data.Factory as DataJsonFactory
-import org.oewntk.json.`in`.model.Factory as ModelJsonFactory
-import org.oewntk.json.`in`.oewn.Factory as OEWNJsonFactory
-import org.oewntk.ser.`in`.Factory as SerFactory
-import org.oewntk.wndb.`in`.Factory as WndbFactory
-import org.oewntk.xml.`in`.Factory as XmlFactory
-import org.oewntk.yaml.`in`.Factory as YamlFactory
 
 /**
  * Main class that generates the OEWN plus database
@@ -89,57 +82,37 @@ object Compare {
 
         val startTime = start()
 
-        // Input
-        val inputA = File(inA1)
-        Tracing.psInfo.println("[Input A] " + inputA.absolutePath)
-        val inputB = File(inB1)
-        Tracing.psInfo.println("[Input B] " + inputB.absolutePath)
-
-        // Input2
-        val input2A = File(inA2)
-        Tracing.psInfo.println("[Input2 A] " + input2A.absolutePath)
-        val input2B = File(inB2)
-        Tracing.psInfo.println("[Input2 B] " + input2B.absolutePath)
-
         // Supply model
         progress("before model are supplied,", startTime, verbose = verbose)
         progress("before model A is supplied,", startTime, verbose = verbose)
-        val modelA = if (inAPlus)
-            FactoryPlus(inputA, input2A).get()!!
-        else when (inAFormat) {
-            "ser" -> SerFactory(inputA).get()!!
-            "yaml" -> YamlFactory(inputA, input2A, verbose = verbose).get()!!
-            "xml" -> XmlFactory(inputA, input2A, verbose = verbose).get()!!
-            "wndb" -> WndbFactory(inputA, input2A, verbose = verbose).get()!!
-            "json" -> {
-                when (inASerialization) {
-                    SerializationMode.OEWN -> OEWNJsonFactory(inputA, split = !inAOne, jsonMethod = inAJson, verbose = verbose).get()!!
-                    SerializationMode.DATA -> DataJsonFactory(inputA, split = !inAOne, jsonMethod = inAJson, verbose = verbose).get()!!
-                    SerializationMode.MODEL -> ModelJsonFactory(inputA, verbose = verbose).get()!!
-                }
-            }
-
-            else -> throw IllegalArgumentException("Unsupported A input format")
-        }
+        Tracing.psInfo.println("[Input A] " + File(inA1).absolutePath)
+        if (!inA2.isBlank())
+            Tracing.psInfo.println("[Input2 A] " + File(inA2).absolutePath)
+        val modelA = getModel(
+            inA1,
+            inA2,
+            inAFormat,
+            inAPlus,
+            inASerialization,
+            inAOne,
+            inAJson,
+            verbose
+        )
         progress("after model A $modelA is supplied,", startTime, verbose = verbose)
         progress("before model B is supplied,", startTime, verbose = verbose)
-        val modelB = if (inBPlus)
-            FactoryPlus(inputB, input2B).get()!!
-        else when (inBFormat) {
-            "ser" -> SerFactory(inputB).get()!!
-            "yaml" -> YamlFactory(inputB, input2B, verbose = verbose).get()!!
-            "xml" -> XmlFactory(inputB, input2B, verbose = verbose).get()!!
-            "wndb" -> WndbFactory(inputB, input2B, verbose = verbose).get()!!
-            "json" -> {
-                when (inBSerialization) {
-                    SerializationMode.OEWN -> OEWNJsonFactory(inputB, split = !inBOne, jsonMethod = inBJson, verbose = verbose).get()!!
-                    SerializationMode.DATA -> DataJsonFactory(inputB, split = !inBOne, jsonMethod = inBJson, verbose = verbose).get()!!
-                    SerializationMode.MODEL -> ModelJsonFactory(inputB, verbose = verbose).get()!!
-                }
-            }
-
-            else -> throw IllegalArgumentException("Unsupported B input format")
-        }
+        Tracing.psInfo.println("[Input B] " + File(inB1).absolutePath)
+        if (!inB2.isBlank())
+            Tracing.psInfo.println("[Input2 B] " + File(inB2).absolutePath)
+        val modelB = getModel(
+            inB1,
+            inB2,
+            inBFormat,
+            inBPlus,
+            inBSerialization,
+            inBOne,
+            inBJson,
+            verbose
+        )
         progress("after model B $modelB is supplied,", startTime, verbose = verbose)
         progress("after models are supplied,", startTime, verbose = verbose)
 

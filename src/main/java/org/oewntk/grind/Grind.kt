@@ -13,24 +13,17 @@ import org.oewntk.grind.Args.serializationModeArg
 import org.oewntk.grind.Args.yamlDumpModeArg
 import org.oewntk.grind.Tracing.progress
 import org.oewntk.grind.Tracing.start
+import org.oewntk.grind.Utils.getModel
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.ModelInfo
 import org.oewntk.wndb.out.Flags
-import org.oewntk.yaml.`in`.FactoryPlus
 import java.io.File
-import org.oewntk.json.`in`.data.Factory as DataJsonFactory
-import org.oewntk.json.`in`.model.Factory as ModelJsonFactory
-import org.oewntk.json.`in`.oewn.Factory as OEWNJsonFactory
 import org.oewntk.json.out.data.ModelConsumer as DataJsonModelConsumer
 import org.oewntk.json.out.model.ModelConsumer as ModelJsonModelConsumer
 import org.oewntk.json.out.oewn.ModelConsumer as OEWNJsonModelConsumer
-import org.oewntk.ser.`in`.Factory as SerFactory
 import org.oewntk.ser.out.ModelConsumer as SerModelConsumer
 import org.oewntk.sql.out.ModelConsumer as SqlModelConsumer
-import org.oewntk.wndb.`in`.Factory as WndbFactory
 import org.oewntk.wndb.out.ModelConsumer as WndbModelConsumer
-import org.oewntk.xml.`in`.Factory as XmlFactory
-import org.oewntk.yaml.`in`.Factory as YamlFactory
 import org.oewntk.yaml.out.data.ModelConsumer as DataYamlModelConsumer
 import org.oewntk.yaml.out.oewn.ModelConsumer as OEWNYamlModelConsumer
 
@@ -104,13 +97,10 @@ object Grind {
 
         val startTime = start()
 
-        // Input
-        val input = File(in1)
-        Tracing.psInfo.println("[Input] " + input.absolutePath)
-
-        // Input2
-        val input2 = File(in2)
-        Tracing.psInfo.println("[Input2] " + input2.absolutePath)
+        // Inputs
+        Tracing.psInfo.println("[Input] " + File(in1).absolutePath)
+        if (!in2.isBlank())
+            Tracing.psInfo.println("[Input2] " + File(in2).absolutePath)
 
         // Output
         val outFile = File(out)
@@ -121,23 +111,16 @@ object Grind {
 
         // Supply model
         progress("before model is supplied,", startTime, verbose = verbose)
-        val model = if (inPlus)
-            FactoryPlus(input, input2).get()!!
-        else when (inFormat) {
-            "ser" -> SerFactory(input).get()!!
-            "yaml" -> YamlFactory(input, input2, verbose = verbose).get()!!
-            "xml" -> XmlFactory(input, input2, verbose = verbose).get()!!
-            "wndb" -> WndbFactory(input, input2, verbose = verbose).get()!!
-            "json" -> {
-                when (inSerialization) {
-                    SerializationMode.OEWN -> OEWNJsonFactory(input, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
-                    SerializationMode.DATA -> DataJsonFactory(input, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
-                    SerializationMode.MODEL -> ModelJsonFactory(input, verbose = verbose).get()!!
-                }
-            }
-
-            else -> throw IllegalArgumentException("Unsupported input format")
-        }
+        val model = getModel(
+            in1,
+            in2,
+            inFormat,
+            inPlus,
+            inSerialization,
+            inOne,
+            inJson,
+            verbose
+        )
         progress("after model is supplied,", startTime, verbose = verbose)
 
         // Consume model
