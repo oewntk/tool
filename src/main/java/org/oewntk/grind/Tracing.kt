@@ -40,15 +40,15 @@ object Tracing {
 
     fun progress(message: String, startTime: Long, verbose: Boolean) {
         if (verbose)
-            psInfo.println(message)
+            psInfo.println("[Progress] $message")
+        // time
         if (traceTime) {
             val endTime = System.currentTimeMillis()
-            psTime.println("[Time]: " + (endTime - startTime) / 1000 + "s")
+            psTime.println("[Time] " + (endTime - startTime) / 1000 + "s")
         }
-
         // heap state
         if (traceHeap) {
-            psHeap.println("[Heap]: " + Memory.heapInfo(message, Memory.Unit.M))
+            psHeap.println("[Heap] " + Memory.heapInfo(message, Memory.Unit.M))
         }
     }
 
@@ -62,7 +62,7 @@ object Tracing {
             return formatter
         }
 
-        fun heapInfo(tag: String, u: Unit): String {
+        fun heapInfo(stage: String, u: Unit): String {
             val max = Runtime.getRuntime().maxMemory()
             val total = Runtime.getRuntime().totalMemory()
             val free = Runtime.getRuntime().freeMemory()
@@ -74,7 +74,7 @@ object Tracing {
             avail /= u.div
 
             val formatter = formatter()
-            return "$tag used: ${formatter.format(used)}$u maxfree: ${formatter.format(avail)}$u"
+            return "$stage used: ${formatter.format(used)}$u maxfree: ${formatter.format(avail)}$u"
         }
 
         fun memoryInfo(tag: String, u: Unit): String {

@@ -63,6 +63,7 @@ object Grind {
         val outSerialization by parser.option( serializationModeArg,  shortName = "os", fullName = "out_serialization",  description = "Serialization mode")              .default(SerializationMode.OEWN)
         val outYaml by parser.option(          yamlDumpModeArg,       shortName = "y",  fullName = "yaml",               description = "YAML format")                     .default(YamlDumpMode.AUTO)
         val outJson by parser.option(          jsonMethodArg,         shortName = "oj", fullName = "out_json",           description = "JSON output method")              .default(JsonMethod.ANY_SERIALIZER)
+        val outInfo by parser.option(          ArgType.String,        shortName = "oi", fullName = "out_info",           description = "Info output")                     .default("")
         val outPretty by parser.option(        ArgType.Boolean,       shortName = "op", fullName = "pretty",             description = "JSON pretty print")               .default(true)
         val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",            description = "Verbose output")                  .default(false)
 
@@ -110,7 +111,7 @@ object Grind {
         Tracing.psInfo.println("[Output] " + outFile.absolutePath)
 
         // Supply model
-        progress("before model is supplied,", startTime, verbose = verbose)
+        progress("before model is supplied", startTime, verbose = verbose)
         val model = getModel(
             in1,
             in2,
@@ -121,10 +122,10 @@ object Grind {
             inJson,
             verbose
         )
-        progress("after model is supplied,", startTime, verbose = verbose)
+        progress("after model is supplied", startTime, verbose = verbose)
 
         // Consume model
-        progress("before model is consumed,", startTime, verbose = verbose)
+        progress("before model is consumed", startTime, verbose = verbose)
 
         when (outFormat) {
             "ser" -> SerModelConsumer(outFile).accept(model)
@@ -150,7 +151,7 @@ object Grind {
 
             else -> throw IllegalArgumentException("Unsupported output format")
         }
-        progress("after model is consumed,", startTime, verbose = verbose)
+        progress("after model is consumed", startTime, verbose = verbose)
 
         // End
         progress("end, ", startTime, verbose = verbose)
@@ -160,8 +161,8 @@ object Grind {
         val modelCounts = ModelInfo.counts(model)
         val modelInfo2 = "$modelInfo\n$modelCounts"
         Tracing.psInfo.println(modelInfo2)
-        if (out2.isNotEmpty()) {
-            val file = File(out2)
+        if (outInfo.isNotEmpty()) {
+            val file = File(outInfo)
             val outDir = file.parentFile
             if (!outDir.exists()) {
                 outDir.mkdirs()

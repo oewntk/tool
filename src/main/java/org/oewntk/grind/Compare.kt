@@ -83,8 +83,8 @@ object Compare {
         val startTime = start()
 
         // Supply model
-        progress("before model are supplied,", startTime, verbose = verbose)
-        progress("before model A is supplied,", startTime, verbose = verbose)
+        progress("before model are supplied", startTime, verbose = verbose)
+        progress("before model A is supplied", startTime, verbose = verbose)
         Tracing.psInfo.println("[Input A] " + File(inA1).absolutePath)
         if (!inA2.isBlank())
             Tracing.psInfo.println("[Input2 A] " + File(inA2).absolutePath)
@@ -98,8 +98,8 @@ object Compare {
             inAJson,
             verbose
         )
-        progress("after model A $modelA is supplied,", startTime, verbose = verbose)
-        progress("before model B is supplied,", startTime, verbose = verbose)
+        progress("after model A $modelA is supplied", startTime, verbose = verbose)
+        progress("before model B is supplied", startTime, verbose = verbose)
         Tracing.psInfo.println("[Input B] " + File(inB1).absolutePath)
         if (!inB2.isBlank())
             Tracing.psInfo.println("[Input2 B] " + File(inB2).absolutePath)
@@ -113,33 +113,35 @@ object Compare {
             inBJson,
             verbose
         )
-        progress("after model B $modelB is supplied,", startTime, verbose = verbose)
-        progress("after models are supplied,", startTime, verbose = verbose)
+        progress("after model B $modelB is supplied", startTime, verbose = verbose)
+        progress("after models are supplied", startTime, verbose = verbose)
 
         // Consume models
-        progress("before models are consumed,", startTime, verbose = verbose)
+        progress("before models are consumed", startTime, verbose = verbose)
 
         // info
         val modelInfoA = modelA.info()
         val modelCountsA = ModelInfo.counts(modelA)
         val modelInfo2A = "$modelInfoA\n$modelCountsA"
+        Tracing.psInfo.println("Model A $modelA")
         Tracing.psInfo.println(modelInfo2A)
 
         val modelInfoB = modelB.info()
         val modelCountsB = ModelInfo.counts(modelB)
         val modelInfo2B = "$modelInfoB\n$modelCountsB"
+        Tracing.psInfo.println("Model B $modelB")
         Tracing.psInfo.println(modelInfo2B)
 
-        if (modelInfo2A != modelInfo2B) Tracing.psErr.println("Model A $modelA and B $modelB don't have the same info")
-        else Tracing.psInfo.println("Model A $modelA and B $modelB have the same info")
+        if (modelInfo2A != modelInfo2B) Tracing.psErr.println("[E] Model A $modelA and B $modelB don't have the same info")
+        else Tracing.psInfo.println("[I] Model A and B have the same info")
 
         val dataA = DataCoreModel(modelA)
         val dataB = DataCoreModel(modelB)
         val equal = dataA == dataB
-        if (equal) Tracing.psErr.println("Model A $modelA and B $modelB are not equal")
-        else Tracing.psInfo.println("Model A $modelA and B $modelB are equal")
+        if (equal) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
+        else Tracing.psInfo.println("[I] Model A and B are equal")
 
         // End
-        progress("end,", startTime, verbose = verbose)
+        progress("end", startTime, verbose = verbose)
     }
 }
