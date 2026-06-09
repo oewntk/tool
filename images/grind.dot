@@ -1,19 +1,19 @@
-digraph "io.github.oewntk:grind:jar:3.0.1" { 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:model:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromser:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromyaml:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromjson:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromxml:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:fromwndb:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:toyaml:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:tojson:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:toser:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:towndb:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "io.github.oewntk:tosql:jar:3.0.1:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "org.jetbrains.kotlin:kotlin-stdlib:jar:2.1.0:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "org.jetbrains.kotlinx:kotlinx-cli-jvm:jar:0.3.6:compile" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "org.jetbrains.kotlin:kotlin-test-junit:jar:2.1.0:test" ; 
-	"io.github.oewntk:grind:jar:3.0.1" -> "junit:junit:jar:4.13.2:test" ; 
+digraph "io.github.oewntk:tool:jar:3.0.1" { 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:model:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:fromser:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:fromyaml:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:fromjson:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:fromxml:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:fromwndb:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:toyaml:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:tojson:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:toser:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:towndb:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:tosql:jar:3.0.1:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "org.jetbrains.kotlin:kotlin-stdlib:jar:2.1.0:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "org.jetbrains.kotlinx:kotlinx-cli-jvm:jar:0.3.6:compile" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "org.jetbrains.kotlin:kotlin-test-junit:jar:2.1.0:test" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "junit:junit:jar:4.13.2:test" ; 
 	"io.github.oewntk:model:jar:3.0.1:compile" -> "org.jetbrains.kotlinx:kotlinx-serialization-core:jar:1.6.3:compile" ; 
 	"org.jetbrains.kotlinx:kotlinx-serialization-core:jar:1.6.3:compile" -> "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:1.6.3:compile" ; 
 	"io.github.oewntk:fromyaml:jar:3.0.1:compile" -> "org.yaml:snakeyaml:jar:2.6:compile" ; 
