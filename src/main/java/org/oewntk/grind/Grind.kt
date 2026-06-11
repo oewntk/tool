@@ -28,7 +28,7 @@ import org.oewntk.yaml.out.data.ModelConsumer as DataYamlModelConsumer
 import org.oewntk.yaml.out.oewn.ModelConsumer as OEWNYamlModelConsumer
 
 /**
- * Main class that generates the OEWN plus database
+ * Main class that chains suppliers and consumers
  *
  * @author Bernard Bou
  * @see "https://sqlunet.sourceforge.net/schema.html"
@@ -56,6 +56,7 @@ object Grind {
         val inJson by parser.option(           jsonMethodArg,         shortName = "ij", fullName = "in_json",            description = "JSON input method")               .default(JsonMethod.ANY_SERIALIZER)
         val inOne by parser.option(            ArgType.Boolean,       shortName = "i1", fullName = "in_one",             description = "Input one file")                  .default(false)
         val inPlus by parser.option(           ArgType.Boolean,       shortName = "p",  fullName = "plus",               description = "Plus input")                      .default(false)
+        val outNone by parser.option(          ArgType.Boolean,       shortName = "on", fullName = "out_none",           description = "No output")                       .default(false)
         val outFormat by parser.option(        ArgType.String,        shortName = "of", fullName = "out_format",         description = "Output format")                   .default("yaml")
         val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",               description = "Extra output dir or file")        .default("")
         val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",            description = "Output one file")                 .default(false)
@@ -123,36 +124,37 @@ object Grind {
             verbose
         )
         progress("after model is supplied", startTime, verbose = verbose)
+        if (!outNone) {
 
-        // Consume model
-        progress("before model is consumed", startTime, verbose = verbose)
+            // Consume model
+            progress("before model is consumed", startTime, verbose = verbose)
 
-        when (outFormat) {
-            "ser" -> SerModelConsumer(outFile).accept(model)
-            "sql" -> SqlModelConsumer(outFile).accept(model)
-            "wndb" -> WndbModelConsumer(outFile, wndbFlags(wndCompatPointers, wndCompatLexId, wndCompatVFrames)).accept(model)
-            "yaml" -> {
-                if (outMerge)
-                    File(outFile, "entries-generated.yaml").delete()
-                when (outSerialization) {
-                    SerializationMode.OEWN -> OEWNYamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, generated = !outMerge, verbose = verbose).accept(model)
-                    SerializationMode.DATA -> DataYamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, verbose = verbose).accept(model)
-                    else -> throw IllegalArgumentException("Unsupported output format")
+            when (outFormat) {
+                "ser" -> SerModelConsumer(outFile).accept(model)
+                "sql" -> SqlModelConsumer(outFile).accept(model)
+                "wndb" -> WndbModelConsumer(outFile, wndbFlags(wndCompatPointers, wndCompatLexId, wndCompatVFrames)).accept(model)
+                "yaml" -> {
+                    if (outMerge)
+                        File(outFile, "entries-generated.yaml").delete()
+                    when (outSerialization) {
+                        SerializationMode.OEWN -> OEWNYamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, generated = !outMerge, verbose = verbose).accept(model)
+                        SerializationMode.DATA -> DataYamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, verbose = verbose).accept(model)
+                        else -> throw IllegalArgumentException("Unsupported output format")
+                    }
                 }
-            }
 
-            "json" -> {
-                when (outSerialization) {
-                    SerializationMode.OEWN -> OEWNJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, generated = !outMerge, verbose = verbose).accept(model)
-                    SerializationMode.DATA -> DataJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, verbose = verbose).accept(model)
-                    SerializationMode.MODEL -> ModelJsonModelConsumer(outFile, prettyPrint = outPretty, verbose = verbose).accept(model)
+                "json" -> {
+                    when (outSerialization) {
+                        SerializationMode.OEWN -> OEWNJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, generated = !outMerge, verbose = verbose).accept(model)
+                        SerializationMode.DATA -> DataJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, verbose = verbose).accept(model)
+                        SerializationMode.MODEL -> ModelJsonModelConsumer(outFile, prettyPrint = outPretty, verbose = verbose).accept(model)
+                    }
                 }
-            }
 
-            else -> throw IllegalArgumentException("Unsupported output format")
+                else -> throw IllegalArgumentException("Unsupported output format")
+            }
+            progress("after model is consumed", startTime, verbose = verbose)
         }
-        progress("after model is consumed", startTime, verbose = verbose)
-
         // End
         progress("end, ", startTime, verbose = verbose)
 
