@@ -17,14 +17,16 @@ OUT_SQL=sql/data
 
 declare -A BY_KEY
 export BY_KEY=(
-[YAM_SER]="                     -if yaml -i2 ${IN_YAML2}  -of ser  -o2 ${OUT}/${OUT_SER2}                  ${IN_YAML}      ${OUT}/${OUT_SER}"
-[YAM_YAM]="                     -if yaml -i2 ${IN_YAML2}  -of yaml -o2 ${OUT}/${OUT_YAML}/${OUT_INFO}      ${IN_YAML}      ${OUT}/${OUT_YAML}"
-[YAM_SQL]="                     -if yaml -i2 ${IN_YAML2}  -of sql  -o2 ${OUT}/${OUT_SQL}/${OUT_INFO}       ${IN_YAML}      ${OUT}/${OUT_SQL}"
-[YAM_WNB]="                     -if yaml -i2 ${IN_YAML2}  -of wndb -o2 ${OUT}/${OUT_WNDB}/${OUT_INFO}      ${IN_YAML}      ${OUT}/${OUT_WNDB}"
-[YAM_JSNO]="      -os o         -if yaml -i2 ${IN_YAML2}  -of json -o2 ${OUT}/${OUT_JSON}/${OUT_INFO}      ${IN_YAML}      ${OUT}/${OUT_JSON}"
-[YAM_JSNO1]="     -os o -o1     -if yaml -i2 ${IN_YAML2}  -of json -o2 ${OUT}/${OUT_JSON}1/${OUT_INFO}     ${IN_YAML}      ${OUT}/${OUT_JSON}1"
-[YAM_JSND]="      -os d         -if yaml -i2 ${IN_YAML2}  -of json -o2 ${OUT}/${OUT_JSON}/${OUT_INFO}      ${IN_YAML}      ${OUT}/${OUT_JSON}data"
-[YAM_JSND1]="     -os d -o1     -if yaml -i2 ${IN_YAML2}  -of json -o2 ${OUT}/${OUT_JSON}/${OUT_INFO}      ${IN_YAML}      ${OUT}/${OUT_JSON}data1"
-[YAM_JSNM]="      -os m         -if yaml -i2 ${IN_YAML2}  -of json -o2 ${OUT}/${OUT_JSON}/${OUT_INFO}      ${IN_YAML}      ${OUT}/${OUT_JSON}model/${OUT_JSON_FILE}"
+#            FLAGS      FROM     TO        INPUT      INPUT2           OUTPUT                                   OUTPUT2
+#__________________________________________________________________________________________________________________________________________________
+[YAM_SER]="             -if yaml -of ser   ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_SER}                        -o2 ${OUT}/${OUT_SER2}             "
+[YAM_YAM]="             -if yaml -of yaml  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_YAML}                       -o2 ${OUT}/${OUT_YAML}/${OUT_INFO} "
+[YAM_SQL]="             -if yaml -of sql   ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_SQL}                        -o2 ${OUT}/${OUT_SQL}/${OUT_INFO}  "
+[YAM_WNB]="             -if yaml -of wndb  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_WNDB}                       -o2 ${OUT}/${OUT_WNDB}/${OUT_INFO} "
+[YAM_JSNO]=" -os o      -if yaml -of json  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_JSON}                       -o2 ${OUT}/${OUT_JSON}/${OUT_INFO} "
+[YAM_JSNO1]="-os o -o1  -if yaml -of json  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_JSON}1                      -o2 ${OUT}/${OUT_JSON}1/${OUT_INFO}"
+[YAM_JSND]=" -os d      -if yaml -of json  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_JSON}data                   -o2 ${OUT}/${OUT_JSON}/${OUT_INFO} "
+[YAM_JSND1]="-os d -o1  -if yaml -of json  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_JSON}data1                  -o2 ${OUT}/${OUT_JSON}/${OUT_INFO} "
+[YAM_JSNM]=" -os m      -if yaml -of json  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_JSON}model/${OUT_JSON_FILE} -o2 ${OUT}/${OUT_JSON}/${OUT_INFO} "
 )
 export KEYS="${!BY_KEY[@]}"
