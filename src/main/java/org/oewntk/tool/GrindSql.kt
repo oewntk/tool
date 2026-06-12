@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2021-2024. Bernard Bou.
  */
-package org.oewntk.grind
+package org.oewntk.tool
 
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
-import org.oewntk.grind.Tracing.progress
-import org.oewntk.grind.Tracing.start
+import org.oewntk.tool.Tracing.progress
+import org.oewntk.tool.Tracing.start
 import org.oewntk.sql.out.SchemaGenerator
 import org.oewntk.sql.out.SourcesGenerator
 import java.io.File

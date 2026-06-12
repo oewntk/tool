@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2021-2024. Bernard Bou.
  */
-package org.oewntk.grind
+package org.oewntk.tool
 
 import kotlinx.cli.ArgType
 import org.oewntk.json.out.JsonMethod

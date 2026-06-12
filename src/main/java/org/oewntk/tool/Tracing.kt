@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2024. Bernard Bou.
  */
-package org.oewntk.grind
+package org.oewntk.tool
 
 import java.io.PrintStream
 import java.text.DecimalFormat

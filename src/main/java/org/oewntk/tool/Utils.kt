@@ -1,6 +1,6 @@
-package org.oewntk.grind
+package org.oewntk.tool
 
-import org.oewntk.grind.Args.SerializationMode
+import org.oewntk.tool.Args.SerializationMode
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.Model
 import org.oewntk.yaml.`in`.FactoryPlus

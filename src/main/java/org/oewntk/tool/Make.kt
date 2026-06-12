@@ -1,17 +1,17 @@
 /*
  * Copyright (c) 2021-2024. Bernard Bou.
  */
-package org.oewntk.grind
+package org.oewntk.tool
 
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
-import org.oewntk.grind.Args.SerializationMode
-import org.oewntk.grind.Args.jsonMethodArg
-import org.oewntk.grind.Args.serializationModeArg
-import org.oewntk.grind.Tracing.progress
-import org.oewntk.grind.Tracing.start
-import org.oewntk.grind.Utils.getModel
+import org.oewntk.tool.Args.SerializationMode
+import org.oewntk.tool.Args.jsonMethodArg
+import org.oewntk.tool.Args.serializationModeArg
+import org.oewntk.tool.Tracing.progress
+import org.oewntk.tool.Tracing.start
+import org.oewntk.tool.Utils.getModel
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.ModelInfo
 import java.io.File
