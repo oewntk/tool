@@ -19,6 +19,6 @@ for k in ${KEYS_IN}; do
   echo -e "${Y}${k}${Z}"
   echo -e "${B}${args}${Z}"
 
-  cl="./factory.sh -v -on ${args}"
+  cl="./factory.sh ${args}"
   eval "${cl}"
 done
