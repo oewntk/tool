@@ -6,22 +6,11 @@
 
 set -e
 
-if [ "$*" == "" ]; then
-  echo "
-in1               String,                                                Input dir or file
-out               String,                                                Output dir or file
-in2               String,  shortName = i2, fullName = in2,               Extra input dir or file         default=
-inFormat          String,  shortName = if, fullName = in_format,         In format                       default=yaml
-inSerialization   String,  shortName = is, fullName = in_serialization,  In serialization                default=a
-inPlus            Boolean, shortName = p,  fullName = plus,              Plus input                      default=false
-outFormat         String,  shortName = of, fullName = out_format,        Output format                   default=yaml
-outSerialization  String,  shortName = os, fullName = out_serialization, Out serialization               default=a
-out2              String,  shortName = o2, fullName = out2,              Extra input dir or file         default=
-outOne            Boolean, shortName = o1, fullName = out_one,           Output one file                 default=false
-outMerge          Boolean, shortName = m,  fullName = merge,             Do not group generated entries  default=false
-verbose           Boolean, shortName = v,  fullName = verbose,           Verbose output                  default=false
-"
-exit 1
+source define_grind_help.sh
+
+if [ "$1" == "-h" ]; then
+  echo "${grind_help}"
+  exit 1
 fi
 
 jar=tool-3.0.1-uber.jar

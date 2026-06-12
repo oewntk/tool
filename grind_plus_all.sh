@@ -19,6 +19,6 @@ for k in ${KEYS_PLUS}; do
   echo -e "${Y}${k}${Z}"
   echo -e "${B}${args}${Z}"
 
-  cl="./grind.sh ${args}"
+  cl="./grind.sh -v ${args}"
   eval "${cl}"
 done
