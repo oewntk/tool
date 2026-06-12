@@ -155,10 +155,11 @@ object Grind {
             }
             progress("after model is consumed", startTime, verbose = verbose)
         }
+
         // End
         progress("end, ", startTime, verbose = verbose)
 
-        // info
+        // Info
         val modelInfo = model.info()
         val modelCounts = ModelInfo.counts(model)
         val modelInfo2 = "$modelInfo\n$modelCounts"

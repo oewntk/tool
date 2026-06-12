@@ -18,7 +18,7 @@ import org.oewntk.model.ModelInfo
 import java.io.File
 
 /**
- * Main class that generates the OEWN plus database
+ * Main class that compares models
  *
  * @author Bernard Bou
  * @see "https://sqlunet.sourceforge.net/schema.html"
@@ -35,7 +35,7 @@ object Compare {
      */
     @JvmStatic
     fun main(args: Array<String>) {
-        val parser = ArgParser("grind")
+        val parser = ArgParser("compare")
         // Options (start with - or --)
         // @formatter:off
         val inA1 by parser.argument(            ArgType.String,                                                             description = "A Input dir or file")

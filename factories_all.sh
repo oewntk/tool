@@ -18,7 +18,7 @@ for k in ${KEYS_IN}; do
   args=$(echo "${args}" | sed 's/\s\+/ /g')
   echo -e "${Y}${k}${Z}"
   echo -e "${B}${args}${Z}"
-continue
+
   cl="./grind.sh -v -on ${args}"
   eval "${cl}"
 done
