@@ -31,7 +31,7 @@ object Utils {
             FactoryPlus(inputFile, inputFile2!!).get()!!
         else when (inFormat) {
             "ser" -> SerFactory(inputFile).get()!!
-            "yaml" -> YamlFactory(inputFile, inputFile2!!, verbose = verbose).get()!!
+            "yaml" -> YamlFactory(inputFile, inputFile2, verbose = verbose).get()!!
             "xml" -> XmlFactory(inputFile, inputFile2!!, verbose = verbose).get()!!
             "wndb" -> WndbFactory(inputFile, inputFile2!!, verbose = verbose).get()!!
             "json" -> {
