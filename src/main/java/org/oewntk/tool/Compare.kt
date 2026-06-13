@@ -3,18 +3,22 @@
  */
 package org.oewntk.tool
 
+import kotlin.reflect.full.memberProperties
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
+import org.oewntk.json.out.JsonMethod
+import org.oewntk.model.DataModel
+import org.oewntk.model.ModelInfo
 import org.oewntk.tool.Args.SerializationMode
 import org.oewntk.tool.Args.jsonMethodArg
 import org.oewntk.tool.Args.serializationModeArg
 import org.oewntk.tool.Tracing.progress
 import org.oewntk.tool.Tracing.start
 import org.oewntk.tool.Utils.getModel
-import org.oewntk.json.out.JsonMethod
-import org.oewntk.model.ModelInfo
 import java.io.File
+import kotlin.reflect.jvm.isAccessible
+import kotlin.reflect.jvm.javaField
 
 /**
  * Main class that compares models
@@ -135,10 +139,64 @@ object Compare {
         else Tracing.psInfo.println("[I] Model A and B have the same info")
 
         val areEqual = modelA == modelB
-        if (! areEqual) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
-        else Tracing.psInfo.println("[I] Model A and B are equal")
+        if (!areEqual) {
+            Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
+            val diffs = structuralDiff(DataModel(modelA), DataModel(modelB))
+            if (diffs.isNotEmpty()) {
+                // diffs.forEach { println("${it.path}:\n  expected: ${it.expected}\n  actual:   ${it.actual}") }
+                diffs.forEach { println(it.path) }
+
+                Tracing.psErr.println("[E] Model A $modelA and B $modelB")
+                error("Objects differ at ${diffs.size} location(s)")
+             }
+        } else Tracing.psInfo.println("[I] Model A and B are equal")
 
         // End
         progress("end", startTime, verbose = verbose)
+    }
+}
+
+data class Diff(val path: String, val expected: Any?, val actual: Any?)
+
+private val LEAF_PACKAGES = setOf("java.", "javax.", "kotlin.", "sun.", "com.sun.")
+
+fun isLeaf(obj: Any): Boolean =
+    LEAF_PACKAGES.any { obj::class.java.name.startsWith(it) }
+
+fun structuralDiff(expected: Any?, actual: Any?, path: String = ""): List<Diff> {
+    if (expected == actual) return emptyList()
+    if (expected == null || actual == null) return listOf(Diff(path, expected, actual))
+    if (expected::class != actual::class) return listOf(Diff(path, expected, actual))
+
+    // JDK/stdlib leaf: compare via equals(), report if differ
+    if (isLeaf(expected)) return listOf(Diff(path, expected, actual))
+
+    // List / any indexed collection
+    if (expected is List<*> && actual is List<*>) {
+        if (expected.size != actual.size)
+            return listOf(Diff("$path.size", expected.size, actual.size))
+        return expected.indices.flatMap { i ->
+            structuralDiff(expected[i], actual[i], "$path[$i]")
+        }
+    }
+
+    // Map
+    if (expected is Map<*, *> && actual is Map<*, *>) {
+        val allKeys = expected.keys + actual.keys
+        return allKeys.flatMap { k ->
+            structuralDiff(expected[k], actual[k], "$path[$k]")
+        }
+    }
+
+    // Your domain classes: reflect into backing fields only
+    val props = expected::class.memberProperties
+        .filter { it.javaField != null }
+
+    return props.flatMap { prop ->
+        @Suppress("UNCHECKED_CAST")
+        val p = prop as kotlin.reflect.KProperty1<Any, *>
+        p.isAccessible = true
+        val childPath = if (path.isEmpty()) prop.name else "$path.${prop.name}"
+        structuralDiff(p.get(expected), p.get(actual), childPath)
     }
 }
