@@ -13,7 +13,6 @@ import org.oewntk.tool.Tracing.progress
 import org.oewntk.tool.Tracing.start
 import org.oewntk.tool.Utils.getModel
 import org.oewntk.json.out.JsonMethod
-import org.oewntk.model.DataCoreModel
 import org.oewntk.model.ModelInfo
 import java.io.File
 
@@ -135,10 +134,8 @@ object Compare {
         if (modelInfo2A != modelInfo2B) Tracing.psErr.println("[E] Model A $modelA and B $modelB don't have the same info")
         else Tracing.psInfo.println("[I] Model A and B have the same info")
 
-        val dataA = DataCoreModel(modelA)
-        val dataB = DataCoreModel(modelB)
-        val equal = dataA == dataB
-        if (equal) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
+        val areEqual = modelA == modelB
+        if (! areEqual) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
         else Tracing.psInfo.println("[I] Model A and B are equal")
 
         // End
