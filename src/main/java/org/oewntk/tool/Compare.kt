@@ -3,13 +3,11 @@
  */
 package org.oewntk.tool
 
-import kotlin.reflect.full.memberProperties
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import org.oewntk.json.out.JsonMethod
-import org.oewntk.model.DataModel
-import org.oewntk.model.ModelInfo
+import org.oewntk.model.*
 import org.oewntk.tool.Args.SerializationMode
 import org.oewntk.tool.Args.jsonMethodArg
 import org.oewntk.tool.Args.serializationModeArg
@@ -17,6 +15,8 @@ import org.oewntk.tool.Tracing.progress
 import org.oewntk.tool.Tracing.start
 import org.oewntk.tool.Utils.getModel
 import java.io.File
+import kotlin.reflect.KClass
+import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.jvm.javaField
 
@@ -143,12 +143,16 @@ object Compare {
             Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
             val diffs = structuralDiff(DataModel(modelA), DataModel(modelB))
             if (diffs.isNotEmpty()) {
-                // diffs.forEach { println("${it.path}:\n  expected: ${it.expected}\n  actual:   ${it.actual}") }
-                diffs.forEach { println(it.path) }
-
+                //diffs.forEach { println(it.path) }
+                //diffs.forEach { println("${it.path}:\n  expected: ${it.expected.toString().substring(0,80)}\n  actual:   ${it.actual.toString().substring(0,80)}") }
+                diffs.forEach { diff ->
+                    val expStr = diff.expected.toString()
+                    val actStr = diff.actual.toString()
+                    println("${diff.path}:\n${firstDivergence(expStr, actStr)}")
+                }
                 Tracing.psErr.println("[E] Model A $modelA and B $modelB")
                 error("Objects differ at ${diffs.size} location(s)")
-             }
+            }
         } else Tracing.psInfo.println("[I] Model A and B are equal")
 
         // End
@@ -163,40 +167,90 @@ private val LEAF_PACKAGES = setOf("java.", "javax.", "kotlin.", "sun.", "com.sun
 fun isLeaf(obj: Any): Boolean =
     LEAF_PACKAGES.any { obj::class.java.name.startsWith(it) }
 
+typealias KeyExtractor = (Any) -> Any?
+
+val keyExtractors: Map<KClass<*>, KeyExtractor> = mapOf(
+    Synset::class to { (it as Synset).key },
+    Lex::class to { (it as Lex).key },
+    Sense::class to { (it as Sense).key },
+)
+
 fun structuralDiff(expected: Any?, actual: Any?, path: String = ""): List<Diff> {
-    if (expected == actual) return emptyList()
-    if (expected == null || actual == null) return listOf(Diff(path, expected, actual))
+    if (expected == null || actual == null) return if (expected == actual) emptyList() else listOf(Diff(path, expected, actual))
     if (expected::class != actual::class) return listOf(Diff(path, expected, actual))
 
-    // JDK/stdlib leaf: compare via equals(), report if differ
-    if (isLeaf(expected)) return listOf(Diff(path, expected, actual))
-
-    // List / any indexed collection
-    if (expected is List<*> && actual is List<*>) {
-        if (expected.size != actual.size)
-            return listOf(Diff("$path.size", expected.size, actual.size))
-        return expected.indices.flatMap { i ->
-            structuralDiff(expected[i], actual[i], "$path[$i]")
+    // Collections and Maps BEFORE isLeaf — they start with java. but must be recursed into
+    if (expected is Collection<*> && actual is Collection<*>) {
+        val elementClass = (expected.firstOrNull() ?: actual.firstOrNull())?.let { it::class }
+        val keyFn = elementClass?.let { keyExtractors[it] }
+        if (keyFn != null) {
+            val expMap = expected.filterNotNull().associateBy(keyFn)
+            val actMap = actual.filterNotNull().associateBy(keyFn)
+            val allKeys = (expMap.keys + actMap.keys).toSet()
+            return allKeys.flatMap { k ->
+                when {
+                    !actMap.containsKey(k) -> listOf(Diff("$path[key=$k]", expMap[k], "<missing>"))
+                    !expMap.containsKey(k) -> listOf(Diff("$path[key=$k]", "<missing>", actMap[k]))
+                    else -> structuralDiff(expMap[k], actMap[k], "$path[key=$k]")
+                }
+            }
+        } else {
+            val expList = expected.toList()
+            val actList = actual.toList()
+            val minSize = minOf(expList.size, actList.size)
+            val diffs = mutableListOf<Diff>()
+            for (i in 0 until minSize)
+                diffs += structuralDiff(expList[i], actList[i], "$path[$i]")
+            for (i in minSize until expList.size)
+                diffs += Diff("$path[$i]", expList[i], "<missing>")
+            for (i in minSize until actList.size)
+                diffs += Diff("$path[$i]", "<missing>", actList[i])
+            return diffs
         }
     }
 
-    // Map
     if (expected is Map<*, *> && actual is Map<*, *>) {
-        val allKeys = expected.keys + actual.keys
+        val allKeys = (expected.keys + actual.keys).toSet()
         return allKeys.flatMap { k ->
-            structuralDiff(expected[k], actual[k], "$path[$k]")
+            when {
+                !actual.containsKey(k) -> listOf(Diff("$path[$k]", expected[k], "<missing>"))
+                !expected.containsKey(k) -> listOf(Diff("$path[$k]", "<missing>", actual[k]))
+                else -> structuralDiff(expected[k], actual[k], "$path[$k]")
+            }
         }
     }
 
-    // Your domain classes: reflect into backing fields only
+    // Only NOW treat java./kotlin. types as opaque leaves
+    if (isLeaf(expected)) return if (expected == actual) emptyList() else listOf(Diff(path, expected, actual))
+
+    // Domain classes: reflect into backing fields
     val props = expected::class.memberProperties
         .filter { it.javaField != null }
-
     return props.flatMap { prop ->
         @Suppress("UNCHECKED_CAST")
         val p = prop as kotlin.reflect.KProperty1<Any, *>
         p.isAccessible = true
         val childPath = if (path.isEmpty()) prop.name else "$path.${prop.name}"
         structuralDiff(p.get(expected), p.get(actual), childPath)
+    }
+}
+
+fun firstDivergence(a: String, b: String, context: Int = 40): String {
+    val idx = a.zip(b).indexOfFirst { (ca, cb) -> ca != cb }
+    return when {
+        idx == -1 && a.length == b.length -> "<identical>"
+        idx == -1 -> "same up to index ${minOf(a.length, b.length)}, then one is longer: " +
+                "expected[${a.length}] actual[${b.length}]"
+        else -> {
+            val from = maxOf(0, idx - context)
+            val toA  = minOf(a.length, idx + context)
+            val toB  = minOf(b.length, idx + context)
+            """
+            |first difference at index $idx:
+            |  expected: ...${a.substring(from, toA)}...
+            |  actual:   ...${b.substring(from, toB)}...
+            |  char: expected='${a[idx]}' (${a[idx].code})  actual='${b[idx]}' (${b[idx].code})
+            """.trimMargin()
+        }
     }
 }
