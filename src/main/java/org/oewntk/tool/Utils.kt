@@ -32,8 +32,8 @@ object Utils {
         else when (inFormat) {
             "ser" -> SerFactory(inputFile).get()!!
             "yaml" -> YamlFactory(inputFile, inputFile2, verbose = verbose).get()!!
-            "xml" -> XmlFactory(inputFile, inputFile2!!, verbose = verbose).get()!!
-            "wndb" -> WndbFactory(inputFile, inputFile2!!, verbose = verbose).get()!!
+            "xml" -> XmlFactory(inputFile, inputFile2, verbose = verbose).get()!!
+            "wndb" -> WndbFactory(inputFile, inputFile2, verbose = verbose).get()!!
             "json" -> {
                 when (inSerialization) {
                     SerializationMode.OEWN -> OEWNJsonFactory(inputFile, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
