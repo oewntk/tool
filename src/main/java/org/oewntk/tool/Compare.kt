@@ -9,9 +9,13 @@ import kotlinx.cli.default
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.*
 import org.oewntk.model.ModelEquals.checkDataEq
+import org.oewntk.model.ModelEquals.checkLexesEq
+import org.oewntk.model.ModelEquals.checkSensesEq
+import org.oewntk.model.ModelEquals.checkSynsetsEq
 import org.oewntk.model.ModelEquals.checkZipLexesEq
 import org.oewntk.model.ModelEquals.checkZipSensesEq
 import org.oewntk.model.ModelEquals.checkZipSynsetsEq
+import org.oewntk.model.ModelEquals.dataEquals
 import org.oewntk.tool.Args.SerializationMode
 import org.oewntk.tool.Args.jsonMethodArg
 import org.oewntk.tool.Args.serializationModeArg
@@ -145,6 +149,9 @@ object Compare {
         val areEqual = modelA == modelB
         if (!areEqual) {
             Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
+            val dataEq = modelA.dataEquals(modelB)
+            if (!dataEq) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not data equal")
+
             checkDiffs(modelA, modelB)
             findDiffs(modelA, modelB)
         } else Tracing.psInfo.println("[I] Model A and B are equal")
@@ -161,9 +168,36 @@ fun checkDiffs(modelA: Model, modelB: Model) {
         checkDataEq(data1, data2)
     } catch (e: IllegalStateException) {
         Tracing.psErr.println("[E] ${e.message}")
-        try { checkZipLexesEq(modelA.lexes, modelB.lexes) } catch (e2: IllegalStateException) {Tracing.psErr.println("[E] ${e2.message}")}
-        try { checkZipSynsetsEq(modelA.synsets, modelB.synsets) } catch (e2: IllegalStateException) {Tracing.psErr.println("[E] ${e2.message}")}
-        try { checkZipSensesEq(modelA.senses, modelB.senses) } catch (e2: IllegalStateException) {Tracing.psErr.println("[E] ${e2.message}")}
+        try {
+            checkZipLexesEq(modelA.lexes, modelB.lexes)
+        } catch (e2: IllegalStateException) {
+            Tracing.psErr.println("[E] ${e2.message}")
+        }
+        try {
+            checkZipSynsetsEq(modelA.synsets, modelB.synsets)
+        } catch (e2: IllegalStateException) {
+            Tracing.psErr.println("[E] ${e2.message}")
+        }
+        try {
+            checkZipSensesEq(modelA.senses, modelB.senses)
+        } catch (e2: IllegalStateException) {
+            Tracing.psErr.println("[E] ${e2.message}")
+        }
+        try {
+            checkLexesEq(modelA.lexes, modelB.lexes)
+        } catch (e2: IllegalStateException) {
+            Tracing.psErr.println("[E] ${e2.message}")
+        }
+        try {
+            checkSynsetsEq(modelA.synsets, modelB.synsets)
+        } catch (e2: IllegalStateException) {
+            Tracing.psErr.println("[E] ${e2.message}")
+        }
+        try {
+            checkSensesEq(modelA.senses, modelB.senses)
+        } catch (e2: IllegalStateException) {
+            Tracing.psErr.println("[E] ${e2.message}")
+        }
     }
 }
 
