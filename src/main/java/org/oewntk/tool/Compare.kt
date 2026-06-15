@@ -8,6 +8,10 @@ import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.*
+import org.oewntk.model.ModelEquals.checkDataEq
+import org.oewntk.model.ModelEquals.checkZipLexesEq
+import org.oewntk.model.ModelEquals.checkZipSensesEq
+import org.oewntk.model.ModelEquals.checkZipSynsetsEq
 import org.oewntk.tool.Args.SerializationMode
 import org.oewntk.tool.Args.jsonMethodArg
 import org.oewntk.tool.Args.serializationModeArg
@@ -141,22 +145,40 @@ object Compare {
         val areEqual = modelA == modelB
         if (!areEqual) {
             Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
-            val diffs = structuralDiff(DataModel(modelA), DataModel(modelB))
-            if (diffs.isNotEmpty()) {
-                //diffs.forEach { println(it.path) }
-                //diffs.forEach { println("${it.path}:\n  expected: ${it.expected.toString().substring(0,80)}\n  actual:   ${it.actual.toString().substring(0,80)}") }
-                diffs.forEach { diff ->
-                    val expStr = diff.expected.toString()
-                    val actStr = diff.actual.toString()
-                    println("${diff.path}:\n${firstDivergence(expStr, actStr)}")
-                }
-                Tracing.psErr.println("[E] Model A $modelA and B $modelB")
-                error("Objects differ at ${diffs.size} location(s)")
-            }
+            checkDiffs(modelA, modelB)
+            findDiffs(modelA, modelB)
         } else Tracing.psInfo.println("[I] Model A and B are equal")
 
         // End
         progress("end", startTime, verbose = verbose)
+    }
+}
+
+fun checkDiffs(modelA: Model, modelB: Model) {
+    val data1 = Triple(modelA.lexes, modelA.synsets, modelA.senses)
+    val data2 = Triple(modelB.lexes, modelB.synsets, modelB.senses)
+    try {
+        checkDataEq(data1, data2)
+    } catch (e: IllegalStateException) {
+        Tracing.psErr.println("[E] ${e.message}")
+        try { checkZipLexesEq(modelA.lexes, modelB.lexes) } catch (e2: IllegalStateException) {Tracing.psErr.println("[E] ${e2.message}")}
+        try { checkZipSynsetsEq(modelA.synsets, modelB.synsets) } catch (e2: IllegalStateException) {Tracing.psErr.println("[E] ${e2.message}")}
+        try { checkZipSensesEq(modelA.senses, modelB.senses) } catch (e2: IllegalStateException) {Tracing.psErr.println("[E] ${e2.message}")}
+    }
+}
+
+fun findDiffs(modelA: Model, modelB: Model) {
+    val diffs = structuralDiff(DataModel(modelA), DataModel(modelB))
+    if (diffs.isNotEmpty()) {
+        //diffs.forEach { println(it.path) }
+        //diffs.forEach { println("${it.path}:\n  expected: ${it.expected.toString().substring(0,80)}\n  actual:   ${it.actual.toString().substring(0,80)}") }
+        diffs.forEach { diff ->
+            val expStr = diff.expected.toString()
+            val actStr = diff.actual.toString()
+            println("${diff.path}:\n${firstDivergence(expStr, actStr)}")
+        }
+        Tracing.psErr.println("[E] Model A $modelA and B $modelB")
+        error("Objects differ at ${diffs.size} location(s)")
     }
 }
 
@@ -241,10 +263,11 @@ fun firstDivergence(a: String, b: String, context: Int = 40): String {
         idx == -1 && a.length == b.length -> "<identical>"
         idx == -1 -> "same up to index ${minOf(a.length, b.length)}, then one is longer: " +
                 "expected[${a.length}] actual[${b.length}]"
+
         else -> {
             val from = maxOf(0, idx - context)
-            val toA  = minOf(a.length, idx + context)
-            val toB  = minOf(b.length, idx + context)
+            val toA = minOf(a.length, idx + context)
+            val toB = minOf(b.length, idx + context)
             """
             |first difference at index $idx:
             |  expected: ...${a.substring(from, toA)}...
