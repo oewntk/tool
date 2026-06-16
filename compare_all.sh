@@ -5,20 +5,20 @@
 set -e
 
 source define_colors.sh
-source define_factory_help.sh
-source define_args_in.sh
+source define_compare_help.sh
+source define_args_compare.sh
 
 if [ "$1" == "-h" ]; then
-  echo "${factory_help}"
+  echo "${compare_help}"
   exit 1
 fi
 
-for k in ${KEYS_IN}; do
-  args=${BY_KEY_IN[${k}]}
+for k in ${KEYS}; do
+  args=${BY_KEY[${k}]}
   args=$(echo "${args}" | sed 's/\s\+/ /g')
   echo -e "${Y}${k}${Z}"
   echo -e "${B}${args}${Z}"
 
-  cl="./factory.sh -v ${args}"
+  cl="./compare.sh -v ${args}"
   eval "${cl}"
 done

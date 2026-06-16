@@ -25,4 +25,4 @@ if [ ! -e "${jar}" ]; then
   echo "Non existing uber jar" >&2
   exit 2
   fi
-eval java -ea -cp "${jar}" org.oewntk.tool.Make "$*"
+eval java -ea -cp "${jar}" org.oewntk.tool.Compare "$*"

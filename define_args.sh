@@ -18,7 +18,7 @@ OUT_SQL=sql/data
 declare -A BY_KEY
 export BY_KEY=(
 #            FLAGS      FROM     TO        INPUT      INPUT2           OUTPUT                                   OUTPUT2
-#__________________________________________________________________________________________________________________________________________________
+#___________________________________________________________________________________________________________________________________________________
 [YAM_SER]="             -if yaml -of ser   ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_SER}                        -o2 ${OUT}/${OUT_SER2}             "
 [YAM_YAM]="             -if yaml -of yaml  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_YAML}                       -o2 ${OUT}/${OUT_YAML}/${OUT_INFO} "
 [YAM_SQL]="             -if yaml -of sql   ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_SQL}                        -o2 ${OUT}/${OUT_SQL}/${OUT_INFO}  "
