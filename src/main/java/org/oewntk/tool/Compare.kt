@@ -153,7 +153,7 @@ object Compare {
             if (!dataEq) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not data equal")
 
             checkDiffs(modelA, modelB)
-            findDiffs(modelA, modelB)
+            //findDiffs(modelA, modelB)
         } else Tracing.psInfo.println("[I] Model A and B are equal")
 
         // End
