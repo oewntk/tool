@@ -4,7 +4,6 @@
 
 export factory_help="
 in1                 String,                                                Input dir or file
-out                 String,                                                Output dir or file
 in2                 String,  shortName = i2, fullName = in2,               Extra Input dir or file,                                       default=
 inFormat            String,  shortName = if, fullName = in_format,         In format,                                                     default=yaml
 inSerialization     (o,d,m), shortName = is, fullName = in_serialization,  Input serialization mode (oewn,data,model),                    default=oewn
