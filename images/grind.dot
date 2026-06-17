@@ -15,6 +15,7 @@ digraph "io.github.oewntk:tool:jar:3.0.1" {
 	"io.github.oewntk:tool:jar:3.0.1" -> "org.jetbrains.kotlin:kotlin-reflect:jar:2.1.0:compile" ; 
 	"io.github.oewntk:tool:jar:3.0.1" -> "org.jetbrains.kotlin:kotlin-test-junit:jar:2.1.0:test" ; 
 	"io.github.oewntk:tool:jar:3.0.1" -> "junit:junit:jar:4.13.2:test" ; 
+	"io.github.oewntk:tool:jar:3.0.1" -> "io.github.oewntk:model:test-jar:tests:3.0.1:test" ; 
 	"io.github.oewntk:model:jar:3.0.1:compile" -> "org.jetbrains.kotlinx:kotlinx-serialization-core:jar:1.7.3:compile" ; 
 	"org.jetbrains.kotlinx:kotlinx-serialization-core:jar:1.7.3:compile" -> "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:1.7.3:compile" ; 
 	"io.github.oewntk:fromyaml:jar:3.0.1:compile" -> "org.yaml:snakeyaml:jar:2.6:compile" ; 

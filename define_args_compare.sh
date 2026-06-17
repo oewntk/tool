@@ -19,13 +19,14 @@ declare -A BY_KEY
 export BY_KEY=(
 #            FLAGS        FROM      TO         INPUT      INPUT2            OUTPUT
 #______________________________________________________________________________________________________________________
-#[YAM_SER]="               -Aif yaml -Bif ser   ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_SER}                       "
-#[YAM_YAM]="               -Aif yaml -Bif yaml  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_YAML}                      "
-#[YAM_WNB]="               -Aif yaml -Bif wndb  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_WNDB}                      "
+[YAM_SER]="               -Aif yaml -Bif ser   ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_SER}                       "
+[YAM_YAM]="               -Aif yaml -Bif yaml  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_YAML}                      "
+[YAM_WNB]="               -Aif yaml -Bif wndb  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_WNDB}                      "
 [YAM_JSNO]=" -Bis o       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}                      "
-#[YAM_JSNO1]="-Bis o -Bi1  -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}1                     "
-#[YAM_JSND]=" -Bis d       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}data                  "
-#[YAM_JSND1]="-Bis d -Bi1  -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}data1                 "
-#[YAM_JSNM]=" -Bis m       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}model/${IN2_JSON_FILE}"
+[YAM_JSNO1]="-Bis o -Bi1  -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}1                     "
+[YAM_JSND]=" -Bis d       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}data                  "
+[YAM_JSND1]="-Bis d -Bi1  -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}data1                 "
+[YAM_JSNM]=" -Bis m       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}model/${IN2_JSON_FILE}"
 )
 export KEYS="${!BY_KEY[@]}"
+export KEYS="YAM_SER YAM_YAM YAM_WNB YAM_JSNO YAM_JSNO1 YAM_JSND YAM_JSND1 YAM_JSNM"

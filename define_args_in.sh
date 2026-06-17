@@ -24,5 +24,5 @@ export BY_KEY_IN=(
 [JSNM]="  -is m       -if json  ${IN}/${IN_JSON}model/${IN_JSON_FILE}"
 [WNB]="               -if wndb  ${IN}/${IN_WNDB}                     "
 )
-
-export KEYS_IN="SER YAM JSNO JSNO1 JSND JSNDJ JSNDV JSND1 JSNM WNB" # "${!BY_KEY_IN[@]}"
+export KEYS_IN="${!BY_KEY_IN[@]}"
+export KEYS_IN="SER YAM JSNO JSNO1 JSND JSNDJ JSNDV JSND1 JSNM WNB"
