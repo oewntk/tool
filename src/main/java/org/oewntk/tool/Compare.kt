@@ -9,6 +9,7 @@ import kotlinx.cli.default
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.*
 import org.oewntk.model.ModelEquals.checkDataEq
+import org.oewntk.model.ModelEquals.checkDiffs
 import org.oewntk.model.ModelEquals.checkLexesEq
 import org.oewntk.model.ModelEquals.checkSensesEq
 import org.oewntk.model.ModelEquals.checkSynsetsEq
@@ -158,46 +159,6 @@ object Compare {
 
         // End
         progress("end", startTime, verbose = verbose)
-    }
-}
-
-fun checkDiffs(modelA: Model, modelB: Model) {
-    val data1 = Triple(modelA.lexes, modelA.synsets, modelA.senses)
-    val data2 = Triple(modelB.lexes, modelB.synsets, modelB.senses)
-    try {
-        checkDataEq(data1, data2)
-    } catch (e: IllegalStateException) {
-        Tracing.psErr.println("[E] ${e.message}")
-        try {
-            checkZipLexesEq(modelA.lexes, modelB.lexes)
-        } catch (e2: IllegalStateException) {
-            Tracing.psErr.println("[E] ${e2.message}")
-        }
-        try {
-            checkZipSynsetsEq(modelA.synsets, modelB.synsets)
-        } catch (e2: IllegalStateException) {
-            Tracing.psErr.println("[E] ${e2.message}")
-        }
-        try {
-            checkZipSensesEq(modelA.senses, modelB.senses)
-        } catch (e2: IllegalStateException) {
-            Tracing.psErr.println("[E] ${e2.message}")
-        }
-        try {
-            checkLexesEq(modelA.lexes, modelB.lexes)
-        } catch (e2: IllegalStateException) {
-            Tracing.psErr.println("[E] ${e2.message}")
-        }
-        try {
-            checkSynsetsEq(modelA.synsets, modelB.synsets)
-        } catch (e2: IllegalStateException) {
-            Tracing.psErr.println("[E] ${e2.message}")
-        }
-        try {
-            checkSensesEq(modelA.senses, modelB.senses)
-        } catch (e2: IllegalStateException) {
-            Tracing.psErr.println("[E] ${e2.message}")
-        }
     }
 }
 
