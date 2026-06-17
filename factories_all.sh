@@ -19,5 +19,7 @@ for k in ${KEYS_IN}; do
   echo -e "${Y}${k}${Z}"
   echo -e "${B}${args}${Z}"
   cl="./factory.sh -v -tt ${args}"
-  eval "${cl}"
+  if ! eval "${cl}"; then
+    echo -e "${R}cl${Z}"
+    fi
 done

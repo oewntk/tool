@@ -19,5 +19,7 @@ for k in ${KEYS}; do
   echo -e "${Y}${k}${Z}"
   echo -e "${B}${args}${Z}"
   cl="./grind.sh -v -tt ${args}"
-  eval "${cl}"
+  if ! eval "${cl}"; then
+    echo -e "${R}cl${Z}"
+    fi
 done

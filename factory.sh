@@ -26,3 +26,4 @@ if [ ! -e "${jar}" ]; then
   exit 2
   fi
 eval java -ea -cp "${jar}" org.oewntk.tool.Make "$*"
+exit $?
