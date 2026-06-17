@@ -26,4 +26,3 @@ export BY_KEY_IN=(
 )
 
 export KEYS_IN="SER YAM JSNO JSNO1 JSND JSNDJ JSNDV JSND1 JSNM WNB" # "${!BY_KEY_IN[@]}"
-export KEYS_IN="WNB" # "${!BY_KEY_IN[@]}"
