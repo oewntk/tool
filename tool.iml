@@ -10,6 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/yaml" />
       <excludeFolder url="file://$MODULE_DIR$/yaml2" />
       <excludeFolder url="file://$MODULE_DIR$/yamlplus" />
+      <excludeFolder url="file://$MODULE_DIR$/_out2" />
     </content>
   </component>
 </module>
