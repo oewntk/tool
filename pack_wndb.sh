@@ -45,12 +45,12 @@ echo "pack to ${DISTDIR} from ${DATADIR}"
 
 # A R C H I V E S
 
-TAR_ARCHIVE=${DISTDIR}/oewn_${dbtag}.dict.tar.gz
-ZIP_ARCHIVE=${DISTDIR}/oewn_${dbtag}.zip
-TAR_ARCHIVE_MIN=${DISTDIR}/oewn_${dbtag}_bare.dict.tar.gz
-ZIP_ARCHIVE_MIN=${DISTDIR}/oewn_${dbtag}_bare.zip
-TAR_ARCHIVE_COMPAT=${DISTDIR}/oewn_${dbtag}_compat.dict.tar.gz
-ZIP_ARCHIVE_COMPAT=${DISTDIR}/oewn_${dbtag}_compat.zip
+TAR_ARCHIVE=${DISTDIR}/oewn-${dbtag}.dict.tar.gz
+ZIP_ARCHIVE=${DISTDIR}/oewn-${dbtag}.zip
+TAR_ARCHIVE_MIN=${DISTDIR}/oewn-${dbtag}_bare.dict.tar.gz
+ZIP_ARCHIVE_MIN=${DISTDIR}/oewn-${dbtag}_bare.zip
+TAR_ARCHIVE_COMPAT=${DISTDIR}/oewn-${dbtag}_compat.dict.tar.gz
+ZIP_ARCHIVE_COMPAT=${DISTDIR}/oewn-${dbtag}_compat.zip
 
 # M A I N
 
