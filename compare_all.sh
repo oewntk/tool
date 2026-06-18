@@ -20,6 +20,6 @@ for k in ${KEYS}; do
   echo -e "${B}${args}${Z}"
   cl="./compare.sh -v -tt ${args}"
   if ! eval "${cl}"; then
-    echo -e "${R}cl${Z}"
+    echo -e "${R}${cl}${Z}"
     fi
 done

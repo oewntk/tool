@@ -5,6 +5,8 @@
 IN=out
 IN_SER=ser/oewn.ser
 IN_YAML=yaml
+IN_YAML2=yaml2
+IN_YAMLPLUS=yamlplus
 IN_JSON=json
 IN_JSON_FILE=oewn-model.json
 IN_WNDB=wndb
@@ -23,6 +25,9 @@ export BY_KEY_IN=(
 [JSND1]=" -is d -i1   -if json  ${IN}/${IN_JSON}data1                "
 [JSNM]="  -is m       -if json  ${IN}/${IN_JSON}model/${IN_JSON_FILE}"
 [WNB]="               -if wndb  ${IN}/${IN_WNDB}                     "
+
+[YAMPL]=" -p          -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}       "
+[YAMPLPL]="           -if yaml  ${IN}-plus/${IN_YAML}                "
 )
 export KEYS_IN="${!BY_KEY_IN[@]}"
 export KEYS_IN="SER YAM JSNO JSNO1 JSND JSNDJ JSNDV JSND1 JSNM WNB"
