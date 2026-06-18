@@ -13,21 +13,22 @@ IN_WNDB=wndb
 
 declare -A BY_KEY_FACTORY
 export BY_KEY_FACTORY=(
-#         FLAGS       FROM      INPUT
-#_____________________________________________________________________
-[SER]="               -if ser   ${IN}/${IN_SER}                      "
-[YAM]="               -if yaml  ${IN}/${IN_YAML}                     "
-[JSNO]="  -is o       -if json  ${IN}/${IN_JSON}                     "
-[JSNO1]=" -is o -i1   -if json  ${IN}/${IN_JSON}1                    "
-[JSND]="  -is d       -if json  ${IN}/${IN_JSON}data                 "
-[JSNDJ]=" -is d -ij j -if json  ${IN}/${IN_JSON}data_je              "
-[JSNDV]=" -is d -ij v -if json  ${IN}/${IN_JSON}data_vw              "
-[JSND1]=" -is d -i1   -if json  ${IN}/${IN_JSON}data1                "
-[JSNM]="  -is m       -if json  ${IN}/${IN_JSON}model/${IN_JSON_FILE}"
-[WNB]="               -if wndb  ${IN}/${IN_WNDB}                     "
+#          FLAGS        FROM      INPUT
+#___________________________ ___________________________________________
+[SER]="                -if ser   ${IN}/${IN_SER}                       "
+[YAM]="                -if yaml  ${IN}/${IN_YAML}                      "
+[JSN_O]="  -is o       -if json  ${IN}/${IN_JSON}                      "
+[JSN_O1]=" -is o -i1   -if json  ${IN}/${IN_JSON}1                     "
+[JSN_DA]=" -is d -ij a -if json  ${IN}/${IN_JSON}_data                 "
+[JSN_DJ]=" -is d -ij j -if json  ${IN}/${IN_JSON}_data_je              "
+[JSN_DV]=" -is d -ij v -if json  ${IN}/${IN_JSON}_data_vw              "
+[JSN_D1]=" -is d -i1   -if json  ${IN}/${IN_JSON}_data1                "
+[JSN_M]="  -is m       -if json  ${IN}/${IN_JSON}_model/${IN_JSON_FILE}"
+[WNB]="                -if wndb  ${IN}/${IN_WNDB}                      "
+[WNB_C]="              -if wndb  ${IN}/${IN_WNDB}_compat               "
 
-[YAMPL]=" -p          -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}       "
-[YAMPLPL]="           -if yaml  ${IN}-plus/${IN_YAML}                "
+[YAM_PL]=" -p           -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}       "
+[YAM_PLPL]="            -if yaml  ${IN}-plus/${IN_YAML}                "
 )
 export KEYS_FACTORY="${!BY_KEY_IN[@]}"
-export KEYS_FACTORY="SER YAM JSNO JSNO1 JSND JSNDJ JSNDV JSND1 JSNM WNB"
+export KEYS_FACTORY="SER YAM JSN_O JSN_O1 JSN_DA JSN_DJ JSN_DV JSN_D1 JSN_M WNB WNB_C YAM_PL YAM_PL_PL"

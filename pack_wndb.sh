@@ -4,7 +4,16 @@
 # Copyright (c) 2024. Bernard Bou.
 #
 
-set -e
+set -Eeuo pipefail
+
+on_err() {
+  local exit_code=$?
+  local line_no=${BASH_LINENO[0]}
+  echo "Error on line $line_no (exit code: $exit_code)."
+  # do cleanup here
+}
+
+trap on_err ERR
 
 source define_build.sh
 source define_colors.sh
@@ -35,17 +44,21 @@ if [ -z "${outdir}" ]; then
   outdir=$(pwd)
 fi
 
+compat=$1
+[ "$#" -eq 0 ] || shift
+if [ -z "${compat}" ]; then
+  compat=""
+fi
+
 echo -e "${M}${dbtag}-${build} ${C}${indir} -> ${outdir}${Z}"
 echo "pack to ${outdir} from ${indir}"
 
 # A R C H I V E S
 
-TAR_ARCHIVE=${outdir}/oewn-${dbtag}.dict.tar.gz
-ZIP_ARCHIVE=${outdir}/oewn-${dbtag}.zip
-TAR_ARCHIVE_MIN=${outdir}/oewn-${dbtag}_bare.dict.tar.gz
-ZIP_ARCHIVE_MIN=${outdir}/oewn-${dbtag}_bare.zip
-TAR_ARCHIVE_COMPAT=${outdir}/oewn-${dbtag}_compat.dict.tar.gz
-ZIP_ARCHIVE_COMPAT=${outdir}/oewn-${dbtag}_compat.zip
+TAR_ARCHIVE=${outdir}/oewn${compat}-${dbtag}.dict.tar.gz
+ZIP_ARCHIVE=${outdir}/oewn${compat}-${dbtag}.zip
+TAR_ARCHIVE_MIN=${outdir}/oewn${compat}-${dbtag}_bare.dict.tar.gz
+ZIP_ARCHIVE_MIN=${outdir}/oewn${compat}-${dbtag}_bare.zip
 
 # M A I N
 
@@ -103,37 +116,6 @@ echo -e "${C}"
 unzip -l ${ZIP_ARCHIVE_MIN}
 echo -en "${Z}"
 echo -e "${G}${ZIP_ARCHIVE_MIN}${Z}"
-echo
-
-exit
-
-# compat
-
-if [ ! -e "${indir}/wndb_compat" -a ! -d "${indir}/wndb_compat" ]; then
-  echo -e "${R}Non existent wndb_compat dir${Z}"
-  exit 1
-fi
-pushd ${indir} >/dev/null
-ln -sfT wndb_compat/ dict
-popd >/dev/null
-
-echo -e "${M}pack to $(basename ${TAR_ARCHIVE_COMPAT})${Z}"
-rm -f ${TAR_ARCHIVE_COMPAT}
-tar czfh ${TAR_ARCHIVE_COMPAT} OEWN_LICENSE.md -C ${parent} dict
-echo -e "${C}"
-tar tvf ${TAR_ARCHIVE_COMPAT}
-echo -en "${Z}"
-echo -e "${G}${TAR_ARCHIVE_COMPAT}${Z}"
-echo
-
-echo -e "${M}pack to $(basename ${ZIP_ARCHIVE_COMPAT})${Z}"
-rm -f ${ZIP_ARCHIVE_COMPAT}
-zip -j ${ZIP_ARCHIVE_COMPAT} ${parent}/dict/*
-zip ${ZIP_ARCHIVE_COMPAT} OEWN_LICENSE.md
-echo -e "${C}"
-unzip -l ${ZIP_ARCHIVE_COMPAT}
-echo -en "${Z}"
-echo -e "${G}${ZIP_ARCHIVE_COMPAT}${Z}"
 echo
 
 #rm ${indir}/dict

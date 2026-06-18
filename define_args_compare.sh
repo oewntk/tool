@@ -17,16 +17,17 @@ IN2_SQL=sql/data
 
 declare -A BY_KEY_COMPARE
 export BY_KE_COMPARE=(
-#            FLAGS        FROM      TO         INPUT      INPUT2            OUTPUT
-#______________________________________________________________________________________________________________________
-[YAM_SER]="               -Aif yaml -Bif ser   ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_SER}                       "
-[YAM_YAM]="               -Aif yaml -Bif yaml  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_YAML}                      "
-[YAM_WNB]="               -Aif yaml -Bif wndb  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_WNDB}                      "
-[YAM_JSNO]=" -Bis o       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}                      "
-[YAM_JSNO1]="-Bis o -Bi1  -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}1                     "
-[YAM_JSND]=" -Bis d       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}data                  "
-[YAM_JSND1]="-Bis d -Bi1  -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}data1                 "
-[YAM_JSNM]=" -Bis m       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}model/${IN2_JSON_FILE}"
+#            FLAGS         FROM      TO         INPUT      INPUT2            OUTPUT
+#________________________________________________________________________________________________________________________
+[YAM_SER]="                -Aif yaml -Bif ser   ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_SER}                        "
+[YAM_YAM]="                -Aif yaml -Bif yaml  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_YAML}                       "
+[YAM_WNB]="                -Aif yaml -Bif wndb  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_WNDB}                       "
+[YAM_WNB_C]="              -Aif yaml -Bif wndb  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_WNDB}                       "
+[YAM_JSN_O]=" -Bis o       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}                       "
+[YAM_JSN_O1]="-Bis o -Bi1  -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}1                      "
+[YAM_JSN_D]=" -Bis d       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}_data                  "
+[YAM_JSN_D1]="-Bis d -Bi1  -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}_data1                 "
+[YAM_JSN_M]=" -Bis m       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}_model/${IN2_JSON_FILE}"
 )
 export KEYS_COMPARE="${!BY_KEY[@]}"
-export KEYS_COMPARE="YAM_SER YAM_YAM YAM_WNB YAM_JSNO YAM_JSNO1 YAM_JSND YAM_JSND1 YAM_JSNM"
+export KEYS_COMPARE="YAM_SER YAM_YAM YAM_WNB YAM_WND_C YAM_JSN_O YAM_JSN_O1 YAM_JSN_D YAM_JSN_D1 YAM_JSN_M"
