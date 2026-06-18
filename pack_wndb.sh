@@ -1,0 +1,144 @@
+#!/bin/bash
+
+#
+# Copyright (c) 2024. Bernard Bou.
+#
+
+set -e
+
+source define_build.sh
+source define_colors.sh
+
+# P A R A M S
+
+dbtag=$1
+[ "$#" -eq 0 ] || shift
+if [ -z "${dbtag}" ]; then
+  dbtag=TAG
+fi
+
+build=$1
+[ "$#" -eq 0 ] || shift
+if [ -z "${build}" ]; then
+  build=BUILD
+fi
+
+indir=$1
+[ "$#" -eq 0 ] || shift
+if [ -z "${indir}" ]; then
+  indir=$(pwd)
+fi
+
+outdir=$1
+[ "$#" -eq 0 ] || shift
+if [ -z "${outdir}" ]; then
+  outdir=$(pwd)
+fi
+
+echo -e "${M}${dbtag}-${build} ${C}${indir} -> ${outdir}${Z}"
+
+# D I R S
+
+DISTDIR=${outdir}
+DATADIR=${indir}
+echo "pack to ${DISTDIR} from ${DATADIR}"
+
+# A R C H I V E S
+
+TAR_ARCHIVE=${DISTDIR}/oewn_${dbtag}.dict.tar.gz
+ZIP_ARCHIVE=${DISTDIR}/oewn_${dbtag}.zip
+TAR_ARCHIVE_MIN=${DISTDIR}/oewn_${dbtag}_bare.dict.tar.gz
+ZIP_ARCHIVE_MIN=${DISTDIR}/oewn_${dbtag}_bare.zip
+TAR_ARCHIVE_COMPAT=${DISTDIR}/oewn_${dbtag}_compat.dict.tar.gz
+ZIP_ARCHIVE_COMPAT=${DISTDIR}/oewn_${dbtag}_compat.zip
+
+# M A I N
+
+mkdir -p ${DISTDIR}
+
+# prepare dict container
+
+if [ ! -e "${DATADIR}" -a ! -d "${DATADIR}" ]; then
+  echo -e "${R}Non existent wndb dir${Z}"
+  exit 1
+fi
+parent="$(dirname ${DATADIR})"
+base="$(basename ${DATADIR})"
+pushd "${parent}" >/dev/null
+ln -sfT "${base}" dict
+popd >/dev/null
+
+# full
+
+echo -e "${M}pack to $(basename ${TAR_ARCHIVE})${Z}"
+rm -f ${TAR_ARCHIVE}
+tar czfh ${TAR_ARCHIVE} OEWN_LICENSE.md -C ${parent} dict
+echo -e "${C}"
+tar tvf ${TAR_ARCHIVE}
+echo -en "${Z}"
+echo -e "${G}${TAR_ARCHIVE}${Z}"
+echo
+
+echo -e "${M}pack to $(basename ${ZIP_ARCHIVE})${Z}"
+rm -f ${ZIP_ARCHIVE}
+zip -j ${ZIP_ARCHIVE} ${parent}/dict/*
+zip ${ZIP_ARCHIVE} OEWN_LICENSE.md
+echo -e "${C}"
+unzip -l ${ZIP_ARCHIVE}
+echo -en "${Z}"
+echo -e "${G}${ZIP_ARCHIVE}${Z}"
+echo
+
+# bare
+
+echo -e "${M}pack to $(basename ${TAR_ARCHIVE_MIN})${Z}"
+rm -f ${TAR_ARCHIVE_MIN}
+tar czhf ${TAR_ARCHIVE_MIN} OEWN_LICENSE_short.md -C ${parent} --exclude --exclude dict/lexnames --exclude dict/sensemap.txt --exclude dict/cntlist --exclude dict/cntlist.rev dict
+echo -e "${C}"
+tar tvf ${TAR_ARCHIVE_MIN}
+echo -en "${Z}"
+echo -e "${G}${TAR_ARCHIVE_MIN}${Z}"
+echo
+
+echo -e "${M}pack to $(basename ${ZIP_ARCHIVE_MIN})${Z}"
+rm -f ${ZIP_ARCHIVE_MIN}
+zip -j ${ZIP_ARCHIVE_MIN} ${parent}/dict/* -x "*lexnames" -x "*sensemap.txt" -x "*cntlist" -x "*cntlist.rev"
+zip ${ZIP_ARCHIVE_MIN} OEWN_LICENSE_short.md
+echo -e "${C}"
+unzip -l ${ZIP_ARCHIVE_MIN}
+echo -en "${Z}"
+echo -e "${G}${ZIP_ARCHIVE_MIN}${Z}"
+echo
+
+exit
+
+# compat
+
+if [ ! -e "${DATADIR}/wndb_compat" -a ! -d "${DATADIR}/wndb_compat" ]; then
+  echo -e "${R}Non existent wndb_compat dir${Z}"
+  exit 1
+fi
+pushd ${DATADIR} >/dev/null
+ln -sfT wndb_compat/ dict
+popd >/dev/null
+
+echo -e "${M}pack to $(basename ${TAR_ARCHIVE_COMPAT})${Z}"
+rm -f ${TAR_ARCHIVE_COMPAT}
+tar czfh ${TAR_ARCHIVE_COMPAT} OEWN_LICENSE.md -C ${parent} dict
+echo -e "${C}"
+tar tvf ${TAR_ARCHIVE_COMPAT}
+echo -en "${Z}"
+echo -e "${G}${TAR_ARCHIVE_COMPAT}${Z}"
+echo
+
+echo -e "${M}pack to $(basename ${ZIP_ARCHIVE_COMPAT})${Z}"
+rm -f ${ZIP_ARCHIVE_COMPAT}
+zip -j ${ZIP_ARCHIVE_COMPAT} ${parent}/dict/*
+zip ${ZIP_ARCHIVE_COMPAT} OEWN_LICENSE.md
+echo -e "${C}"
+unzip -l ${ZIP_ARCHIVE_COMPAT}
+echo -en "${Z}"
+echo -e "${G}${ZIP_ARCHIVE_COMPAT}${Z}"
+echo
+
+#rm ${DATADIR}/dict
