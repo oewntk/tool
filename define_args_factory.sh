@@ -11,8 +11,8 @@ IN_JSON=json
 IN_JSON_FILE=oewn-model.json
 IN_WNDB=wndb
 
-declare -A BY_KEY_IN
-export BY_KEY_IN=(
+declare -A BY_KEY_FACTORY
+export BY_KEY_FACTORY=(
 #         FLAGS       FROM      INPUT
 #_____________________________________________________________________
 [SER]="               -if ser   ${IN}/${IN_SER}                      "
@@ -29,5 +29,5 @@ export BY_KEY_IN=(
 [YAMPL]=" -p          -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}       "
 [YAMPLPL]="           -if yaml  ${IN}-plus/${IN_YAML}                "
 )
-export KEYS_IN="${!BY_KEY_IN[@]}"
-export KEYS_IN="SER YAM JSNO JSNO1 JSND JSNDJ JSNDV JSND1 JSNM WNB"
+export KEYS_FACTORY="${!BY_KEY_IN[@]}"
+export KEYS_FACTORY="SER YAM JSNO JSNO1 JSND JSNDJ JSNDV JSND1 JSNM WNB"

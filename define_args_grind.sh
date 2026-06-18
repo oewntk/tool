@@ -15,8 +15,8 @@ OUT_JSON=json
 OUT_JSON_FILE=oewn-model.json
 OUT_SQL=sql
 
-declare -A BY_KEY
-export BY_KEY=(
+declare -A BY_KEY_GRIND
+export BY_KEY_GRIND=(
 #            FLAGS        FROM     TO        INPUT      INPUT2           OUTPUT                                   OUTPUT2
 #______________________-_____________________________________________________________________________________________________________________________________
 [YAM_SER]="               -if yaml -of ser   ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_SER}                        -o2 ${OUT}/${OUT_SER2}                    "
@@ -31,5 +31,5 @@ export BY_KEY=(
 [YAM_JSND1]="-os d -o1    -if yaml -of json  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_JSON}data1                  -o2 ${OUT}/${OUT_JSON}data1/${OUT_INFO}   "
 [YAM_JSNM]=" -os m        -if yaml -of json  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_JSON}model/${OUT_JSON_FILE} -o2 ${OUT}/${OUT_JSON}model/${OUT_INFO}   "
 )
-export KEYS="${!BY_KEY[@]}"
-export KEYS="YAM_SER YAM_YAM YAM_SQL YAM_WNB YAM_JSNO YAM_JSNO1 YAM_JSNDA YAM_JSNV YAM_JSNDJ YAM_JSND1 YAM_JSNM"
+export KEYS_GRIND="${!BY_KEY[@]}"
+export KEYS_GRIND="YAM_SER YAM_YAM YAM_SQL YAM_WNB YAM_JSNO YAM_JSNO1 YAM_JSNDA YAM_JSNV YAM_JSNDJ YAM_JSND1 YAM_JSNM"

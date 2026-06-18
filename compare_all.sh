@@ -13,8 +13,13 @@ if [ "$1" == "-h" ]; then
   exit 1
 fi
 
-for k in ${KEYS}; do
-  args=${BY_KEY[${k}]}
+ks="$1"
+if [ -z "$1" ] ;then
+  ks="${KEYS_COMPARE}"
+  fi
+
+for k in ${ks}; do
+  args=${BY_KEY_COMPARE[${k}]}
   args=$(echo "${args}" | sed 's/\s\+/ /g')
   echo -e "${Y}${k}${Z}"
   echo -e "${B}${args}${Z}"

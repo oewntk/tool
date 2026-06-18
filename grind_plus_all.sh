@@ -13,7 +13,12 @@ if [ "$1" == "-h" ]; then
   exit 1
 fi
 
-for k in ${KEYS_PLUS}; do
+ks="$1"
+if [ -z "$1" ] ;then
+  ks="${KEYS_PLUS}"
+  fi
+
+for k in ${ks}; do
   args=${BY_KEY_PLUS[${k}]}
   args=$(echo "${args}" | sed 's/\s\+/ /g')
   echo -e "${Y}${k}${Z}"

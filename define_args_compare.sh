@@ -15,8 +15,8 @@ IN2_JSON=json
 IN2_JSON_FILE=oewn-model.json
 IN2_SQL=sql/data
 
-declare -A BY_KEY
-export BY_KEY=(
+declare -A BY_KEY_COMPARE
+export BY_KE_COMPARE=(
 #            FLAGS        FROM      TO         INPUT      INPUT2            OUTPUT
 #______________________________________________________________________________________________________________________
 [YAM_SER]="               -Aif yaml -Bif ser   ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_SER}                       "
@@ -28,5 +28,5 @@ export BY_KEY=(
 [YAM_JSND1]="-Bis d -Bi1  -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}data1                 "
 [YAM_JSNM]=" -Bis m       -Aif yaml -Bif json  ${IN1_YAML} -Ai2 ${IN1_YAML2}  ${IN2}/${IN2_JSON}model/${IN2_JSON_FILE}"
 )
-export KEYS="${!BY_KEY[@]}"
-export KEYS="YAM_SER YAM_YAM YAM_WNB YAM_JSNO YAM_JSNO1 YAM_JSND YAM_JSND1 YAM_JSNM"
+export KEYS_COMPARE="${!BY_KEY[@]}"
+export KEYS_COMPARE="YAM_SER YAM_YAM YAM_WNB YAM_JSNO YAM_JSNO1 YAM_JSND YAM_JSND1 YAM_JSNM"

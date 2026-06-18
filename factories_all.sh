@@ -6,15 +6,20 @@ set -e
 
 source define_colors.sh
 source define_factory_help.sh
-source define_args_in.sh
+source define_args_factory.sh
 
 if [ "$1" == "-h" ]; then
   echo "${factory_help}"
   exit 1
 fi
 
-for k in ${KEYS_IN}; do
-  args=${BY_KEY_IN[${k}]}
+ks="$1"
+if [ -z "$1" ] ;then
+  ks="${KEYS_FACTORY}"
+  fi
+
+for k in ${ks}; do
+  args=${BY_KEY_FACTORY[${k}]}
   args=$(echo "${args}" | sed 's/\s\+/ /g')
   echo -e "${Y}${k}${Z}"
   echo -e "${B}${args}${Z}"
