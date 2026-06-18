@@ -55,6 +55,11 @@
     <echo>outdir=${outdir}</echo>
   </target>
 
+  <target name="ask-plus" unless="plus" description="prompts for plus tag if necessary (not in command line arguments)">
+    <input addProperty="plus" message="Plus:"/>
+    <echo>plus=${plus}</echo>
+  </target>
+
   <target name="makestamp">
     <tstamp>
       <format property="touch.time" pattern="EEE MMM d HH:mm:ss z yyyy" unit="hour" locale="en"/>
@@ -62,20 +67,20 @@
   </target>
 
   <!-- main -->
-  <target name="dist" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir,dist-sqlite,dist-mysql">
+  <target name="dist" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir,ask-plus,dist-sqlite,dist-mysql">
     <echo message="done"/>
   </target>
 
-  <target name="dist-sqlite" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir">
-    <pack dbtype="sqlite" dbtag="${dbtag}" version="${version}" indir="${dbdir}" outdir="${outdir}"/>
+  <target name="dist-sqlite" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir,ask-plus">
+    <pack dbtype="sqlite" dbtag="${dbtag}" version="${version}" indir="${dbdir}" outdir="${outdir}" plus="${plus}"/>
   </target>
 
-  <target name="dist-mysql" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir">
-    <pack dbtype="mysql" dbtag="${dbtag}" version="${version}" indir="${dbdir}" outdir="${outdir}"/>
+  <target name="dist-mysql" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir,ask-plus">
+    <pack dbtype="mysql" dbtag="${dbtag}" version="${version}" indir="${dbdir}" outdir="${outdir}" plus="${plus}"/>
   </target>
 
   <!-- dump -->
-  <target name="dump-sqlite" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir">
+  <target name="dump-sqlite" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir,ask-plus">
     <echo message="version ${version}"/>
     <echo message="stamp ${DSTAMP}"/>
     <echo message="release ${outdir}/"/>
@@ -84,7 +89,7 @@
     <echo-fileset filesetref="fs.restore.sqlite"/>
   </target>
 
-  <target name="dump-mysql" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir">
+  <target name="dump-mysql" depends="makestamp,ask-dbtag,ask-dbdir,ask-version,ask-outdir,ask-plus">
     <echo message="version ${version}"/>
     <echo message="stamp ${DSTAMP}"/>
     <echo message="release ${outdir}/"/>
@@ -137,13 +142,14 @@
     <attribute name="version"/>
     <attribute name="indir"/>
     <attribute name="outdir"/>
+    <attribute name="plus"/>
     <sequential>
       <definefs dbtype="@{dbtype}" dbtag="@{dbtag}" version="@{version}" dir="@{indir}"/>
       <dumpfs dbtype="@{dbtype}" dbtag="@{dbtag}" version="@{version}" dir="@{indir}" />
       <mkdir dir="@{outdir}"/>
       <delete file="@{outdir}/oewn-@{dbtag}-@{dbtype}-@{version}.zip"/>
       <echo message="jar oewn-@{dbtag}-@{dbtype}-@{version}.zip"/>
-      <jar destfile="@{outdir}/oewn-@{dbtag}-@{dbtype}-@{version}.zip" update="no">
+      <jar destfile="@{outdir}/oewn@{plus}-@{dbtag}-@{dbtype}-@{version}.zip" update="no">
         <mappedresources>
           <fileset refid="fs.@{dbtype}.@{dbtag}.sql"/>
           <globmapper from="*" to="sql/*"/>
@@ -159,10 +165,10 @@
         </mappedresources>
         <manifest>
           <section name="oewn/@{dbtype}/data">
-            <attribute name="Specification-Title" value="SQL-@{dbtype}-@{dbtag}-@{version}"/>
-            <attribute name="Implementation-Title" value="SQL-@{dbtype}-@{dbtag}-@{version}"/>
+            <attribute name="Specification-Title" value="SQL@{plus}-@{dbtype}-@{dbtag}-@{version}"/>
+            <attribute name="Implementation-Title" value="SQL@{plus}-@{dbtype}-@{dbtag}-@{version}"/>
             <attribute name="Specification-Version" value="@{dbtag}"/>
-            <attribute name="Implementation-Version" value="@{version}-@{dbtag}-${DSTAMP}"/>
+            <attribute name="Implementation-Version" value="@{version}-@{dbtag}@{plus}-${DSTAMP}"/>
             <attribute name="Specification-Vendor" value="Bernard Bou, 1313ou@gmail.com"/>
             <attribute name="Implementation-Vendor" value="Bernard Bou, 1313ou@gmail.com"/>
             <attribute name="Built-By" value="Bernard Bou, 1313ou@gmail.com"/>

@@ -36,34 +36,29 @@ if [ -z "${outdir}" ]; then
 fi
 
 echo -e "${M}${dbtag}-${build} ${C}${indir} -> ${outdir}${Z}"
-
-# D I R S
-
-DISTDIR=${outdir}
-DATADIR=${indir}
-echo "pack to ${DISTDIR} from ${DATADIR}"
+echo "pack to ${outdir} from ${indir}"
 
 # A R C H I V E S
 
-TAR_ARCHIVE=${DISTDIR}/oewn-${dbtag}.dict.tar.gz
-ZIP_ARCHIVE=${DISTDIR}/oewn-${dbtag}.zip
-TAR_ARCHIVE_MIN=${DISTDIR}/oewn-${dbtag}_bare.dict.tar.gz
-ZIP_ARCHIVE_MIN=${DISTDIR}/oewn-${dbtag}_bare.zip
-TAR_ARCHIVE_COMPAT=${DISTDIR}/oewn-${dbtag}_compat.dict.tar.gz
-ZIP_ARCHIVE_COMPAT=${DISTDIR}/oewn-${dbtag}_compat.zip
+TAR_ARCHIVE=${outdir}/oewn-${dbtag}.dict.tar.gz
+ZIP_ARCHIVE=${outdir}/oewn-${dbtag}.zip
+TAR_ARCHIVE_MIN=${outdir}/oewn-${dbtag}_bare.dict.tar.gz
+ZIP_ARCHIVE_MIN=${outdir}/oewn-${dbtag}_bare.zip
+TAR_ARCHIVE_COMPAT=${outdir}/oewn-${dbtag}_compat.dict.tar.gz
+ZIP_ARCHIVE_COMPAT=${outdir}/oewn-${dbtag}_compat.zip
 
 # M A I N
 
-mkdir -p ${DISTDIR}
+mkdir -p ${outdir}
 
 # prepare dict container
 
-if [ ! -e "${DATADIR}" -a ! -d "${DATADIR}" ]; then
+if [ ! -e "${indir}" -a ! -d "${indir}" ]; then
   echo -e "${R}Non existent wndb dir${Z}"
   exit 1
 fi
-parent="$(dirname ${DATADIR})"
-base="$(basename ${DATADIR})"
+parent="$(dirname ${indir})"
+base="$(basename ${indir})"
 pushd "${parent}" >/dev/null
 ln -sfT "${base}" dict
 popd >/dev/null
@@ -114,11 +109,11 @@ exit
 
 # compat
 
-if [ ! -e "${DATADIR}/wndb_compat" -a ! -d "${DATADIR}/wndb_compat" ]; then
+if [ ! -e "${indir}/wndb_compat" -a ! -d "${indir}/wndb_compat" ]; then
   echo -e "${R}Non existent wndb_compat dir${Z}"
   exit 1
 fi
-pushd ${DATADIR} >/dev/null
+pushd ${indir} >/dev/null
 ln -sfT wndb_compat/ dict
 popd >/dev/null
 
@@ -141,4 +136,4 @@ echo -en "${Z}"
 echo -e "${G}${ZIP_ARCHIVE_COMPAT}${Z}"
 echo
 
-#rm ${DATADIR}/dict
+#rm ${indir}/dict

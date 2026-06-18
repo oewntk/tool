@@ -35,17 +35,18 @@ if [ -z "${outdir}" ]; then
   outdir=$(pwd)
 fi
 
+plus=$1
+[ "$#" -eq 0 ] || shift
+if [ -z "${plus}" ]; then
+  plus=""
+fi
+
 echo -e "${M}${dbtag}-${build} ${C}${indir} -> ${outdir}${Z}"
-
-# D I R S
-
-DISTDIR=${outdir}
-DATADIR=${indir}
-echo "pack to ${DISTDIR} from ${DATADIR}"
+echo "pack to ${outdir} from ${indir} plus=${plus}"
 
 # M A I N
 
-echo -e "${C}packing ${Y}${TAG}${Z}"
-echo "ant pack with dbtag=${TAG}"
-ant -f make-dist-sql.xml -Ddbdir=${DATADIR} -Ddbtag=${TAG} -Dversion="${BUILD}" -Doutdir="${DISTDIR}"
+echo -e "${C}packing ${Y}${dbtag}${Z}"
+echo "ant pack with dbtag=${dbtag}"
+ant -f make-dist-sql.xml -Ddbdir=${indir} -Ddbtag=${dbtag} -Dversion="${build}" -Doutdir="${outdir}" -Dplus="${plus}"
 

@@ -42,21 +42,16 @@ if [ -z "${outfile}" ]; then
 fi
 
 echo -e "${M}${dbtag}-${build} ${C}${indir} -> ${outdir}/${outfile}${Z}"
-
-# D I R S
-
-DISTDIR=${outdir}
-DATADIR=${indir}
-echo "pack ${outfile}-${dbtag}.json.zip to ${DISTDIR} from ${DATADIR}"
+echo "pack ${outfile}-${dbtag}.json.zip to ${outdir} from ${indir}"
 
 # M A I N
 
-mkdir -p ${DISTDIR}
+mkdir -p ${outdir}
 
-ZIP_ARCHIVE=${DISTDIR}/${outfile}-${dbtag}.json.zip
+ZIP_ARCHIVE=${outdir}/${outfile}-${dbtag}.json.zip
 echo -e "${M}pack to $(basename ${ZIP_ARCHIVE})${Z}"
 rm -f ${ZIP_ARCHIVE}
-zip -j ${ZIP_ARCHIVE} "${DATADIR}"/*
+zip -j ${ZIP_ARCHIVE} "${indir}"/*
 zip ${ZIP_ARCHIVE} OEWN_LICENSE.md
 echo -e "${C}"
 unzip -l ${ZIP_ARCHIVE}
