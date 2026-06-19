@@ -7,17 +7,11 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import org.oewntk.json.out.JsonMethod
-import org.oewntk.model.*
-import org.oewntk.model.ModelEquals.checkDataEq
 import org.oewntk.model.ModelEquals.checkDiffs
-import org.oewntk.model.ModelEquals.checkLexesEq
-import org.oewntk.model.ModelEquals.checkSensesEq
-import org.oewntk.model.ModelEquals.checkSynsetsEq
-import org.oewntk.model.ModelEquals.checkZipLexesEq
-import org.oewntk.model.ModelEquals.checkZipSensesEq
-import org.oewntk.model.ModelEquals.checkZipSynsetsEq
 import org.oewntk.model.ModelEquals.dataEquals
-import org.oewntk.tool.Args.SerializationMode
+import org.oewntk.model.ModelInfo
+import org.oewntk.model.SerializationMode
+import org.oewntk.tool.Args.Format
 import org.oewntk.tool.Args.formatArg
 import org.oewntk.tool.Args.jsonMethodArg
 import org.oewntk.tool.Args.serializationModeArg
@@ -26,10 +20,6 @@ import org.oewntk.tool.Tracing.progress
 import org.oewntk.tool.Tracing.start
 import org.oewntk.tool.Utils.getModel
 import java.io.File
-import kotlin.reflect.KClass
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.isAccessible
-import kotlin.reflect.jvm.javaField
 
 /**
  * Main class that compares models
@@ -54,7 +44,7 @@ object Compare {
         // @formatter:off
         val inA1 by parser.argument(            ArgType.String,                                                             description = "A Input dir or file")
         val inA2 by parser.option(              ArgType.String,        shortName = "Ai2", fullName = "a_in2",               description = "A Extra input dir or file")     .default("")
-        val inAFormat by parser.option(         formatArg,             shortName = "Aif", fullName = "a_in_format",         description = "A In format")                   .default("yaml")
+        val inAFormat by parser.option(         formatArg,             shortName = "Aif", fullName = "a_in_format",         description = "A In format")                   .default(Format.YAML)
         val inASerialization by parser.option(  serializationModeArg,  shortName = "Ais", fullName = "a_in_serialization",  description = "A Serialization mode")          .default(SerializationMode.OEWN)
         val inAJson by parser.option(           jsonMethodArg,         shortName = "Aij", fullName = "a_in_json",           description = "A JSON input method")           .default(JsonMethod.ANY_SERIALIZER)
         val inAOne by parser.option(            ArgType.Boolean,       shortName = "Ai1", fullName = "a_in_one",            description = "Input one file")                .default(false)
@@ -62,7 +52,7 @@ object Compare {
 
         val inB1 by parser.argument(            ArgType.String,                                                             description = "B Input dir or file")
         val inB2 by parser.option(              ArgType.String,        shortName = "Bi2", fullName = "b_in2",               description = "B Extra input dir or file")     .default("")
-        val inBFormat by parser.option(         formatArg,             shortName = "Bif", fullName = "b_in_format",         description = "B In format")                   .default("yaml")
+        val inBFormat by parser.option(         formatArg,             shortName = "Bif", fullName = "b_in_format",         description = "B In format")                   .default(Format.YAML)
         val inBSerialization by parser.option(  serializationModeArg,  shortName = "Bis", fullName = "b_in_serialization",  description = "B Serialization mode")          .default(SerializationMode.OEWN)
         val inBJson by parser.option(           jsonMethodArg,         shortName = "Bij", fullName = "b_in_json",           description = "B JSON input method")           .default(JsonMethod.ANY_SERIALIZER)
         val inBOne by parser.option(            ArgType.Boolean,       shortName = "Bi1", fullName = "b_in_one",            description = "Input one file")                .default(false)

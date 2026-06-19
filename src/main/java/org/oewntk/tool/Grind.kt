@@ -6,17 +6,18 @@ package org.oewntk.tool
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
-import org.oewntk.tool.Args.SerializationMode
+import org.oewntk.json.out.JsonMethod
+import org.oewntk.model.ModelInfo
+import org.oewntk.model.SerializationMode
+import org.oewntk.tool.Args.Format
 import org.oewntk.tool.Args.YamlDumpMode
+import org.oewntk.tool.Args.formatArg
 import org.oewntk.tool.Args.jsonMethodArg
 import org.oewntk.tool.Args.serializationModeArg
 import org.oewntk.tool.Args.yamlDumpModeArg
 import org.oewntk.tool.Tracing.progress
 import org.oewntk.tool.Tracing.start
 import org.oewntk.tool.Utils.getModel
-import org.oewntk.json.out.JsonMethod
-import org.oewntk.model.ModelInfo
-import org.oewntk.tool.Args.formatArg
 import org.oewntk.wndb.out.Flags
 import java.io.File
 import org.oewntk.json.out.data.ModelConsumer as DataJsonModelConsumer
@@ -52,13 +53,13 @@ object Grind {
         val in1 by parser.argument(            ArgType.String,                                                           description = "Input dir or file")
         val out by parser.argument(            ArgType.String,                                                           description = "Output dir or file")
         val in2 by parser.option(              ArgType.String,        shortName = "i2", fullName = "in2",                description = "Extra input dir or file")         .default("")
-        val inFormat by parser.option(         formatArg,             shortName = "if", fullName = "in_format",          description = "In format")                       .default("yaml")
+        val inFormat by parser.option(         formatArg,             shortName = "if", fullName = "in_format",          description = "In format")                       .default(Format.YAML)
         val inSerialization by parser.option(  serializationModeArg,  shortName = "is", fullName = "in_serialization",   description = "Serialization mode")              .default(SerializationMode.OEWN)
         val inJson by parser.option(           jsonMethodArg,         shortName = "ij", fullName = "in_json",            description = "JSON input method")               .default(JsonMethod.ANY_SERIALIZER)
         val inOne by parser.option(            ArgType.Boolean,       shortName = "i1", fullName = "in_one",             description = "Input one file")                  .default(false)
         val inPlus by parser.option(           ArgType.Boolean,       shortName = "p",  fullName = "plus",               description = "Plus input")                      .default(false)
         val outNone by parser.option(          ArgType.Boolean,       shortName = "on", fullName = "out_none",           description = "No output")                       .default(false)
-        val outFormat by parser.option(        formatArg,             shortName = "of", fullName = "out_format",         description = "Output format")                   .default("yaml")
+        val outFormat by parser.option(        formatArg,             shortName = "of", fullName = "out_format",         description = "Output format")                   .default(Format.YAML)
         val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",               description = "Extra output dir or file")        .default("")
         val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",            description = "Output one file")                 .default(false)
         val outMerge by parser.option(         ArgType.Boolean,       shortName = "om", fullName = "out_merge",          description = "Do not group generated entries")  .default(false)
@@ -131,10 +132,10 @@ object Grind {
             progress("before model is consumed", startTime, verbose = verbose)
 
             when (outFormat) {
-                "ser" -> SerModelConsumer(outFile).accept(model)
-                "sql" -> SqlModelConsumer(outFile).accept(model)
-                "wndb" -> WndbModelConsumer(outFile, wndbFlags(wndCompatPointers, wndCompatLexId, wndCompatVFrames)).accept(model)
-                "yaml" -> {
+                Format.SER -> SerModelConsumer(outFile).accept(model)
+                Format.SQL -> SqlModelConsumer(outFile).accept(model)
+                Format.WNDB -> WndbModelConsumer(outFile, wndbFlags(wndCompatPointers, wndCompatLexId, wndCompatVFrames)).accept(model)
+                Format.YAML -> {
                     if (outMerge)
                         File(outFile, "entries-generated.yaml").delete()
                     when (outSerialization) {
@@ -144,7 +145,7 @@ object Grind {
                     }
                 }
 
-                "json" -> {
+                Format.JSON -> {
                     when (outSerialization) {
                         SerializationMode.OEWN -> OEWNJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, generated = !outMerge, verbose = verbose).accept(model)
                         SerializationMode.DATA -> DataJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, verbose = verbose).accept(model)

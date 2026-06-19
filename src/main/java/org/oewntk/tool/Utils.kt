@@ -1,8 +1,9 @@
 package org.oewntk.tool
 
-import org.oewntk.tool.Args.SerializationMode
+import org.oewntk.tool.Args.Format
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.Model
+import org.oewntk.model.SerializationMode
 import org.oewntk.yaml.`in`.FactoryPlus
 import java.io.File
 import org.oewntk.json.`in`.data.Factory as DataJsonFactory
@@ -18,7 +19,7 @@ object Utils {
     fun getModel(
         input: String,
         input2: String?,
-        inFormat: String,
+        inFormat: Format,
         inPlus: Boolean,
         inSerialization: SerializationMode,
         inOne: Boolean,
@@ -30,11 +31,11 @@ object Utils {
         return if (inPlus)
             FactoryPlus(inputFile, inputFile2!!).get()!!
         else when (inFormat) {
-            "ser" -> SerFactory(inputFile).get()!!
-            "yaml" -> YamlFactory(inputFile, inputFile2, inverses = true, verbose = verbose).get()!!
-            "xml" -> XmlFactory(inputFile, inputFile2, verbose = verbose).get()!!
-            "wndb" -> WndbFactory(inputFile, inputFile2, verbose = verbose).get()!!
-            "json" -> {
+            Format.SER -> SerFactory(inputFile).get()!!
+            Format.YAML -> YamlFactory(inputFile, inputFile2, inverses = true, verbose = verbose).get()!!
+            Format.XML-> XmlFactory(inputFile, inputFile2, verbose = verbose).get()!!
+            Format.WNDB -> WndbFactory(inputFile, inputFile2, verbose = verbose).get()!!
+            Format.JSON -> {
                 when (inSerialization) {
                     SerializationMode.OEWN -> OEWNJsonFactory(inputFile, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
                     SerializationMode.DATA -> DataJsonFactory(inputFile, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
