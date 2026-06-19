@@ -2,7 +2,7 @@
 
 # Copyright (c) 2021-2026. Bernard Bou.
 
-set -Eeuo pipefail
+set -Eeo pipefail
 
 on_err() {
   local exit_code=$?

@@ -4,7 +4,7 @@
 # Copyright (c) 2021-2024. Bernard Bou.
 #
 
-set -Eeuo pipefail
+set -Eeo pipefail
 
 on_err() {
   local exit_code=$?
