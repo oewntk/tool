@@ -2,7 +2,7 @@
 
 # Copyright (c) 2021-2026. Bernard Bou.
 
-export factory_help="
+export compare_help="
 inA                 String,                                                           Input dir or file for model A
 inB                 String,                                                           Input dir or file for model B
 in2                 String,  shortName = (A|B)i2, fullName = (a|b)_in2,               Extra Input dir or file,                                       default=

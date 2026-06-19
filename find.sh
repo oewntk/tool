@@ -15,10 +15,10 @@ on_err() {
 
 trap on_err ERR
 
-source define_compare_help.sh
+source define_find_help.sh
 
 if [ "$1" == "-h" ]; then
-  echo "${compare_help}"
+  echo "${find_help}"
   exit 1
 fi
 
@@ -34,5 +34,5 @@ if [ ! -e "${jar}" ]; then
   echo "Non existing uber jar" >&2
   exit 2
   fi
-eval java -ea -cp "${jar}" org.oewntk.tool.Compare "$*"
+eval java -ea -cp "${jar}" org.oewntk.tool.Find "$*"
 exit $?

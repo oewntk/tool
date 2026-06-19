@@ -15,10 +15,10 @@ on_err() {
 
 trap on_err ERR
 
-source define_grind_help.sh
+source define_factory_help.sh
 
 if [ "$1" == "-h" ]; then
-  echo "${grind_help}"
+  echo "${factory_help}"
   exit 1
 fi
 
