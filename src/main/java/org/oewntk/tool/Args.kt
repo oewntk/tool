@@ -5,6 +5,7 @@ package org.oewntk.tool
 
 import kotlinx.cli.ArgType
 import org.oewntk.json.out.JsonMethod
+import org.oewntk.model.SerializationMode
 import org.oewntk.yaml.out.YamlDump
 import org.yaml.snakeyaml.DumperOptions
 
@@ -79,12 +80,6 @@ object Args {
             }
         }
     )
-
-    enum class SerializationMode {
-        OEWN,
-        DATA,
-        MODEL
-    }
 
     val serializationModeArg = ArgType.Choice(
         choices = SerializationMode.entries,
