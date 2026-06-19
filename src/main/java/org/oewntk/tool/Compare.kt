@@ -20,6 +20,7 @@ import org.oewntk.tool.Tracing.progress
 import org.oewntk.tool.Tracing.start
 import org.oewntk.tool.Utils.getModel
 import java.io.File
+import kotlin.system.exitProcess
 
 /**
  * Main class that compares models
@@ -140,16 +141,21 @@ object Compare {
         else Tracing.psInfo.println("[I] Model A and B have the same info")
 
         val areEqual = modelA == modelB
-        if (!areEqual) {
+        val ret = if (!areEqual) {
             Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
             val dataEq = modelA.dataEquals(modelB)
             if (!dataEq) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not data equal")
 
             checkDiffs(modelA, modelB)
             findDiffs(modelA, modelB)
-        } else Tracing.psInfo.println("[I] Model A and B are equal")
+            1
+        } else {
+            Tracing.psInfo.println("[I] Model A and B are equal")
+            0
+        }
 
         // End
-        progress("end", startTime, verbose = verbose)
+        progress("end $ret", startTime, verbose = verbose)
+        exitProcess(ret)
     }
 }
