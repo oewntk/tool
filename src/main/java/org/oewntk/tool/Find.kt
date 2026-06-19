@@ -172,9 +172,9 @@ object Find {
         progress("end, ", startTime, verbose = verbose)
     }
 
-    fun Any.dump(model: CoreModel, outFormat: Format, outSerialization: SerializationMode, jsonMethod: JsonMethod, outYaml: YamlDumpMode, prettyPrint: Boolean = true) {
+    fun Any.dump(model: CoreModel, outFormat: Format, outSerialization: SerializationMode, jsonMethod: JsonMethod, outYaml: YamlDumpMode, prettyPrint: Boolean = true, noCast: Boolean = false) {
         when (outFormat) {
-            Format.YAML -> YamlObjectConsumer(mode = outSerialization, dumperOptions = outYaml.options, ps = System.out).accept(this, model)
+            Format.YAML -> YamlObjectConsumer(mode = outSerialization, dumperOptions = outYaml.options, noCast = noCast, ps = System.out).accept(this, model)
             Format.JSON -> JsonObjectConsumer(mode = outSerialization, jsonMethod = jsonMethod, prettyPrint = prettyPrint, ps = System.out).accept(this, model)
             else -> throw IllegalArgumentException("Unsupported output format")
         }
