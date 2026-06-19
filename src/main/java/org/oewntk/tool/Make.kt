@@ -14,6 +14,7 @@ import org.oewntk.tool.Tracing.start
 import org.oewntk.tool.Utils.getModel
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.ModelInfo
+import org.oewntk.tool.Args.formatArg
 import java.io.File
 
 /**
@@ -39,7 +40,7 @@ object Make {
         // @formatter:off
         val in1 by parser.argument(            ArgType.String,                                                           description = "Input dir or file")
         val in2 by parser.option(              ArgType.String,        shortName = "i2", fullName = "in2",                description = "Extra input dir or file")         .default("")
-        val inFormat by parser.option(         ArgType.String,        shortName = "if", fullName = "in_format",          description = "In format")                       .default("yaml")
+        val inFormat by parser.option(         formatArg,             shortName = "if", fullName = "in_format",          description = "In format")                       .default("yaml")
         val inSerialization by parser.option(  serializationModeArg,  shortName = "is", fullName = "in_serialization",   description = "Serialization mode")              .default(SerializationMode.OEWN)
         val inJson by parser.option(           jsonMethodArg,         shortName = "ij", fullName = "in_json",            description = "JSON input method")               .default(JsonMethod.ANY_SERIALIZER)
         val inOne by parser.option(            ArgType.Boolean,       shortName = "i1", fullName = "in_one",             description = "Input one file")                  .default(false)

@@ -16,6 +16,31 @@ import org.yaml.snakeyaml.DumperOptions
  */
 object Args {
 
+    enum class Format {
+        YAML,
+        JSON,
+        XML,
+        SER,
+        SQL,
+        WNDB,
+    }
+
+    val formatArg = ArgType.Choice(
+        choices = Format.entries,
+        variantToString = { it.name.lowercase() },
+        toVariant = { raw ->
+            when (raw.lowercase()) {
+                "s", "ser" -> Format.SER
+                "q", "sql" -> Format.JSON
+                "y", "yaml" -> Format.YAML
+                "j", "json" -> Format.JSON
+                "w", "wndb" -> Format.WNDB
+                "x", "xml" -> Format.XML
+                else -> error("Unknown format: $raw")
+            }
+        }
+    )
+
     enum class YamlDumpMode(val options: DumperOptions) {
         AUTO(YamlDump.autoDumperOptions),
         BLOCK(YamlDump.blockDumperOptions),
