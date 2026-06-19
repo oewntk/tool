@@ -129,40 +129,40 @@ object Find {
         }
 
         lemmas2
-            .also { if (verbose) println("LEMMAS $it\n") }
+            .also { if (verbose) Tracing.psInfo.println("# [LEMMAS] $it\n") }
             .map { model.lexFinder(it) }
             .forEach {
                 it?.forEach { lex ->
-                    if (verbose) println("LEX ${lex.lemma} ${lex.type.value} ${lex.discriminant}\n")
+                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.type.value} ${lex.discriminant}\n")
                     lex.dump(model, outFormat, outSerialization, outJson, outYaml)
                 }
             }
 
         lexIds2
-            .also { if (verbose) println("LEXES $it\n") }
+            .also { if (verbose) Tracing.psInfo.println("# [LEXES] $it\n") }
             .map { it.split(",") }
             .map { (lemma, key2) -> key2 to model.lexFinder(lemma) }
             .map { (key2, lexes) -> lexes?.filter { lex -> lex.key2 == key2 } }
             .forEach {
                 it?.forEach { lex ->
-                    if (verbose) println("LEX ${lex.lemma} ${lex.type.value} ${lex.discriminant}\n")
+                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.type.value} ${lex.discriminant}\n")
                     lex.dump(model, outFormat, outSerialization, outJson, outYaml)
                 }
             }
 
         synsetIds2
-            .also { if (verbose) println("SYNSETS $it\n") }
+            .also { if (verbose) Tracing.psInfo.println("# [SYNSETS] $it\n") }
             .map { model.synsetFinder(it) }
             .forEach {
-                if (verbose) println("SYNSET ${it?.synsetId}\n")
+                if (verbose) Tracing.psInfo.println("# [SYNSET] ${it?.synsetId}\n")
                 it?.dump(model, outFormat, outSerialization, outJson, outYaml)
             }
 
         senseIds2
-            .also { if (verbose) println("SENSES $it\n") }
+            .also { if (verbose) Tracing.psInfo.println("# [SENSES] $it\n") }
             .map { model.senseFinder(it) }
             .forEach {
-                if (verbose) println("SENSE ${it?.senseKey}\n")
+                if (verbose) Tracing.psInfo.println("# [SENSE] ${it?.senseKey}\n")
                 it?.dump(model, outFormat, outSerialization, outJson, outYaml, outPretty)
             }
 
