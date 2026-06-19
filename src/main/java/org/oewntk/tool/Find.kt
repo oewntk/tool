@@ -3,13 +3,9 @@
  */
 package org.oewntk.tool
 
-import kotlinx.cli.ArgParser
-import kotlinx.cli.ArgType
-import kotlinx.cli.default
-import kotlinx.cli.multiple
+import kotlinx.cli.*
 import org.oewntk.json.out.JsonMethod
-import org.oewntk.model.CoreModel
-import org.oewntk.model.SerializationMode
+import org.oewntk.model.*
 import org.oewntk.tool.Args.Format
 import org.oewntk.tool.Args.YamlDumpMode
 import org.oewntk.tool.Args.formatArg
@@ -19,6 +15,7 @@ import org.oewntk.tool.Args.yamlDumpModeArg
 import org.oewntk.tool.Tracing.progress
 import org.oewntk.tool.Tracing.start
 import org.oewntk.tool.Utils.getModel
+import org.oewntk.tool.Utils.recog
 import java.io.File
 import org.oewntk.json.out.ObjectConsumer as JsonObjectConsumer
 import org.oewntk.yaml.out.ObjectConsumer as YamlObjectConsumer
@@ -41,10 +38,11 @@ object Find {
      */
     @JvmStatic
     fun main(args: Array<String>) {
-        val parser = ArgParser("grind")
+        val parser = ArgParser("find")
         // Options (start with - or --)
         // @formatter:off
         val in1 by parser.argument(            ArgType.String,                                                           description = "Input dir or file")
+        val objects by parser.argument(        ArgType.String,                                                           description = "Lex ID")                          .vararg()
         val in2 by parser.option(              ArgType.String,        shortName = "i2", fullName = "in2",                description = "Extra input dir or file")         .default("")
         val inFormat by parser.option(         formatArg,             shortName = "if", fullName = "in_format",          description = "In format")                       .default(Format.YAML)
         val inSerialization by parser.option(  serializationModeArg,  shortName = "is", fullName = "in_serialization",   description = "Serialization mode")              .default(SerializationMode.OEWN)
@@ -59,9 +57,10 @@ object Find {
         val outYaml by parser.option(          yamlDumpModeArg,       shortName = "oy", fullName = "out_yaml",           description = "YAML output format")              .default(YamlDumpMode.AUTO)
         val outJson by parser.option(          jsonMethodArg,         shortName = "oj", fullName = "out_json",           description = "JSON output method")              .default(JsonMethod.ANY_SERIALIZER)
         val outPretty by parser.option(        ArgType.Boolean,       shortName = "op", fullName = "out_pretty",         description = "JSON pretty print")               .default(true)
-        val senses by parser.option(           ArgType.String,        shortName = "s",  fullName = "sense",              description = "Sense ID").multiple()
-        val synsets by parser.option(          ArgType.String,        shortName = "y",  fullName = "synset",             description = "Synset ID").multiple()
-        val lexes by parser.option(            ArgType.String,        shortName = "l",  fullName = "lex",                description = "Lex ID").multiple()
+        val senseIds by parser.option(         ArgType.String,        shortName = "s",  fullName = "sense",              description = "Sense ID").multiple()
+        val synsetIds by parser.option(        ArgType.String,        shortName = "y",  fullName = "synset",             description = "Synset ID").multiple()
+        val lexIds by parser.option(           ArgType.String,        shortName = "x",  fullName = "lex",                description = "Lex ID").multiple()
+        val lemmas by parser.option(           ArgType.String,        shortName = "l",  fullName = "lemma",              description = "Lemma").multiple()
         val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",            description = "Verbose output")                  .default(false)
 
         val traceTime by parser.option(        ArgType.Boolean,       shortName = "tt", fullName = "trace:time",         description = "trace time")                      .default(false)
@@ -82,9 +81,9 @@ object Find {
             System.err.println("out serialization: $outSerialization")
             System.err.println("out YAML: $outYaml")
             System.err.println("out JSON: $outJson")
-            System.err.println("lexes: $lexes")
-            System.err.println("synsets: $synsets")
-            System.err.println("senses: $senses")
+            System.err.println("lexes: $lexIds")
+            System.err.println("synsets: $synsetIds")
+            System.err.println("senses: $senseIds")
         }
 
         // Tracing
@@ -115,18 +114,57 @@ object Find {
         // Consume model
         progress("before model is consumed", startTime, verbose = verbose)
 
-        lexes.forEach {
-            val lex = model.lexFinder(it)
-            //lex?.dump(model, outFormat, outSerialization, outJson, outYaml)
+        val lemmas2 = lemmas.toMutableList()
+        val lexIds2 = lexIds.toMutableList()
+        val synsetIds2 = synsetIds.toMutableList()
+        val senseIds2 = senseIds.toMutableList()
+
+        objects.forEach { obj ->
+            when (recog(obj)) {
+                Lemma::class -> lemmas2.add(obj)
+                Lex::class -> lexIds2.add(obj)
+                Synset::class -> synsetIds2.add(obj)
+                Sense::class -> senseIds2.add(obj)
+            }
         }
-        synsets.forEach {
-            val synset = model.synsetFinder(it)
-            synset?.dump(model, outFormat, outSerialization, outJson, outYaml)
-        }
-        senses.forEach {
-            val sense = model.senseFinder(it)
-            sense?.dump(model, outFormat, outSerialization, outJson, outYaml, outPretty)
-        }
+
+        lemmas2
+            .also { if (verbose) println("LEMMAS $it\n") }
+            .map { model.lexFinder(it) }
+            .forEach {
+                it?.forEach { lex ->
+                    if (verbose) println("LEX ${lex.lemma} ${lex.type.value} ${lex.discriminant}\n")
+                    lex.dump(model, outFormat, outSerialization, outJson, outYaml)
+                }
+            }
+
+        lexIds2
+            .also { if (verbose) println("LEXES $it\n") }
+            .map { it.split(",") }
+            .map { (lemma, key2) -> key2 to model.lexFinder(lemma) }
+            .map { (key2, lexes) -> lexes?.filter { lex -> lex.key2 == key2 } }
+            .forEach {
+                it?.forEach { lex ->
+                    if (verbose) println("LEX ${lex.lemma} ${lex.type.value} ${lex.discriminant}\n")
+                    lex.dump(model, outFormat, outSerialization, outJson, outYaml)
+                }
+            }
+
+        synsetIds2
+            .also { if (verbose) println("SYNSETS $it\n") }
+            .map { model.synsetFinder(it) }
+            .forEach {
+                if (verbose) println("SYNSET ${it?.synsetId}\n")
+                it?.dump(model, outFormat, outSerialization, outJson, outYaml)
+            }
+
+        senseIds2
+            .also { if (verbose) println("SENSES $it\n") }
+            .map { model.senseFinder(it) }
+            .forEach {
+                if (verbose) println("SENSE ${it?.senseKey}\n")
+                it?.dump(model, outFormat, outSerialization, outJson, outYaml, outPretty)
+            }
 
         progress("after model is consumed", startTime, verbose = verbose)
 
