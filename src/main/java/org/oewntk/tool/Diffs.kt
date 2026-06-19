@@ -27,7 +27,9 @@ object Diffs {
             diffs.forEach { diff ->
                 val expStr = diff.expected.toString()
                 val actStr = diff.actual.toString()
-                println("${diff.path}:\n${firstDivergence(expStr, actStr)}")
+                val divergence = firstDivergence(expStr, actStr)
+                if (divergence != null)
+                    println("${diff.path}:\n$divergence")
             }
             val report = "[E] Model A $modelA and B $modelB differ at ${diffs.size} location(s)"
             ps.println(report)
@@ -164,10 +166,10 @@ object Diffs {
             }
     }
 
-    fun firstDivergence(a: String, b: String, context: Int = 40): String {
+    fun firstDivergence(a: String, b: String, context: Int = 40): String? {
         val idx = a.zip(b).indexOfFirst { (ca, cb) -> ca != cb }
         return when {
-            idx == -1 && a.length == b.length -> "<identical>"
+            idx == -1 && a.length == b.length -> null
             idx == -1 -> "same up to index ${minOf(a.length, b.length)}, then one is longer: expected[${a.length}] actual[${b.length}]"
 
             else -> {
@@ -176,8 +178,8 @@ object Diffs {
                 val toB = minOf(b.length, idx + context)
                 """
             |  first difference at index $idx:
-            |    expected:    ${a.substring(from, toA)}...
-            |    actual:      ${b.substring(from, toB)}...
+            |    expected:    ${a.substring(from, toA)}
+            |    actual:      ${b.substring(from, toB)}
             |    char:        expected='${a[idx]}' (${a[idx].code})  actual='${b[idx]}' (${b[idx].code})
             """.trimMargin()
             }
