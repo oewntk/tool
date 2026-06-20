@@ -170,7 +170,7 @@ object Find {
         progress("after model is consumed", startTime, verbose = verbose)
 
         // End
-        progress("end, ", startTime, verbose = verbose)
+        progress("end", startTime, verbose = verbose)
     }
 
     fun Any.dump(model: CoreModel, outFormat: Format, outSerialization: SerializationMode, jsonMethod: JsonMethod, outYaml: YamlDumpMode, prettyPrint: Boolean = true, noCast: Boolean = false) {

@@ -88,7 +88,7 @@ object Make {
         progress("after model is supplied", startTime, verbose = verbose)
 
         // End
-        progress("end, ", startTime, verbose = verbose)
+        progress("end", startTime, verbose = verbose)
 
         // info
         val modelInfo = model.info()

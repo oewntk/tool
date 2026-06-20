@@ -54,6 +54,7 @@ object Grind {
         val out by parser.argument(            ArgType.String,                                                           description = "Output dir or file")
         val in2 by parser.option(              ArgType.String,        shortName = "i2", fullName = "in2",                description = "Extra input dir or file")         .default("")
         val inFormat by parser.option(         formatArg,             shortName = "if", fullName = "in_format",          description = "In format")                       .default(Format.YAML)
+        val inInverses by parser.option(       ArgType.Boolean,       shortName = "iv", fullName = "in_inverses",        description = "Generate inverse relations")      .default(true)
         val inSerialization by parser.option(  serializationModeArg,  shortName = "is", fullName = "in_serialization",   description = "Serialization mode")              .default(SerializationMode.OEWN)
         val inJson by parser.option(           jsonMethodArg,         shortName = "ij", fullName = "in_json",            description = "JSON input method")               .default(JsonMethod.ANY_SERIALIZER)
         val inOne by parser.option(            ArgType.Boolean,       shortName = "i1", fullName = "in_one",             description = "Input one file")                  .default(false)
@@ -61,11 +62,10 @@ object Grind {
         val outNone by parser.option(          ArgType.Boolean,       shortName = "on", fullName = "out_none",           description = "No output")                       .default(false)
         val outFormat by parser.option(        formatArg,             shortName = "of", fullName = "out_format",         description = "Output format")                   .default(Format.YAML)
         val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",               description = "Extra output dir or file")        .default("")
-        val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",            description = "Output one file")                 .default(false)
-        val outMerge by parser.option(         ArgType.Boolean,       shortName = "om", fullName = "out_merge",          description = "Do not group generated entries")  .default(false)
-        val inInverses by parser.option(       ArgType.Boolean,       shortName = "ov", fullName = "in_inverses",        description = "Generate inverse relations")      .default(true)
         val outNoInverses by parser.option(    ArgType.Boolean,       shortName = "ov", fullName = "out_no_inverses",    description = "Do not output inverse relations") .default(false)
+        val outMerge by parser.option(         ArgType.Boolean,       shortName = "om", fullName = "out_merge",          description = "Do not group generated entries")  .default(false)
         val outSerialization by parser.option( serializationModeArg,  shortName = "os", fullName = "out_serialization",  description = "Serialization mode")              .default(SerializationMode.OEWN)
+        val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",            description = "Output one file")                 .default(false)
         val outYaml by parser.option(          yamlDumpModeArg,       shortName = "oy", fullName = "out_yaml",           description = "YAML output format")              .default(YamlDumpMode.AUTO)
         val outJson by parser.option(          jsonMethodArg,         shortName = "oj", fullName = "out_json",           description = "JSON output method")              .default(JsonMethod.ANY_SERIALIZER)
         val outInfo by parser.option(          ArgType.String,        shortName = "oi", fullName = "out_info",           description = "Info output")                     .default("")
@@ -162,7 +162,7 @@ object Grind {
         }
 
         // End
-        progress("end, ", startTime, verbose = verbose)
+        progress("end", startTime, verbose = verbose)
 
         // Info
         val modelInfo = model.info()
