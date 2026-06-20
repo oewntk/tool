@@ -49,6 +49,7 @@ object Utils {
         inSerialization: SerializationMode,
         inOne: Boolean,
         inJson: JsonMethod,
+        inverses: Boolean,
         verbose: Boolean
     ): Model {
         val inputFile = File(input)
@@ -57,7 +58,7 @@ object Utils {
             FactoryPlus(inputFile, inputFile2!!).get()!!
         else when (inFormat) {
             Format.SER -> SerFactory(inputFile).get()!!
-            Format.YAML -> YamlFactory(inputFile, inputFile2, inverses = true, verbose = verbose).get()!!
+            Format.YAML -> YamlFactory(inputFile, inputFile2, inverses = inverses, verbose = verbose).get()!!
             Format.XML-> XmlFactory(inputFile, inputFile2, verbose = verbose).get()!!
             Format.WNDB -> WndbFactory(inputFile, inputFile2, verbose = verbose).get()!!
             Format.JSON -> {

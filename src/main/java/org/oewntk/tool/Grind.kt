@@ -63,6 +63,7 @@ object Grind {
         val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",               description = "Extra output dir or file")        .default("")
         val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",            description = "Output one file")                 .default(false)
         val outMerge by parser.option(         ArgType.Boolean,       shortName = "om", fullName = "out_merge",          description = "Do not group generated entries")  .default(false)
+        val outInverses by parser.option(      ArgType.Boolean,       shortName = "ov", fullName = "out_inverses",       description = "Generate inverse relations")      .default(true)
         val outSerialization by parser.option( serializationModeArg,  shortName = "os", fullName = "out_serialization",  description = "Serialization mode")              .default(SerializationMode.OEWN)
         val outYaml by parser.option(          yamlDumpModeArg,       shortName = "oy", fullName = "out_yaml",           description = "YAML output format")              .default(YamlDumpMode.AUTO)
         val outJson by parser.option(          jsonMethodArg,         shortName = "oj", fullName = "out_json",           description = "JSON output method")              .default(JsonMethod.ANY_SERIALIZER)
@@ -123,6 +124,7 @@ object Grind {
             inSerialization,
             inOne,
             inJson,
+            outInverses,
             verbose
         )
         progress("after model is supplied", startTime, verbose = verbose)

@@ -103,6 +103,7 @@ object Compare {
             inASerialization,
             inAOne,
             inAJson,
+            true,
             verbose
         )
         progress("after model A $modelA is supplied", startTime, verbose = verbose)
@@ -118,6 +119,7 @@ object Compare {
             inBSerialization,
             inBOne,
             inBJson,
+            true,
             verbose
         )
         progress("after model B $modelB is supplied", startTime, verbose = verbose)
