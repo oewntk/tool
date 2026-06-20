@@ -25,6 +25,7 @@ object Diffs {
         val linesA = textA.split("\n")
         val linesB = textB.split("\n")
         return linesA.zip(linesB)
+            .map { (a, b) -> a.trim() to b.trim() }
             .filter { (a, b) -> a != b }
             .joinToString("\n") { (a, b) -> "A: $a\nB: $b" }
     }
