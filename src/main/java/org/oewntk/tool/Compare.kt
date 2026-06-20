@@ -144,8 +144,11 @@ object Compare {
 
         if (modelInfo2A != modelInfo2B) {
             Tracing.psErr.println("[E] Model A $modelA and B $modelB don't have the same info")
+            Tracing.psInfo.println(modelInfo2A)
+            Tracing.psInfo.println(modelInfo2B)
+            Tracing.psInfo.println("diff:")
             val diff = diff(modelInfo2A, modelInfo2B)
-            Tracing.psErr.println(diff)
+            Tracing.psInfo.println(diff)
         } else Tracing.psInfo.println("[I] Model A and B have the same info")
 
         val areEqual = modelA == modelB
