@@ -15,11 +15,13 @@ import org.oewntk.tool.Args.Format
 import org.oewntk.tool.Args.formatArg
 import org.oewntk.tool.Args.jsonMethodArg
 import org.oewntk.tool.Args.serializationModeArg
+import org.oewntk.tool.Diffs.diff
 import org.oewntk.tool.Diffs.findDiffs
 import org.oewntk.tool.Tracing.progress
 import org.oewntk.tool.Tracing.start
 import org.oewntk.tool.Utils.getModel
 import java.io.File
+import java.io.PrintStream
 import kotlin.system.exitProcess
 
 /**
@@ -125,20 +127,26 @@ object Compare {
         progress("before models are consumed", startTime, verbose = verbose)
 
         // info
+
         val modelInfoA = modelA.info()
         val modelCountsA = ModelInfo.counts(modelA)
-        val modelInfo2A = "$modelInfoA\n$modelCountsA"
+        val modelRelationsA = ModelInfo.relations(modelA)
+        val modelInfo2A = "$modelInfoA\n$modelCountsA\n$modelRelationsA"
         Tracing.psInfo.println("Model A $modelA")
-        Tracing.psInfo.println(modelInfo2A)
+        //Tracing.psInfo.println(modelInfo2A)
 
         val modelInfoB = modelB.info()
         val modelCountsB = ModelInfo.counts(modelB)
-        val modelInfo2B = "$modelInfoB\n$modelCountsB"
+        val modelRelationsB = ModelInfo.relations(modelB)
+        val modelInfo2B = "$modelInfoB\n$modelCountsB\n$modelRelationsB"
         Tracing.psInfo.println("Model B $modelB")
-        Tracing.psInfo.println(modelInfo2B)
+        //Tracing.psInfo.println(modelInfo2B)
 
-        if (modelInfo2A != modelInfo2B) Tracing.psErr.println("[E] Model A $modelA and B $modelB don't have the same info")
-        else Tracing.psInfo.println("[I] Model A and B have the same info")
+        if (modelInfo2A != modelInfo2B) {
+            Tracing.psErr.println("[E] Model A $modelA and B $modelB don't have the same info")
+            val diff = diff(modelInfo2A, modelInfo2B)
+            Tracing.psErr.println(diff)
+        } else Tracing.psInfo.println("[I] Model A and B have the same info")
 
         val areEqual = modelA == modelB
         val ret = if (!areEqual) {
@@ -147,7 +155,9 @@ object Compare {
             if (!dataEq) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not data equal")
 
             checkDiffs(modelA, modelB)
-            findDiffs(modelA, modelB)
+            PrintStream(File("diff_@${modelA.id}_@${modelB.id}.log")).use { ps ->
+                findDiffs(modelA, modelB, ps = ps)
+            }
             1
         } else {
             Tracing.psInfo.println("[I] Model A and B are equal")

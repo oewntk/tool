@@ -21,6 +21,14 @@ typealias KeyExtractor = (Any) -> Any?
  */
 object Diffs {
 
+    fun diff(textA: String, textB: String): String {
+        val linesA = textA.split("\n")
+        val linesB = textB.split("\n")
+        return linesA.zip(linesB)
+            .filter { (a, b) -> a != b }
+            .joinToString("\n") { (a, b) -> "A: $a\nB: $b" }
+    }
+
     fun findDiffs(modelA: Model, modelB: Model, throws: Boolean = false, ps: PrintStream = System.out) {
         val diffs = structuralDiff(DataModel(modelA), DataModel(modelB))
         if (diffs.isNotEmpty()) {
@@ -29,10 +37,10 @@ object Diffs {
                 val actStr = diff.actual.toString()
                 val divergence = firstDivergence(expStr, actStr)
                 if (divergence != null)
-                    println("${diff.path}:\n$divergence")
+                    ps.println("${diff.path}:\n$divergence")
             }
             val report = "[E] Model A $modelA and B $modelB differ at ${diffs.size} location(s)"
-            ps.println(report)
+            Tracing.psErr.println(report)
             if (throws) error(report)
         }
     }
@@ -94,7 +102,7 @@ object Diffs {
                 prop.isAccessible = true
                 val childPath = if (path.isEmpty()) kProp.name else "$path.${kProp.name}"
                 val child = prop.get(obj)
-                structure(child, childPath, level+1, ps)
+                structure(child, childPath, level + 1, ps)
             }
     }
 
