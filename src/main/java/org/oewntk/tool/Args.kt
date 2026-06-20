@@ -32,7 +32,7 @@ object Args {
         toVariant = { raw ->
             when (raw.lowercase()) {
                 "s", "ser" -> Format.SER
-                "q", "sql" -> Format.JSON
+                "q", "sql" -> Format.SQL
                 "y", "yaml" -> Format.YAML
                 "j", "json" -> Format.JSON
                 "w", "wndb" -> Format.WNDB
