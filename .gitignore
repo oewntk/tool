@@ -15,6 +15,7 @@
 **/_*/
 **/_*
 **/*.jar
+**/*.log
 **/build
 
 /dependency-reduced-pom.xml
