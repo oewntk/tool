@@ -13,7 +13,7 @@ OUT_YAML=yaml
 OUT_WNDB=wndb
 OUT_JSON=json
 OUT_JSON_FILE=oewn-model.json
-OUT_SQL=sql/data
+OUT_SQL=sql
 
 declare -A BY_KEY_PLUS
 export BY_KEY_PLUS=(
