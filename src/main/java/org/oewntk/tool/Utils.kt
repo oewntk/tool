@@ -55,7 +55,7 @@ object Utils {
         val inputFile = File(input)
         val inputFile2: File? = input2?.takeIf(String::isNotEmpty)?.let { File(it) }
         return if (inPlus)
-            FactoryPlus(inputFile, inputFile2!!).get()!!
+            FactoryPlus(inputFile, inputFile2!!, verbose = verbose).get()!!
         else when (inFormat) {
             Format.SER -> SerFactory(inputFile).get()!!
             Format.YAML -> YamlFactory(inputFile, inputFile2, inverses = inverses, verbose = verbose).get()!!
