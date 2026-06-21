@@ -14,12 +14,11 @@ on_err() {
 trap on_err ERR
 
 source define_colors.sh
-source define_grind_help.sh
 source define_args_grind.sh
 
 if [ "$1" == "-h" ]; then
-  echo "${grind_help}"
-  exit 1
+  ./grind.sh --help
+  exit 0
 fi
 
 ks="$1"

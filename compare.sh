@@ -15,13 +15,6 @@ on_err() {
 
 trap on_err ERR
 
-source define_compare_help.sh
-
-if [ "$1" == "-h" ]; then
-  echo "${compare_help}"
-  exit 1
-fi
-
 jar=tool-3.0.1-uber.jar
 if [ ! -e "${jar}" ]; then
   if [ ! -e "target/${jar}" ]; then

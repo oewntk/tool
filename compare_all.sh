@@ -14,12 +14,11 @@ on_err() {
 trap on_err ERR
 
 source define_colors.sh
-source define_compare_help.sh
 source define_args_compare.sh
 
 if [ "$1" == "-h" ]; then
-  echo "${compare_help}"
-  exit 1
+  ./compare.sh --help
+  exit 0
 fi
 
 ks="$1"

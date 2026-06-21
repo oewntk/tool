@@ -14,12 +14,11 @@ on_err() {
 trap on_err ERR
 
 source define_colors.sh
-source define_factory_help.sh
 source define_args_factory.sh
 
 if [ "$1" == "-h" ]; then
-  echo "${factory_help}"
-  exit 1
+  ./factory.sh --help
+  exit 0
 fi
 
 ks="$1"
