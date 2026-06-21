@@ -12,7 +12,7 @@ source define_colors.sh
 
 # M A I N
 
-for subtag in "-plus" ""; do
+for subtag in "" "-plus"; do
 
         base=oewn${subtag}-${TAG}-sqlite-${BUILD}
         source=${base}.zip

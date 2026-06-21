@@ -147,8 +147,8 @@
       <definefs dbtype="@{dbtype}" dbtag="@{dbtag}" version="@{version}" dir="@{indir}"/>
       <dumpfs dbtype="@{dbtype}" dbtag="@{dbtag}" version="@{version}" dir="@{indir}" />
       <mkdir dir="@{outdir}"/>
-      <delete file="@{outdir}/oewn-@{dbtag}-@{dbtype}-@{version}.zip"/>
-      <echo message="jar oewn-@{dbtag}-@{dbtype}-@{version}.zip"/>
+      <delete file="@{outdir}/oewn@{plus}-@{dbtag}-@{dbtype}-@{version}.zip"/>
+      <echo message="jar oewn@{plus}-@{dbtag}-@{dbtype}-@{version}.zip"/>
       <jar destfile="@{outdir}/oewn@{plus}-@{dbtag}-@{dbtype}-@{version}.zip" update="no">
         <mappedresources>
           <fileset refid="fs.@{dbtype}.@{dbtag}.sql"/>

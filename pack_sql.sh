@@ -57,5 +57,6 @@ echo "pack to ${outdir} from ${indir} plus=${plus}"
 
 echo -e "${C}packing ${Y}${dbtag}${Z}"
 echo "ant pack with dbtag=${dbtag}"
+mkdir -p "${outdir}"
 ant -f make-dist-sql.xml -Ddbdir=${indir} -Ddbtag=${dbtag} -Dversion="${build}" -Doutdir="${outdir}" -Dplus="${plus}"
 
