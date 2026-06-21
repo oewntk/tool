@@ -61,6 +61,7 @@ object Find {
         val synsetIds by parser.option(        ArgType.String,        shortName = "y",  fullName = "synset",             description = "Synset ID").multiple()
         val lexIds by parser.option(           ArgType.String,        shortName = "x",  fullName = "lex",                description = "Lex ID").multiple()
         val lemmas by parser.option(           ArgType.String,        shortName = "l",  fullName = "lemma",              description = "Lemma").multiple()
+        val doNotThrow by parser.option(       ArgType.Boolean,       shortName = "nt", fullName = "no_throw",           description = "Do not throw")                    .default(false)
         val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",            description = "Verbose output")                  .default(false)
 
         val traceTime by parser.option(        ArgType.Boolean,       shortName = "tt", fullName = "trace:time",         description = "trace time")                      .default(false)
@@ -108,7 +109,8 @@ object Find {
             inOne,
             inJson,
             false,
-            verbose
+            throws = !doNotThrow,
+            verbose,
         )
         progress("after model is supplied", startTime, verbose = verbose)
 

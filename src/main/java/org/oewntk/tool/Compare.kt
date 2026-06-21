@@ -61,6 +61,7 @@ object Compare {
         val inBOne by parser.option(            ArgType.Boolean,       shortName = "Bi1", fullName = "b_in_one",            description = "Input one file")                .default(false)
         val inBPlus by parser.option(           ArgType.Boolean,       shortName = "Bp",  fullName = "b_plus",              description = "B Plus input")                  .default(false)
 
+        val doNotThrow by parser.option(       ArgType.Boolean,        shortName = "nt", fullName = "no_throw",             description = "Do not throw")                  .default(true)
         val verbose by parser.option(           ArgType.Boolean,       shortName = "v",  fullName = "verbose",              description = "Verbose output")                .default(false)
 
         val traceTime by parser.option(         ArgType.Boolean,       shortName = "tt", fullName = "trace:time",           description = "trace time")                    .default(false)
@@ -104,7 +105,8 @@ object Compare {
             inAOne,
             inAJson,
             true,
-            verbose
+            throws = !doNotThrow,
+            verbose,
         )
         progress("after model A $modelA is supplied", startTime, verbose = verbose)
         progress("before model B is supplied", startTime, verbose = verbose)
@@ -120,6 +122,7 @@ object Compare {
             inBOne,
             inBJson,
             true,
+            throws = !doNotThrow,
             verbose
         )
         progress("after model B $modelB is supplied", startTime, verbose = verbose)

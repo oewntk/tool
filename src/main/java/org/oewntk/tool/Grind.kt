@@ -70,6 +70,7 @@ object Grind {
         val outJson by parser.option(          jsonMethodArg,         shortName = "oj", fullName = "out_json",           description = "JSON output method")              .default(JsonMethod.ANY_SERIALIZER)
         val outInfo by parser.option(          ArgType.String,        shortName = "oi", fullName = "out_info",           description = "Info output")                     .default("")
         val outPretty by parser.option(        ArgType.Boolean,       shortName = "op", fullName = "out_pretty",         description = "JSON pretty print")               .default(true)
+        val doNotThrow by parser.option(       ArgType.Boolean,       shortName = "nt", fullName = "no_throw",           description = "Do not throw")                    .default(false)
         val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",            description = "Verbose output")                  .default(false)
 
         val wndCompatPointers by parser.option(ArgType.Boolean,       shortName = "wp", fullName = "compat:pointer",     description = "WNDB pointer compat")             .default(false)
@@ -126,7 +127,8 @@ object Grind {
             inOne,
             inJson,
             inInverses,
-            verbose
+            throws = !doNotThrow,
+            verbose,
         )
         progress("after model is supplied", startTime, verbose = verbose)
         if (!outNone) {
