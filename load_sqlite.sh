@@ -9,7 +9,6 @@ set -e
 source define_build.sh
 source define_colors.sh
 
-
 # M A I N
 
 for subtag in "" "-plus"; do
@@ -18,13 +17,12 @@ for subtag in "" "-plus"; do
         source=${base}.zip
         sqlite=${base}.sqlite
         sqlitezip=${sqlite}.zip
-        
+        expanded="${base}"
+
         echo -e "${Y}load ${base}${Z}"
 
         pushd ../dist/data/sql >/dev/null
-        echo -e "${M}sql${Z}"
 
-        expanded="${base}"
         rm -fR ${expanded}/*
         unzip -q ${source} -d ${expanded}
 
