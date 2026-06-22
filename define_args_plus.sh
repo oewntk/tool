@@ -20,7 +20,7 @@ export BY_KEY_PLUS=(
 #                   FLAGS           FROM     TO        INPUT      INPUT2           OUTPUT                                    OUTPUT2
 #________________________________________________________________________________________________________________________________________________________________________
 [PLUS_YAM_SER]="    -p              -if yaml -of ser   ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_SER}                         -oi ${OUT}/${OUT_SER2}                     "
-[PLUS_YAM_YAM]="    -p              -if yaml -of yaml  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_YAML}                        -oi ${OUT}/${OUT_YAML}/${OUT_INFO}         "
+[PLUS_YAM_YAM]="    -p -om          -if yaml -of yaml  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_YAML}                        -oi ${OUT}/${OUT_YAML}/${OUT_INFO}         "
 [PLUS_YAM_SQL]="    -p              -if yaml -of sql   ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_SQL}                         -oi ${OUT}/${OUT_SQL}/${OUT_INFO}          "
 [PLUS_YAM_WNB]="    -p              -if yaml -of wndb  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_WNDB}                        -oi ${OUT}/${OUT_WNDB}/${OUT_INFO}         "
 [PLUS_YAM_WNB_C]="  -p -wp -wl -wv  -if yaml -of wndb  ${IN_YAML} -i2 ${IN_YAML2}  ${OUT}/${OUT_WNDB}_compat                 -oi ${OUT}/${OUT_WNDB}_compat/${OUT_INFO}  "
