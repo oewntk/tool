@@ -36,7 +36,10 @@ for subtag in "" "-plus"; do
 
           mv "${sqlite}" ../
           mv "${sqlitezip}" ../
+          ln -sf "../../${sqlitezip}"
         popd >/dev/null
+
+        ln -sf "sql/${sqlitezip}" "../"
 
         T=${G}
         [ -e "${sqlite}" ] || T=${R}
