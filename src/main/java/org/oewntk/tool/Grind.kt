@@ -62,7 +62,7 @@ object Grind {
         val outNone by parser.option(          ArgType.Boolean,       shortName = "on", fullName = "out_none",           description = "No output")                       .default(false)
         val outFormat by parser.option(        formatArg,             shortName = "of", fullName = "out_format",         description = "Output format")                   .default(Format.YAML)
         val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",               description = "Extra output dir or file")        .default("")
-        val outNoInverses by parser.option(    ArgType.Boolean,       shortName = "ov", fullName = "out_no_inverses",    description = "Do not output inverse relations") .default(false)
+        val outInverses by parser.option(      ArgType.Boolean,       shortName = "ov", fullName = "out_inverses",       description = "Output inverse relations")        .default(false)
         val outMerge by parser.option(         ArgType.Boolean,       shortName = "om", fullName = "out_merge",          description = "Do not group generated entries")  .default(false)
         val outSerialization by parser.option( serializationModeArg,  shortName = "os", fullName = "out_serialization",  description = "Serialization mode")              .default(SerializationMode.OEWN)
         val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",            description = "Output one file")                 .default(false)
@@ -144,7 +144,7 @@ object Grind {
                     if (outMerge)
                         File(outFile, "entries-generated.yaml").delete()
                     when (outSerialization) {
-                        SerializationMode.OEWN -> OEWNYamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, generated = !outMerge, leaveRedundantRelation = outNoInverses, verbose = verbose).accept(model)
+                        SerializationMode.OEWN -> OEWNYamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, generated = !outMerge, leaveRedundantRelation = !outInverses, verbose = verbose).accept(model)
                         SerializationMode.DATA -> DataYamlModelConsumer(outFile, split = !outOne, dumperOptions = outYaml.options, verbose = verbose).accept(model)
                         else -> throw IllegalArgumentException("Unsupported output format")
                     }
@@ -152,7 +152,7 @@ object Grind {
 
                 Format.JSON -> {
                     when (outSerialization) {
-                        SerializationMode.OEWN -> OEWNJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, generated = !outMerge, leaveRedundantRelation = outNoInverses, verbose = verbose).accept(model)
+                        SerializationMode.OEWN -> OEWNJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, generated = !outMerge, leaveRedundantRelation = !outInverses, verbose = verbose).accept(model)
                         SerializationMode.DATA -> DataJsonModelConsumer(outFile, split = !outOne, jsonMethod = outJson, prettyPrint = outPretty, verbose = verbose).accept(model)
                         SerializationMode.MODEL -> ModelJsonModelConsumer(outFile, prettyPrint = outPretty, verbose = verbose).accept(model)
                     }
