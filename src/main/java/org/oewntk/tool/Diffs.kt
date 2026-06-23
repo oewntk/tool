@@ -41,7 +41,7 @@ object Diffs {
                     ps.println("${diff.path}:\n$divergence")
             }
             val report = "[E] Model A $modelA and B $modelB differ at ${diffs.size} location(s)"
-            Tracing.psErr.println(report)
+            ps.println(report)
             if (throws) error(report)
         }
     }
