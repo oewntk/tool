@@ -34,6 +34,6 @@ export BY_KEY_COMPARE=(
 [JSN_M_JSN_D]=" -Ais m -Bis d      -Aif json -Bif json  ${IN2}/${IN2_JSON}_model/${IN2_JSON_FILE} ${IN2}/${IN2_JSON}_data                  "
 [JSN_M_JSN_D1]="-Ais m -Bis d -Bi1 -Aif json -Bif json  ${IN2}/${IN2_JSON}_model/${IN2_JSON_FILE} ${IN2}/${IN2_JSON}_data1                 "
 )
-export KEYS_COMPARE="${!BY_KEY[@]}"
+export KEYS_COMPARE="${!BY_KEY_COMPARE[@]}"
 export KEYS_COMPARE="YAM_JSN_M YAM_SER YAM_YAM YAM_WNB YAM_WND_C YAM_JSN_O YAM_JSN_O1 YAM_JSN_D YAM_JSN_D1 JSN_M_JSN_O JSN_M_JSN_O1 JSN_M_JSN_D JSN_M_JSN_D1"
 

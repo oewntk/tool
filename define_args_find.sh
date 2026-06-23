@@ -11,8 +11,8 @@ IN_JSON=json
 IN_JSON_FILE=oewn-model.json
 IN_WNDB=wndb
 
-declare -A BY_KEY_FACTORY
-export BY_KEY_FACTORY=(
+declare -A BY_KEY_FIND
+export BY_KEY_FIND=(
 #          FLAGS        FROM      INPUT
 #___________________________ ___________________________________________
 [SER]="                -if ser   ${IN}/${IN_SER}                       "
@@ -28,7 +28,7 @@ export BY_KEY_FACTORY=(
 [WNB_C]="              -if wndb  ${IN}/${IN_WNDB}_compat               "
 
 [YAM_PL]=" -p           -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}       "
-[YAM_PLPL]="            -if yaml  ${IN}-plus/${IN_YAML}                "
+[PLYAM]="               -if yaml  ${IN}-plus/${IN_YAML}                "
 )
-export KEYS_FACTORY="${!BY_KEY_IN[@]}"
-export KEYS_FACTORY="SER YAM JSN_O JSN_O1 JSN_DA JSN_DJ JSN_DV JSN_D1 JSN_M WNB WNB_C YAM_PL YAM_PL_PL"
+export KEYS_FIND="${!BY_KEY_FIND[@]}"
+export KEYS_FIND="SER YAM JSN_O JSN_O1 JSN_DA JSN_DJ JSN_DV JSN_D1 JSN_M WNB WNB_C YAM_PL YAM_PL_PL"

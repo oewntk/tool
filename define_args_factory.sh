@@ -30,5 +30,5 @@ export BY_KEY_FACTORY=(
 [YAM_PL]=" -p           -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}       "
 [PLYAM]="               -if yaml  ${IN}-plus/${IN_YAML}                "
 )
-export KEYS_FACTORY="${!BY_KEY_IN[@]}"
+export KEYS_FACTORY="${!BY_KEY_FACTORY[@]}"
 export KEYS_FACTORY="SER YAM JSN_O JSN_O1 JSN_DA JSN_DJ JSN_DV JSN_D1 JSN_M WNB WNB_C YAM_PL PLYAM"
