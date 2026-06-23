@@ -11,6 +11,8 @@
       <excludeFolder url="file://$MODULE_DIR$/yaml2" />
       <excludeFolder url="file://$MODULE_DIR$/yamlplus" />
       <excludeFolder url="file://$MODULE_DIR$/_out2" />
+      <excludeFolder url="file://$MODULE_DIR$/out_nids" />
+      <excludeFolder url="file://$MODULE_DIR$/out_plus_nids" />
     </content>
   </component>
 </module>
