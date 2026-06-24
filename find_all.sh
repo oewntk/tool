@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Copyright (c) 2021-2026. Bernard Bou.
+
+set -Eeo pipefail
+
+on_err() {
+  local exit_code=$?
+  local line_no=${BASH_LINENO[0]}
+  echo "Error on line $line_no (exit code: $exit_code)."
+  # do cleanup here
+}
+
+trap on_err ERR
+
+source define_colors.sh
+source define_args_find.sh
+
+if [ "$1" == "-h" ]; then
+  ./factory.sh --help
+  exit 0
+fi
+
+model_key="$1"
+shift
+model_args=${BY_KEY_FIND[${model_key}]}
+
+if [ -z "$model_args" ] ;then
+  echo -e "${R}Unknown key ${key}${Z}"
+  exit $1
+  fi
+
+model_args=$(echo "$model_args" | sed 's/\s\+/ /g')
+echo -e "${B}${model_args}${Z}"
+
+cl="./find.sh ${model_args} $@"
+echo $cl
+
+if ! eval "${cl}"; then
+    echo -e "${R}${cl}${Z}"
+    fi
+

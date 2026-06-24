@@ -27,8 +27,8 @@ export BY_KEY_FIND=(
 [WNB]="                -if wndb  ${IN}/${IN_WNDB}                      "
 [WNB_C]="              -if wndb  ${IN}/${IN_WNDB}_compat               "
 
-[YAM_PL]=" -p           -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}       "
-[PLYAM]="               -if yaml  ${IN}-plus/${IN_YAML}                "
+[YAM_PL]=" -p          -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}        "
+[PLYAM]="              -if yaml  ${IN}-plus/${IN_YAML}                 "
 )
 export KEYS_FIND="${!BY_KEY_FIND[@]}"
 export KEYS_FIND="SER YAM JSN_O JSN_O1 JSN_DA JSN_DJ JSN_DV JSN_D1 JSN_M WNB WNB_C YAM_PL YAM_PL_PL"
