@@ -34,8 +34,8 @@ export BY_KEY_NIDS=(
 [WNB]="                -if wndb  ${IN}/${IN_WNDB}                       ${OUT}/${IN_WNDB}         "
 [WNB_C]="              -if wndb  ${IN}/${IN_WNDB}_compat                ${OUT}/${IN_WNDB}_c       "
 
-[YAM_PL]=" -p          -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}         ${OUT}/${IN_YAMLPLUS}     "
-[PLYAM]="              -if yaml  ${IN_PLUS}/${IN_YAML}                  ${OUT_PLUS}/${IN_YAML}    "
+[YAM_PLUS]=" -p        -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}         ${OUT}/${IN_YAMLPLUS}     "
+[PLUSYAM]="            -if yaml  ${IN_PLUS}/${IN_YAML}                  ${OUT_PLUS}/${IN_YAML}    "
 )
 export KEYS_NIDS="${!BY_KEY_NIDS[@]}"
-export KEYS_NIDS="SER YAM JSN_O JSN_O1 JSN_DA JSN_DJ JSN_DV JSN_D1 JSN_M WNB WNB_C YAM_PL PLYAM"
+export KEYS_NIDS="SER YAM JSN_O JSN_O1 JSN_DA JSN_DJ JSN_DV JSN_D1 JSN_M WNB WNB_C YAM_PLUS PLUSYAM"
