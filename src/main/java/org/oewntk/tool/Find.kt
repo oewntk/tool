@@ -131,41 +131,41 @@ object Find {
             }
         }
 
-        lemmas2
-            .also { if (verbose) Tracing.psInfo.println("# [LEMMAS] $it\n") }
-            .map { model.lexFinder(it) }
-            .forEach {
+        lemmas2.ifEmpty { null }
+            ?.also { if (verbose) Tracing.psInfo.println("# [LEMMAS] $it") }
+            ?.map { model.lexFinder(it) }
+            ?.forEach {
                 it?.forEach { lex ->
-                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.type.value} ${lex.discriminant}\n")
+                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.type.value} ${lex.discriminant}")
                     lex.dump(model, outFormat, outSerialization, outJson, outYaml)
                 }
             }
 
-        lexIds2
-            .also { if (verbose) Tracing.psInfo.println("# [LEXES] $it\n") }
-            .map { it.split(",") }
-            .map { (lemma, key2) -> key2 to model.lexFinder(lemma) }
-            .map { (key2, lexes) -> lexes?.filter { lex -> lex.key2 == key2 } }
-            .forEach {
+        lexIds2.ifEmpty { null }
+            ?.also { if (verbose) Tracing.psInfo.println("# [LEXES] $it") }
+            ?.map { it.split(",") }
+            ?.map { (lemma, key2) -> key2 to model.lexFinder(lemma) }
+            ?.map { (key2, lexes) -> lexes?.filter { lex -> lex.key2 == key2 } }
+            ?.forEach {
                 it?.forEach { lex ->
-                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.type.value} ${lex.discriminant}\n")
+                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.type.value} ${lex.discriminant}")
                     lex.dump(model, outFormat, outSerialization, outJson, outYaml)
                 }
             }
 
-        synsetIds2
-            .also { if (verbose) Tracing.psInfo.println("# [SYNSETS] $it\n") }
-            .map { model.synsetFinder(it) }
-            .forEach {
-                if (verbose) Tracing.psInfo.println("# [SYNSET] ${it?.synsetId}\n")
+        synsetIds2.ifEmpty { null }
+            ?.also { if (verbose) Tracing.psInfo.println("# [SYNSETS] $it") }
+            ?.map { model.synsetFinder(it) }
+            ?.forEach {
+                if (verbose) Tracing.psInfo.println("# [SYNSET] ${it?.synsetId}")
                 it?.dump(model, outFormat, outSerialization, outJson, outYaml)
             }
 
-        senseIds2
-            .also { if (verbose) Tracing.psInfo.println("# [SENSES] $it\n") }
-            .map { model.senseFinder(it) }
-            .forEach {
-                if (verbose) Tracing.psInfo.println("# [SENSE] ${it?.senseKey}\n")
+        senseIds2.ifEmpty { null }
+            ?.also { if (verbose) Tracing.psInfo.println("# [SENSES] $it") }
+            ?.map { model.senseFinder(it) }
+            ?.forEach {
+                if (verbose) Tracing.psInfo.println("# [SENSE] ${it?.senseKey}")
                 it?.dump(model, outFormat, outSerialization, outJson, outYaml, outPretty)
             }
 
