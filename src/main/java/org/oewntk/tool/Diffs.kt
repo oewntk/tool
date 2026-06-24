@@ -50,7 +50,7 @@ object Diffs {
 
     private val LEAF_PACKAGES = setOf("java.", "javax.", "kotlin.", "sun.", "com.sun.")
 
-    private  val IGNORED_PROPERTIES = setOf("generated")
+    private val IGNORED_PROPERTIES = setOf("generated")
 
     fun isLeaf(obj: Any): Boolean =
         LEAF_PACKAGES.any { obj::class.java.name.startsWith(it) }
@@ -190,8 +190,8 @@ object Diffs {
                 val toB = minOf(b.length, idx + context)
                 """
             |  first difference at index $idx:
-            |    expected:    ${a.substring(from, toA)}
-            |    actual:      ${b.substring(from, toB)}
+            |    expected:    ${if (from > 0) "..." else ""}${a.substring(from, toA)}
+            |    actual:      ${if (from > 0) "..." else ""}${b.substring(from, toB)}
             |    char:        expected='${a[idx]}' (${a[idx].code})  actual='${b[idx]}' (${b[idx].code})
             """.trimMargin()
             }
