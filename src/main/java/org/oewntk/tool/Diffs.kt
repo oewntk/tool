@@ -50,6 +50,8 @@ object Diffs {
 
     private val LEAF_PACKAGES = setOf("java.", "javax.", "kotlin.", "sun.", "com.sun.")
 
+    private  val IGNORED_PROPERTIES = setOf("generated")
+
     fun isLeaf(obj: Any): Boolean =
         LEAF_PACKAGES.any { obj::class.java.name.startsWith(it) }
 
@@ -165,6 +167,7 @@ object Diffs {
         // Domain classes: reflect into backing fields
         return expected::class.memberProperties
             .filter { it.javaField != null }
+            .filterNot { it.name in IGNORED_PROPERTIES }
             .toList()
             .flatMap { kProp ->
                 @Suppress("UNCHECKED_CAST")
