@@ -14,4 +14,4 @@ on_err() {
 trap on_err ERR
 
 #./find.sh -if json -is model out/json_model/oewn-model.json -of json -os data -oj j "$@"
-./find_all_y.sh JSN_M YAM_D AUTO "$@"
+./find_all_y.sh JSN_M YAM_O AUTO "$@"
