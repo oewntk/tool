@@ -57,11 +57,9 @@ if [ "$1" == "-y" ]; then
   [ "$#" -eq 0 ] || shift
 else
   echo -e "${Y}Restore utility for ${dbtype}${Z}"
-  echo -e "${R}-the -d switch will delete an existing database with this name${Z}"
   read -r -p "Are you sure? [y/N] " response
   case "$response" in
   [yY][eE][sS] | [yY]) ;;
-
   *)
     exit 1
     ;;
@@ -74,6 +72,16 @@ dbdelete=
 if [ "$1" == "-d" ]; then
   dbdelete=true
   [ "$#" -eq 0 ] || shift
+  if [[ "${silent}" != "true" ]]; then
+    echo -e "${R}The -d switch will delete an existing database with this name${Z}"
+    read -r -p "Are you sure you want to delete an existing database ? [y/N] " response
+    case "$response" in
+    [yY][eE][sS] | [yY]) ;;
+    *)
+      exit 2
+      ;;
+    esac
+  fi
 fi
 
 # D A T A B A S E (PARAM 2)
@@ -169,7 +177,7 @@ function createdb() {
 echo -e "${M}restoring ${db}${Z}"
 
 #database
-if [ ! -z "${dbdelete}" ]; then
+if [[ "${dbdelete}" == "true" ]]; then
   deletedb
 fi
 if ! dbexists; then

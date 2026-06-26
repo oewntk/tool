@@ -9,7 +9,7 @@ set -e
 
 # C O N S T S
 
-thisdir=`dirname $(readlink -m "$0")`
+thisdir=$(dirname $(readlink -m "$0"))
 sqldir="${thisdir}/sql"
 dbtype=mysql
 modules="wn"
@@ -57,11 +57,9 @@ if [ "$1" == "-y" ]; then
 	[ "$#" -eq 0 ] || shift
 else
   echo -e "${Y}Restore utility for ${dbtype}${Z}"
-  echo -e "${R}-the -d switch will delete an existing database with this name${Z}"
   read -r -p "Are you sure? [y/N] " response
   case "$response" in
-      [yY][eE][sS]|[yY])
-          ;;
+  [yY][eE][sS] | [yY]) ;;
       *)
           exit 1
           ;;
@@ -74,6 +72,16 @@ dbdelete=
 if [ "$1" == "-d" ]; then
 	dbdelete=true
 	[ "$#" -eq 0 ] || shift
+  if [[ "${silent}" != "true" ]]; then
+    echo -e "${R}The -d switch will delete an existing database with this name${Z}"
+    read -r -p "Are you sure you want to delete an existing database ? [y/N] " response
+    case "$response" in
+    [yY][eE][sS] | [yY]) ;;
+    *)
+      exit 2
+      ;;
+    esac
+  fi
 fi
 
 # D A T A B A S E (PARAM 2)
@@ -86,8 +94,7 @@ export db
 
 # F U N C T I O N S
 
-function process()
-{
+function process() {
 	local sqlfile="$1"
 	local op="$2"
 	if [ ! -e "${sqlfile}" ];then
@@ -190,7 +197,7 @@ export creds=`getcredentials`
 #echo "credentials ${creds}"
 
 #database
-if [ ! -z "${dbdelete}" ]; then
+if [[ "${dbdelete}" == "true" ]]; then
 	deletedb
 fi
 if ! dbexists; then
