@@ -52,11 +52,10 @@ object Find {
         val outFormat by parser.option(        formatArg,             shortName = "of", fullName = "out_format",         description = "Output format")                   .default(Format.JSON)
         val out2 by parser.option(             ArgType.String,        shortName = "o2", fullName = "out2",               description = "Extra output dir or file")        .default("")
         val outOne by parser.option(           ArgType.Boolean,       shortName = "o1", fullName = "out_one",            description = "Output one file")                 .default(false)
-        val outMerge by parser.option(         ArgType.Boolean,       shortName = "om", fullName = "out_merge",          description = "Do not group generated entries")  .default(false)
         val outSerialization by parser.option( serializationModeArg,  shortName = "os", fullName = "out_serialization",  description = "Serialization mode")              .default(SerializationMode.OEWN)
         val outYaml by parser.option(          yamlDumpModeArg,       shortName = "oy", fullName = "out_yaml",           description = "YAML output format")              .default(YamlDumpMode.AUTO)
         val outJson by parser.option(          jsonMethodArg,         shortName = "oj", fullName = "out_json",           description = "JSON output method")              .default(JsonMethod.ANY_SERIALIZER)
-        val outPretty by parser.option(        ArgType.Boolean,       shortName = "op", fullName = "out_pretty",         description = "JSON pretty print")               .default(true)
+        val outCompact by parser.option(       ArgType.Boolean,       shortName = "oc", fullName = "out_compact",        description = "JSON compact print")               .default(false)
         val senseIds by parser.option(         ArgType.String,        shortName = "s",  fullName = "sense",              description = "Sense ID").multiple()
         val synsetIds by parser.option(        ArgType.String,        shortName = "y",  fullName = "synset",             description = "Synset ID").multiple()
         val lexIds by parser.option(           ArgType.String,        shortName = "x",  fullName = "lex",                description = "Lex ID").multiple()
@@ -77,7 +76,6 @@ object Find {
             System.err.println("in serialization: $inSerialization")
             System.err.println("in JSON: $inJson")
             System.err.println("out format: $outFormat")
-            System.err.println("out merge: $outMerge")
             System.err.println("out one: $outOne")
             System.err.println("out serialization: $outSerialization")
             System.err.println("out YAML: $outYaml")
@@ -166,7 +164,7 @@ object Find {
             ?.map { model.senseFinder(it) }
             ?.forEach {
                 if (verbose) Tracing.psInfo.println("# [SENSE] ${it?.senseKey}")
-                it?.dump(model, outFormat, outSerialization, outJson, outYaml, outPretty)
+                it?.dump(model, outFormat, outSerialization, outJson, outYaml, prettyPrint = !outCompact)
             }
 
         progress("after model is consumed", startTime, verbose = verbose)
