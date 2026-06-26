@@ -33,7 +33,7 @@ for subtag in "" "-plus"; do
 
         pushd ${expanded} >/dev/null
           chmod +x restore-mysql.sh
-          ./restore-mysql.sh -d "oewn${subtag}"
+          ./restore-mysql.sh -y -d "oewn${subtag}"
         popd >/dev/null
 
         popd >/dev/null

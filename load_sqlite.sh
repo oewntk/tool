@@ -36,8 +36,7 @@ for subtag in "" "-plus"; do
         pushd ${expanded} >/dev/null
           sed -i -r 's/sqlite3 (.*)$/sqlite3 -bail \1 2>>LOG || echo -e "${R}FAILED ${sqlfile}${Z}"/g' restore-sqlite.sh 
           chmod +x restore-sqlite.sh
-
-          ./restore-sqlite.sh -d ${sqlite}
+          ./restore-sqlite.sh -y -d ${sqlite}
 
           zip ${sqlitezip} ${sqlite}
 
