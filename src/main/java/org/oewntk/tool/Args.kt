@@ -57,7 +57,7 @@ object Args {
         variantToString = { it.name.lowercase() },
         toVariant = { raw ->
             when (raw.lowercase()) {
-                "a", "auto" -> YamlDumpMode.BLOCK
+                "a", "auto" -> YamlDumpMode.AUTO
                 "b", "block" -> YamlDumpMode.BLOCK
                 "f", "flow" -> YamlDumpMode.FLOW
                 "j", "json" -> YamlDumpMode.JSON
