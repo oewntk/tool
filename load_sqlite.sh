@@ -4,7 +4,14 @@
 # Copyright (c) 2024. Bernard Bou.
 #
 
-set -e
+set -Eeo pipefail
+on_err() {
+  local exit_code=$?
+  local line_no=${BASH_LINENO[0]}
+  echo "Error on line $line_no (exit code: $exit_code)."
+  # do cleanup here
+}
+trap on_err ERR
 
 source define_build.sh
 source define_colors.sh
@@ -39,6 +46,7 @@ for subtag in "" "-plus"; do
           ln -sf "../../${sqlitezip}"
         popd >/dev/null
 
+        ln -sf "sql/${sqlite}" "../"
         ln -sf "sql/${sqlitezip}" "../"
 
         T=${G}
