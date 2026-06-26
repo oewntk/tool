@@ -21,7 +21,7 @@ fi
 
 # MODEL (compulsory)
 model_key="$1"
-shift
+[ "$#" -eq 0 ] || shift
 model_args=${BY_KEY_FIND[${model_key}]}
 if [ -z "$model_args" ] ;then
   echo -e "${R}Unknown key ${key}${Z}"
@@ -34,8 +34,8 @@ echo -e "${B}${model_args}${Z}"
 out_key="$1"
 out_args=${BY_KEY_OUT[${out_key}]}
 if [ ! -z "$out_args" ] ;then
-  shift
-  fi
+  [ "$#" -eq 0 ] || shift
+fi
 out_args=$(echo "$out_args" | sed 's/\s\+/ /g')
 echo -e "${M}${out_args}${Z}"
 
@@ -43,8 +43,8 @@ echo -e "${M}${out_args}${Z}"
 yaml_out_key="$1"
 yaml_out_args=${BY_KEY_YAML_OUT[${yaml_out_key}]}
 if [ ! -z "$yaml_out_args" ] ;then
-  shift
-  fi
+  [ "$#" -eq 0 ] || shift
+fi
 yaml_out_args=$(echo "$yaml_out_args" | sed 's/\s\+/ /g')
 echo -e "${M}${yaml_out_args}${Z}"
 

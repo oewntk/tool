@@ -21,7 +21,7 @@ fi
 
 # MODEL (compulsory)
 model_key="$1"
-shift
+[ "$#" -eq 0 ] || shift
 model_args=${BY_KEY_FIND[${model_key}]}
 if [ -z "$model_args" ] ;then
   echo -e "${R}Unknown key ${key}${Z}"
