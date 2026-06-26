@@ -39,9 +39,17 @@ if [ ! -z "$out_args" ] ;then
 out_args=$(echo "$out_args" | sed 's/\s\+/ /g')
 echo -e "${M}${out_args}${Z}"
 
+# YAML OUT FORMAT (optional)
+yaml_out_key="$1"
+yaml_out_args=${BY_KEY_YAML_OUT[${yaml_out_key}]}
+if [ ! -z "$yaml_out_args" ] ;then
+  shift
+  fi
+yaml_out_args=$(echo "$yaml_out_args" | sed 's/\s\+/ /g')
+echo -e "${M}${yaml_out_args}${Z}"
 
-cl="./find.sh ${model_args} ${out_args} $@"
-#echo $cl
+cl="./find.sh ${model_args} ${out_args} ${yaml_out_args} $@"
+# echo $cl
 
 if ! eval "${cl}"; then
     echo -e "${R}${cl}${Z}"
