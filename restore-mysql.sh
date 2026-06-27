@@ -5,7 +5,14 @@
 
 # 22/11/2021
 
-set -e
+set -eo pipefail
+on_err() {
+	local exit_code=$?
+	local line_no=${BASH_LINENO[0]}
+	echo "Error on line $line_no (exit code: $exit_code)."
+	# do cleanup here
+}
+trap on_err ERR
 
 # C O N S T S
 
@@ -35,8 +42,8 @@ lexrelations
 senses_vframes
 senses_vtemplates
 semrelations
-usages 
-ilis 
+usages
+ilis
 wikidatas
 "
 
@@ -56,14 +63,12 @@ if [ "$1" == "-y" ]; then
 	silent=true
 	[ "$#" -eq 0 ] || shift
 else
-  echo -e "${Y}Restore utility for ${dbtype}${Z}"
-  read -r -p "Are you sure? [y/N] " response
-  case "$response" in
-  [yY][eE][sS] | [yY]) ;;
-      *)
-          exit 1
-          ;;
-  esac
+	echo -e "${Y}Restore utility for ${dbtype}${Z}"
+	read -r -p "Are you sure? [y/N] " response
+	case "$response" in
+	[yY][eE][sS] | [yY]) ;;
+	*) exit 1 ;;
+	esac
 fi
 
 # D E L E T E (PARAM 1)
@@ -72,16 +77,14 @@ dbdelete=
 if [ "$1" == "-d" ]; then
 	dbdelete=true
 	[ "$#" -eq 0 ] || shift
-  if [[ "${silent}" != "true" ]]; then
-    echo -e "${R}The -d switch will delete an existing database with this name${Z}"
-    read -r -p "Are you sure you want to delete an existing database ? [y/N] " response
-    case "$response" in
-    [yY][eE][sS] | [yY]) ;;
-    *)
-      exit 2
-      ;;
-    esac
-  fi
+	if [[ "${silent}" != "true" ]]; then
+		echo -e "${R}The -d switch will delete an existing database with this name${Z}"
+		read -r -p "Are you sure you want to delete an existing database ? [y/N] " response
+		case "$response" in
+		[yY][eE][sS] | [yY]) ;;
+		*) exit 2 ;;
+		esac
+	fi
 fi
 
 # D A T A B A S E (PARAM 2)
@@ -97,51 +100,47 @@ export db
 function process() {
 	local sqlfile="$1"
 	local op="$2"
-	if [ ! -e "${sqlfile}" ];then
+	if [ ! -e "${sqlfile}" ]; then
 		echo -e "${R}${sqlfile} does not exist${Z}"
 		return
 	fi
 	local base="$(basename "${sqlfile}")"
 	#echo "${base}"
-	mysql ${creds} "${db}" < "${sqlfile}"
+	mysql ${creds} "${db}" <"${sqlfile}"
 }
 
-function dbexists()
-{
-	mysql ${creds} -e "\q" ${db} > /dev/null 2> /dev/null
-	return $? 
+function dbexists() {
+	mysql ${creds} -e "\q" ${db} >/dev/null 2>/dev/null
+	return $?
 }
 
-function deletedb()
-{
+function deletedb() {
 	echo -e "${M}delete ${db}${Z}"
-	mysql ${creds} -e "DROP DATABASE ${db};"
+	mysql ${creds} -e "DROP DATABASE \`${db}\`;"
 }
 
-function createdb()
-{
+function createdb() {
 	echo -e "${M}create ${db}${Z}"
-	mysql ${creds} -e "CREATE DATABASE ${db} DEFAULT CHARACTER SET UTF8;"
+	mysql ${creds} -e "CREATE DATABASE \`${db}\` DEFAULT CHARACTER SET UTF8;"
 }
 
-function getcredentialslegacy()
-{
-  # read user
+function getcredentialslegacy() {
+	# read user
 	read -p "Enter database user: " dbuser
 	if [ -z "${dbuser}" ]; then
 		echo "Define ${dbtype} user"
 		exit 1
 	fi
 
-  # read password unless et in en variable
+	# read password unless et in en variable
 	if [ -z "$MYSQLPASSWORD" ]; then
 		read -s -p "Enter ${dbuser}'s password (type '?' if you want to be asked each time, because it's unsafe): " dbpasswd
 	else
-	  dbpasswd="$MYSQLPASSWORD"
+		dbpasswd="$MYSQLPASSWORD"
 	fi
 
-  # output as commandline switches
-  echo -n "-u ${dbuser} "
+	# output as commandline switches
+	echo -n "-u ${dbuser} "
 	if [ ! -z "${dbpasswd}" ]; then
 		if [ "${dbpasswd}" == "?" ]; then
 			echo "--password"
@@ -151,36 +150,35 @@ function getcredentialslegacy()
 	fi
 }
 
-function getcredentials()
-{
-  >&2 echo "This requires mysql_config_editor."
-  profiles=`mysql_config_editor print --all | grep '\[.*\]'`
-  if [ ! -z "${profiles}" ]; then
-    >&2 echo "Existing profiles recorded by mysql_config_editor:"
-    >&2 echo "${profiles}"
-  fi
+function getcredentials() {
+	>&2 echo "This requires mysql_config_editor."
+	profiles=$(mysql_config_editor print --all | grep '\[.*\]')
+	if [ ! -z "${profiles}" ]; then
+		>&2 echo "Existing profiles recorded by mysql_config_editor:"
+		>&2 echo "${profiles}"
+	fi
 
-  # read profile
-  read -p "Enter database user profile: " dbprofile
-  if [ -z "${dbprofile}" ]; then
-    echo "Define ${dbtype} user profile"
-    exit 1
-  fi
+	# read profile
+	read -p "Enter database user profile: " dbprofile
+	if [ -z "${dbprofile}" ]; then
+		echo "Define ${dbtype} user profile"
+		exit 1
+	fi
 
-  if ! echo "${profiles}" | grep -q "\[${dbprofile}\]"; then
+	if ! echo "${profiles}" | grep -q "\[${dbprofile}\]"; then
 
-    # read user
-    read -p "Enter database user: " dbuser
-    if [ -z "${dbuser}" ]; then
-      echo "Define ${dbtype} user"
-      exit 1
-    fi
+		# read user
+		read -p "Enter database user: " dbuser
+		if [ -z "${dbuser}" ]; then
+			echo "Define ${dbtype} user"
+			exit 1
+		fi
 
-    # editor
-    >&2 echo "Passing data to mysql_config_editor (password will be obfuscated ~/.mylogin.cnf)"
-    mysql_config_editor set --login-path=${dbprofile} --host=localhost --user=${dbuser} --password
+		# editor
+		>&2 echo "Passing data to mysql_config_editor (password will be obfuscated ~/.mylogin.cnf)"
+		mysql_config_editor set --login-path=${dbprofile} --host=localhost --user=${dbuser} --password
 
-  fi
+	fi
 
 	# output as commandline switches
 	echo "--login-path=${dbprofile}"
@@ -193,12 +191,19 @@ echo -e "${M}restoring ${db}${Z}"
 #credentials
 #export lcreds=`getcredentialslegacy`
 #echo "credentials (old style) ${lcreds}"
-export creds=`getcredentials`
+export creds=$(getcredentials)
 #echo "credentials ${creds}"
 
 #database
-if [[ "${dbdelete}" == "true" ]]; then
-	deletedb
+if dbexists; then
+	echo "exists ${db}"
+else
+	echo "does not exists ${db}"
+fi
+if dbexists; then
+	if [[ "${dbdelete}" == "true" ]]; then
+		deletedb
+	fi
 fi
 if ! dbexists; then
 	createdb
@@ -210,19 +215,19 @@ for m in ${modules}; do
 	for op in create data index reference; do
 		echo -e "${M}${op}${Z}"
 		case ${op} in
-			data) 
-				dir="${sqldir}/${op}"
-				suffix=
-				;;
-		 	create|index|reference)
-		 		dir="${sqldir}/${dbtype}/${op}"
-				suffix="-${op}"
-		 		;;	
+		data)
+			dir="${sqldir}/${op}"
+			suffix=
+			;;
+		create | index | reference)
+			dir="${sqldir}/${dbtype}/${op}"
+			suffix="-${op}"
+			;;
 		esac
 		for table in ${tables}; do
 			f="${dir}/${table}${suffix}.sql"
 			if [ ! -e "${f}" -a "${op}" == "reference" ]; then
-			  continue
+				continue
 			fi
 			echo -e "sql=${Y}$(basename ${f})${Z}"
 			process "${f}" "${op}"
