@@ -7,8 +7,9 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import org.oewntk.json.out.JsonMethod
-import org.oewntk.model.NIDs.printMaps
+import org.oewntk.model.NIDs.printNIDs
 import org.oewntk.model.SerializationMode
+import org.oewntk.model.SerializeNIDs.serializeNIDs
 import org.oewntk.tool.Args.Format
 import org.oewntk.tool.Args.formatArg
 import org.oewntk.tool.Args.jsonMethodArg
@@ -99,7 +100,8 @@ object Mapper {
         if (!outDir.isDirectory) {
             outDir.mkdirs()
         }
-        printMaps(model, outDir)
+        printNIDs(model, outDir)
+        serializeNIDs(model, outDir)
         progress("after model is consumed", startTime, verbose = verbose)
 
         // End
