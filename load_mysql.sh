@@ -18,6 +18,7 @@ source define_colors.sh
 
 # M A I N
 
+echo -e "${Y}mysql${Z}"
 for subtag in "" "-plus"; do
 
         base=oewn${subtag}-${TAG}-mysql-${BUILD}
@@ -25,17 +26,22 @@ for subtag in "" "-plus"; do
         expanded="${base}"
 
         echo -e "${Y}load ${base}${Z}"
+        read -p "Are you sure you want to load ${TAG} to MySql oewn${subtag} ? " -n 1 -r
+        echo    # (optional) move to a new line
+        echo -e "${Z}"
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+           
+             pushd ../dist/data/sql >/dev/null
 
-        pushd ../dist/data/sql >/dev/null
+                 rm -fR ${expanded}/*
+                 unzip -q ${source} -d ${expanded}
 
-        rm -fR ${expanded}/*
-        unzip -q ${source} -d ${expanded}
+                 pushd ${expanded} >/dev/null
+                     chmod +x restore-mysql.sh
+                     ./restore-mysql.sh -y -d "oewn${subtag}"
+                 popd >/dev/null
 
-        pushd ${expanded} >/dev/null
-          chmod +x restore-mysql.sh
-          ./restore-mysql.sh -y -d "oewn${subtag}"
-        popd >/dev/null
-
-        popd >/dev/null
+             popd >/dev/null
+       fi
 
 done
