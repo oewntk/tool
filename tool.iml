@@ -13,6 +13,8 @@
       <excludeFolder url="file://$MODULE_DIR$/_out2" />
       <excludeFolder url="file://$MODULE_DIR$/out_nids" />
       <excludeFolder url="file://$MODULE_DIR$/out_plus_nids" />
+      <excludeFolder url="file://$MODULE_DIR$/wndb2" />
+      <excludeFolder url="file://$MODULE_DIR$/wndb31" />
     </content>
   </component>
 </module>
