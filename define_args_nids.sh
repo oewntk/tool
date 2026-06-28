@@ -11,6 +11,7 @@ IN_YAML2=yaml2
 IN_YAMLPLUS=yamlplus
 IN_JSON=json
 IN_WNDB=wndb
+IN_WNDB2=wndb2
 
 IN_JSON_FILE=oewn-model.json
 IN_SER_FILE=oewn.ser
@@ -33,9 +34,10 @@ export BY_KEY_NIDS=(
 [JSN_M]="  -is m       -if json  ${IN}/${IN_JSON}_model/${IN_JSON_FILE} ${OUT}/${IN_JSON}_model   "
 [WNB]="                -if wndb  ${IN}/${IN_WNDB}                       ${OUT}/${IN_WNDB}         "
 [WNB_C]="              -if wndb  ${IN}/${IN_WNDB}_compat                ${OUT}/${IN_WNDB}_c       "
+[WNB31]="              -if wndb  ${IN_WNDB}31 -i2 ${IN_WNDB2}           ${OUT}/${IN_WNDB}31       "
 
 [YAM_PLUS]=" -p        -if yaml  ${IN_YAMLPLUS} -i2 ${IN_YAML2}         ${OUT}/${IN_YAMLPLUS}     "
 [PLUSYAM]="            -if yaml  ${IN_PLUS}/${IN_YAML}                  ${OUT_PLUS}/${IN_YAML}    "
 )
 export KEYS_NIDS="${!BY_KEY_NIDS[@]}"
-export KEYS_NIDS="SER YAM JSN_O JSN_O1 JSN_DA JSN_DJ JSN_DV JSN_D1 JSN_M WNB WNB_C YAM_PLUS PLUSYAM"
+export KEYS_NIDS="SER YAM JSN_O JSN_O1 JSN_DA JSN_DJ JSN_DV JSN_D1 JSN_M WNB WNB_C WNB31 YAM_PLUS PLUSYAM"
