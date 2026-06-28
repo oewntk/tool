@@ -16,7 +16,7 @@ IN_JSON_FILE=oewn-model.json
 IN_SER_FILE=oewn.ser
 
 OUT=out_nids
-OUT_PLUS=out_plus_nids
+OUT_PLUS=out-plus_nids
 
 declare -A BY_KEY_NIDS
 export BY_KEY_NIDS=(
