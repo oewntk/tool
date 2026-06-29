@@ -64,9 +64,9 @@ object Utils {
             Format.WNDB -> WndbFactory(inputFile, inputFile2, verbose = verbose).get()!!
             Format.JSON -> {
                 when (inSerialization) {
-                    SerializationMode.OEWN -> OEWNJsonFactory(inputFile, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
-                    SerializationMode.DATA -> DataJsonFactory(inputFile, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
-                    SerializationMode.MODEL -> ModelJsonFactory(inputFile, verbose = verbose).get()!!
+                    SerializationMode.OEWN -> OEWNJsonFactory(inputFile, inverses = inverses, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
+                    SerializationMode.DATA -> DataJsonFactory(inputFile, inverses = inverses, split = !inOne, jsonMethod = inJson, verbose = verbose).get()!!
+                    SerializationMode.MODEL -> ModelJsonFactory(inputFile, inverses = inverses, verbose = verbose).get()!!
                 }
             }
 
