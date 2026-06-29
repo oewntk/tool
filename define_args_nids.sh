@@ -38,8 +38,8 @@ export BY_KEY_NIDS=(
 [PLUS_WNB]="                -if wndb  ${IN_PLUS}/wndb                        ${OUT_PLUS}/wndb         "
 [PLUS_WNB_C]="              -if wndb  ${IN_PLUS}/wndb_compat                 ${OUT_PLUS}/wndb_c       "
 
-[WNB31]="-nt                -if wndb  ${IN1}/wndb31 -i2 ${IN2}/wndb2         ${OUT_PLUS}/wndb31       "
-[YAM31]="                   -if yaml  ${IN_PLUS}/yaml31                      ${OUT_PLUS}/yaml31       "
+[WNB31]="                   -if wndb  ${IN1}/wndb31 -i2 ${IN2}/wndb2         ${OUT_PLUS}/wndb31       "
+[YAM31]="-nt                -if yaml  ${IN_PLUS}/yaml31                      ${OUT_PLUS}/yaml31       "
 
 [YAM_PLUS]=" -p             -if yaml  ${IN1}/yamlplus -i2 ${IN2}/yaml2       ${OUT_PLUS}/yamlplus     "
 )
