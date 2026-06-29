@@ -10,7 +10,7 @@ declare -A BY_KEY_PLUS
 export BY_KEY_PLUS=(
 #                   FLAGS           FROM     TO        INPUT           INPUT2            OUTPUT                             OUTPUT2
 #______________________________________________________________________________________________________________________________________________________________
-[YAM_PLUS_SER]="    -p              -if yaml -of ser   ${IN}/yamlplus  -i2 ${IN2}/yaml2  ${OUT}/ser                         -oi ${OUT}/ser/oewn.info          "
+[YAM_PLUS_SER]="    -p              -if yaml -of ser   ${IN}/yamlplus  -i2 ${IN2}/yaml2  ${OUT}/ser/oewn.ser                -oi ${OUT}/ser/oewn.info          "
 [YAM_PLUS_YAM]="    -p -om          -if yaml -of yaml  ${IN}/yamlplus  -i2 ${IN2}/yaml2  ${OUT}/yaml                        -oi ${OUT}/yaml/oewn.info         " # becomes PLUSYAM
 [YAM_PLUS_SQL]="    -p              -if yaml -of sql   ${IN}/yamlplus  -i2 ${IN2}/yaml2  ${OUT}/sql                         -oi ${OUT}/sql/oewn.info          "
 [YAM_PLUS_WNB]="    -p              -if yaml -of wndb  ${IN}/yamlplus  -i2 ${IN2}/yaml2  ${OUT}/wndb                        -oi ${OUT}/wndb/oewn.info         "
