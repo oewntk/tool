@@ -9,6 +9,7 @@ import kotlinx.cli.default
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.ModelEquals.checkDiffs
 import org.oewntk.model.ModelEquals.dataEquals
+import org.oewntk.model.ModelEquals.dataSetsEquals
 import org.oewntk.model.ModelInfo
 import org.oewntk.model.SerializationMode
 import org.oewntk.tool.Args.Format
@@ -163,7 +164,8 @@ object Compare {
             Tracing.psErr.println("[E] Model A $modelA and B $modelB are not equal")
             val dataEq = modelA.dataEquals(modelB)
             if (!dataEq) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not data equal")
-
+            val dataSetEq = modelA.dataSetsEquals(modelB)
+            if (!dataSetEq) Tracing.psErr.println("[E] Model A $modelA and B $modelB are not data set equal")
             checkDiffs(modelA, modelB)
             PrintStream(File("diff_@${modelA.id}_@${modelB.id}.log")).use { ps ->
                 findDiffs(modelA, modelB, ps = ps)
