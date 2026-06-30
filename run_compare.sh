@@ -29,7 +29,7 @@ for k in ${ks}; do
   echo -e "${Y}${k}${Z}"
   echo -e "${B}${args}${Z}"
   cl="./compare.sh -v -tt ${args}"
-  echo $cl
+  #echo $cl
   if ! eval "${cl}"; then
     echo -e "${R}${cl}${Z}"
     fi
