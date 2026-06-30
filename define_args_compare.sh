@@ -9,18 +9,18 @@ INB_PLUS=out-plus
 
 declare -A BY_KEY_COMPARE
 export BY_KEY_COMPARE=(
-#               FLAGS               A         B          A INPUT + INPUT2                        B INPUT
-#___________________________________________________________________________________________________________________________________
+#               FLAGS                        A         B          A INPUT + INPUT2                        B INPUT
+#____________________________________________________________________________________________________________________________________________
 # with yaml source
-[YAM_SER]="     -Av -Bv             -Aif yaml -Bif ser   ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/ser/oewn.ser               "
-[YAM_YAM]="     -Av -Bv             -Aif yaml -Bif yaml  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/yaml                       "
-[YAM_JSN_O]="   -Av -Bv -Bis o      -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json                       "
-[YAM_JSN_O1]="  -Av -Bv -Bis o -Bi1 -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json1                      "
-[YAM_JSN_D]="   -Av -Bv -Bis d      -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_data                  "
-[YAM_JSN_D1]="  -Av -Bv -Bis d -Bi1 -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_data1                 "
-[YAM_JSN_M]="   -Av -Bv -Bis m      -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_model/oewn-model.json "
-[YAM_WNB]="     -Av -Bv             -Aif yaml -Bif wndb  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/wndb                       "
-[YAM_WNB_C]="   -Av -Bv             -Aif yaml -Bif wndb  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/wndb_compat                "
+[YAM_SER]="     -Av -Bv                     -Aif yaml -Bif ser   ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/ser/oewn.ser               "
+[YAM_YAM]="     -Av -Bv                     -Aif yaml -Bif yaml  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/yaml                       "
+[YAM_JSN_O]="   -Av -Bv -Bis o              -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json                       "
+[YAM_JSN_O1]="  -Av -Bv -Bis o -Bi1         -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json1                      "
+[YAM_JSN_D]="   -Av -Bv -Bis d              -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_data                  "
+[YAM_JSN_D1]="  -Av -Bv -Bis d -Bi1         -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_data1                 "
+[YAM_JSN_M]="   -Av -Bv -Bis m              -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_model/oewn-model.json "
+[YAM_WNB]="     -Av -Bv                     -Aif yaml -Bif wndb  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/wndb                       "
+[YAM_WNB_C]="   -Av -Bv                     -Aif yaml -Bif wndb  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/wndb_compat                "
 
 # with model
 [JSN_M_JSN_O]=" -Av -Bv -Ais m -Bis o       -Aif json -Bif json  ${INB}/json_model/oewn-model.json       ${INB}/json                       "
