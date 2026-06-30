@@ -21,7 +21,7 @@ export BY_KEY_GRIND=(
 [YAM_JSN_DV]="-os d -oj v -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data_vw                -oi ${OUT}/json_data_vw/oewn.info "
 [YAM_JSN_DJ]="-os d -oj j -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data_je                -oi ${OUT}/json_data_je/oewn.info "
 [YAM_JSN_D1]="-os d -o1   -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data1                  -oi ${OUT}/json_data1/oewn.info   "
-[YAM_JSN_M]=" -os m       -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_model/oewn.json        -oi ${OUT}/json_model/oewn.info   "
+[YAM_JSN_M]=" -os m       -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_model/oewn-model.json  -oi ${OUT}/json_model/oewn.info   "
 )
 export KEYS_GRIND="${!BY_KEY_GRIND[@]}"
 export KEYS_GRIND="YAM_SER YAM_YAM YAM_SQL YAM_WNB YAM_WNB_C YAM_JSN_O YAM_JSN_O1 YAM_JSN_DA YAM_JSN_DV YAM_JSN_DJ YAM_JSN_D1 YAM_JSN_M"
