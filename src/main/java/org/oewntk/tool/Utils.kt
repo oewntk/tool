@@ -51,7 +51,7 @@ object Utils {
         inJson: JsonMethod,
         inverses: Boolean,
         throws: Boolean = true,
-        verbose: Boolean,
+        verbose: Boolean = false,
     ): Model {
         val inputFile = File(input)
         val inputFile2: File? = input2?.takeIf(String::isNotEmpty)?.let { File(it) }

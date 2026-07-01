@@ -108,7 +108,7 @@ object Find {
             inJson,
             false,
             throws = !doNotThrow,
-            verbose,
+            verbose = verbose,
         )
         progress("after model is supplied", startTime, verbose = verbose)
 
