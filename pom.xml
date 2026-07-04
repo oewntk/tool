@@ -5,9 +5,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.oewntk</groupId>
+    <parent>
+        <groupId>io.github.oewntk</groupId>
+        <artifactId>all</artifactId>
+        <version>3.0.1</version>
+    </parent>
+
     <artifactId>tool</artifactId>
-    <version>3.0.1</version>
     <name>tool</name>
     <description>Read Wordnet model and convert.</description>
     <url>https://github.com/oewntk/tool</url>
@@ -123,7 +127,7 @@
                 <executions>
                     <execution>
                         <id>compile</id>
-                        <phase>compile</phase>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
