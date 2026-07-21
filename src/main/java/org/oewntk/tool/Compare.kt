@@ -97,7 +97,7 @@ object Compare {
         progress("before model are supplied", startTime, verbose = verbose)
         progress("before model A is supplied", startTime, verbose = verbose)
         Tracing.psInfo.println("[Input A] " + File(inA1).absolutePath)
-        if (!inA2.isBlank())
+        if (inA2.isNotBlank())
             Tracing.psInfo.println("[Input2 A] " + File(inA2).absolutePath)
         val modelA = getModel(
             inA1,
@@ -114,7 +114,7 @@ object Compare {
         progress("after model A $modelA is supplied", startTime, verbose = verbose)
         progress("before model B is supplied", startTime, verbose = verbose)
         Tracing.psInfo.println("[Input B] " + File(inB1).absolutePath)
-        if (!inB2.isBlank())
+        if (inB2.isNotBlank())
             Tracing.psInfo.println("[Input2 B] " + File(inB2).absolutePath)
         val modelB = getModel(
             inB1,

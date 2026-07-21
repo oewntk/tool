@@ -93,7 +93,7 @@ object Find {
 
         // Inputs
         if (verbose) Tracing.psInfo.println("[Input] " + File(in1).absolutePath)
-        if (!in2.isBlank())
+        if (in2.isNotBlank())
             if (verbose) Tracing.psInfo.println("[Input2] " + File(in2).absolutePath)
 
         // Supply model

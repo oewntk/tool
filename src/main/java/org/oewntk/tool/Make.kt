@@ -70,7 +70,7 @@ object Make {
 
         // Inputs
         Tracing.psInfo.println("[Input] " + File(in1).absolutePath)
-        if (!in2.isBlank())
+        if (in2.isNotBlank())
             Tracing.psInfo.println("[Input2] " + File(in2).absolutePath)
 
         // Supply model
