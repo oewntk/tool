@@ -189,11 +189,11 @@ object Diffs {
                 val toA = minOf(a.length, idx + context)
                 val toB = minOf(b.length, idx + context)
                 """
-            |  first difference at index $idx:
-            |    expected:    ${if (from > 0) "..." else ""}${a.substring(from, toA)}
-            |    actual:      ${if (from > 0) "..." else ""}${b.substring(from, toB)}
-            |    char:        expected='${a[idx]}' (${a[idx].code})  actual='${b[idx]}' (${b[idx].code})
-            """.trimMargin()
+                |  first difference at index $idx:
+                |    expected:    ${if (from > 0) "..." else ""}${a.substring(from, toA)}
+                |    actual:      ${if (from > 0) "..." else ""}${b.substring(from, toB)}
+                |    char:        expected='${a[idx]}' (${a[idx].code})  actual='${b[idx]}' (${b[idx].code})
+                """.trimMargin()
             }
         }
     }
