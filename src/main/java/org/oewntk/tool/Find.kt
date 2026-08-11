@@ -134,7 +134,7 @@ object Find {
             ?.map { model.lexFinder(it) }
             ?.forEach {
                 it?.forEach { lex ->
-                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.type.value} ${lex.discriminant}")
+                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.partOfSpeech.value} ${lex.discriminant}")
                     lex.dump(model, outFormat, outSerialization, outJson, outYaml)
                 }
             }
@@ -146,7 +146,7 @@ object Find {
             ?.map { (key2, lexes) -> lexes?.filter { lex -> lex.key2 == key2 } }
             ?.forEach {
                 it?.forEach { lex ->
-                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.type.value} ${lex.discriminant}")
+                    if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.partOfSpeech.value} ${lex.discriminant}")
                     lex.dump(model, outFormat, outSerialization, outJson, outYaml)
                 }
             }
