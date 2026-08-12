@@ -17,10 +17,11 @@ export BY_KEY_GRIND=(
 [YAM_WNB_C]=" -wp -wl -wv     -iv -if yaml -of wndb  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/wndb_compat                 -oi ${OUT}/wndb_compat/oewn.info  "
 [YAM_JSN_O]=" -os o -oj j     -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json                        -oi ${OUT}/json/oewn.info         "
 [YAM_JSN_O1]="-os o -oj j -o1 -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json1                       -oi ${OUT}/json1/oewn.info        "
-[YAM_JSN_DA]="-os d -oj a     -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data                   -oi ${OUT}/json_data/oewn.info    "
+[YAM_JSN_DA]="-os d -oj a     -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data_ja                -oi ${OUT}/json_data_ja/oewn.info "
 [YAM_JSN_DV]="-os d -oj v     -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data_vw                -oi ${OUT}/json_data_vw/oewn.info "
 [YAM_JSN_DJ]="-os d -oj j     -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data_je                -oi ${OUT}/json_data_je/oewn.info "
-[YAM_JSN_D1]="-os d -o1       -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data1                  -oi ${OUT}/json_data1/oewn.info   "
+[YAM_JSN_D]=" -os d -oj j     -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data                   -oi ${OUT}/json_data/oewn.info "
+[YAM_JSN_D1]="-os d -oj j -o1 -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_data1                  -oi ${OUT}/json_data1/oewn.info   "
 [YAM_JSN_M]=" -os m           -iv -if yaml -of json  ${IN}/yaml   -i2 ${IN2}/yaml2  ${OUT}/json_model/oewn-model.json  -oi ${OUT}/json_model/oewn.info   "
 )
 export KEYS_GRIND="${!BY_KEY_GRIND[@]}"
