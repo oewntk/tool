@@ -46,14 +46,14 @@ object Mapper {
         val inFormat by parser.option(         formatArg,             shortName = "if", fullName = "in_format",          description = "In format")                       .default(Format.YAML)
         val inInverses by parser.option(       ArgType.Boolean,       shortName = "iv", fullName = "in_inverses",        description = "Generate inverse relations")      .default(true)
         val inSerialization by parser.option(  serializationModeArg,  shortName = "is", fullName = "in_serialization",   description = "Serialization mode")              .default(SerializationMode.OEWN)
-        val inJson by parser.option(           jsonMethodArg,         shortName = "ij", fullName = "in_json",            description = "JSON input method")               .default(JsonMethod.ANY_SERIALIZER)
+        val inJson by parser.option(           jsonMethodArg,         shortName = "ij", fullName = "in_json",            description = "JSON input method")               .default(JsonMethod.JSON_ELEMENT)
         val inOne by parser.option(            ArgType.Boolean,       shortName = "i1", fullName = "in_one",             description = "Input one file")                  .default(false)
         val inPlus by parser.option(           ArgType.Boolean,       shortName = "p",  fullName = "plus",               description = "Plus input")                      .default(false)
         val doNotThrow by parser.option(       ArgType.Boolean,       shortName = "nt", fullName = "no_throw",           description = "Do not throw")                    .default(false)
         val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",            description = "Verbose output")                  .default(false)
 
-        val traceTime by parser.option(        ArgType.Boolean,       shortName = "tt", fullName = "trace:time",         description = "trace time")               .default(false)
-        val traceHeap by parser.option(        ArgType.Boolean,       shortName = "th", fullName = "trace:heap",         description = "trace heap")               .default(false)
+        val traceTime by parser.option(        ArgType.Boolean,       shortName = "tt", fullName = "trace:time",         description = "trace time")                      .default(false)
+        val traceHeap by parser.option(        ArgType.Boolean,       shortName = "th", fullName = "trace:heap",         description = "trace heap")                      .default(false)
         // @formatter:on
         parser.parse(args)
         if (verbose) {
