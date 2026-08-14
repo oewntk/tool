@@ -180,10 +180,9 @@ object Diffs {
 
     fun firstDivergence(a: String, b: String, context: Int = 40): String? {
         val idx = a.zip(b).indexOfFirst { (ca, cb) -> ca != cb }
-        return when {
-            idx == -1 && a.length == b.length -> null
-            idx == -1 -> "same up to index ${minOf(a.length, b.length)}, then one is longer: expected[${a.length}] actual[${b.length}]"
-
+        return when (idx) {
+            -1 if a.length == b.length -> null
+            -1 -> "same up to index ${minOf(a.length, b.length)}, then one is longer: expected[${a.length}] actual[${b.length}]"
             else -> {
                 val from = maxOf(0, idx - context)
                 val toA = minOf(a.length, idx + context)
