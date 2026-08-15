@@ -29,7 +29,7 @@ export BY_KEY_COMPARE=(
 [JSN_M_JSN_D1]="-Av -Bv -Ais m -Bis d -Bi1  -Aif json -Bif json  ${INB}/json_model/oewn-model.json       ${INB}/json_data1                 "
 
 # generated plus with saved plus
-[YAM_PLUS_PLUSYAM]=" -Ap -Av -Bv   -Aif yaml -Bif yaml  ${IN}/yamlplus -Ai2 ${IN2}/yaml2         ${INB_PLUS}/yaml                          "
+[YAM_PLUS_PLUSYAM]=" -Ap -Av -Bv            -Aif yaml -Bif yaml  ${IN}/yamlplus -Ai2 ${IN2}/yaml2        ${INB_PLUS}/yaml                  "
 )
 export KEYS_COMPARE="${!BY_KEY_COMPARE[@]}"
 export KEYS_COMPARE="
