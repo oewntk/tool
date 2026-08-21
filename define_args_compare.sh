@@ -16,7 +16,7 @@ export BY_KEY_COMPARE=(
 [YAM_YAM]="     -Av -Bv                     -Aif yaml -Bif yaml  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/yaml                       "
 [YAM_JSN_O]="   -Av -Bv -Bis o              -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json                       "
 [YAM_JSN_O1]="  -Av -Bv -Bis o -Bi1         -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json1                      "
-[YAM_JSN_D]="   -Av -Bv -Bis d              -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_data                  "
+[YAM_JSN_D]="   -Av -Bv -Bis d              -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_data_je               "
 [YAM_JSN_D1]="  -Av -Bv -Bis d -Bi1         -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_data1                 "
 [YAM_JSN_M]="   -Av -Bv -Bis m              -Aif yaml -Bif json  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/json_model/oewn-model.json "
 [YAM_WNB]="     -Av -Bv                     -Aif yaml -Bif wndb  ${IN}/yaml -Ai2 ${IN2}/yaml2            ${INB}/wndb                       "
@@ -25,7 +25,7 @@ export BY_KEY_COMPARE=(
 # with model
 [JSN_M_JSN_O]=" -Av -Bv -Ais m -Bis o       -Aif json -Bif json  ${INB}/json_model/oewn-model.json       ${INB}/json                       "
 [JSN_M_JSN_O1]="-Av -Bv -Ais m -Bis o -Bi1  -Aif json -Bif json  ${INB}/json_model/oewn-model.json       ${INB}/json1                      "
-[JSN_M_JSN_D]=" -Av -Bv -Ais m -Bis d       -Aif json -Bif json  ${INB}/json_model/oewn-model.json       ${INB}/json_data                  "
+[JSN_M_JSN_D]=" -Av -Bv -Ais m -Bis d       -Aif json -Bif json  ${INB}/json_model/oewn-model.json       ${INB}/json_data_je               "
 [JSN_M_JSN_D1]="-Av -Bv -Ais m -Bis d -Bi1  -Aif json -Bif json  ${INB}/json_model/oewn-model.json       ${INB}/json_data1                 "
 
 # generated plus with saved plus

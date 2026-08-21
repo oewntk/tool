@@ -44,7 +44,7 @@ function pack_yaml(){
 function pack_json() {
     echo -e "${M}yaml2json${Z}"
     ./pack_json.sh "${TAG}" "${BUILD}" "out-plus/json" "${distdir}/json" "oewn-plus"
-    ./pack_json.sh "${TAG}" "${BUILD}" "out-plus/json_data" "${distdir}/json" "oewn-plus-data"
+    ./pack_json.sh "${TAG}" "${BUILD}" "out-plus/json_data_je" "${distdir}/json" "oewn-plus-data"
     ./pack_json.sh "${TAG}" "${BUILD}" "out-plus/json_model" "${distdir}/json" "oewn-plus-model"
     check_file "${distdir}/json/oewn-plus-${TAG}.json.zip"
     check_file "${distdir}/json/oewn-plus-data-${TAG}.json.zip"
