@@ -1,13 +1,8 @@
 package org.oewntk.tool
 
-import org.oewntk.tool.Args.Format
 import org.oewntk.json.out.JsonMethod
-import org.oewntk.model.Lemma
-import org.oewntk.model.Lex
-import org.oewntk.model.Model
-import org.oewntk.model.Sense
-import org.oewntk.model.SerializationMode
-import org.oewntk.model.Synset
+import org.oewntk.model.*
+import org.oewntk.tool.Args.Format
 import org.oewntk.yaml.`in`.FactoryPlus
 import java.io.File
 import kotlin.reflect.KClass
@@ -21,22 +16,14 @@ import org.oewntk.yaml.`in`.Factory as YamlFactory
 
 object Utils {
 
-    private val senseKeyRegex = "\\w+%\\d:\\d{2}:\\d{2}:\\w*:".toRegex()
-
-    private val synsetIdRegex = "\\d{8}-[nvar]".toRegex()
-
-    private val lexIdRegex = "\\w+,[nvars]-?[\\d]?".toRegex()
-
-    private val lemmaRegex = "\\w+".toRegex()
-
     fun recog(input: String): KClass<*>? {
-        if (senseKeyRegex.matches(input))
+        if (input.isSenseKey())
             return Sense::class
-        if (synsetIdRegex.matches(input))
+        if (input.isSynsetId())
             return Synset::class
-        if (lexIdRegex.matches(input))
+        if (input.isLexId())
             return Lex::class
-        if (lemmaRegex.matches(input))
+        if (input.isLemma())
             return Lemma::class
         return null
     }
