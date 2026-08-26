@@ -153,7 +153,7 @@ object Find {
 
         synsetIds2.ifEmpty { null }
             ?.also { if (verbose) Tracing.psInfo.println("# [SYNSETS] $it") }
-            ?.map { model.synsetFinder(it) }
+            ?.map { model.synsetFinder(SynsetId(it)) }
             ?.forEach {
                 if (verbose) Tracing.psInfo.println("# [SYNSET] ${it?.synsetId}")
                 it?.dump(model, outFormat, outSerialization, outJson, outYaml)
@@ -161,7 +161,7 @@ object Find {
 
         senseIds2.ifEmpty { null }
             ?.also { if (verbose) Tracing.psInfo.println("# [SENSES] $it") }
-            ?.map { model.senseFinder(it) }
+            ?.map { model.senseFinder(SenseKey(it)) }
             ?.forEach {
                 if (verbose) Tracing.psInfo.println("# [SENSE] ${it?.senseKey}")
                 it?.dump(model, outFormat, outSerialization, outJson, outYaml, prettyPrint = !outCompact)
