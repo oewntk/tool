@@ -46,6 +46,7 @@ object Make {
         val inJson by parser.option(           jsonMethodArg,         shortName = "ij", fullName = "in_json",            description = "JSON input method")        .default(JsonMethod.JSON_ELEMENT)
         val inOne by parser.option(            ArgType.Boolean,       shortName = "i1", fullName = "in_one",             description = "Input one file")           .default(false)
         val inPlus by parser.option(           ArgType.Boolean,       shortName = "p",  fullName = "plus",               description = "Plus input")               .default(false)
+        val inverses by parser.option(         ArgType.Boolean,       shortName = "r",  fullName = "inverses",           description = "Generate inverse relations")    .default(false)
         val doNotThrow by parser.option(       ArgType.Boolean,       shortName = "nt", fullName = "no_throw",           description = "Do not throw")             .default(false)
         val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",            description = "Verbose output")           .default(false)
 
@@ -83,7 +84,7 @@ object Make {
             inSerialization,
             inOne,
             inJson,
-            false,
+            inverses,
             throws = !doNotThrow,
             verbose = verbose,
         )

@@ -53,7 +53,7 @@ object Compare {
         val inAJson by parser.option(           jsonMethodArg,         shortName = "Aij", fullName = "a_in_json",           description = "A JSON input method")           .default(JsonMethod.JSON_ELEMENT)
         val inAOne by parser.option(            ArgType.Boolean,       shortName = "Ai1", fullName = "a_in_one",            description = "Input one file")                .default(false)
         val inAPlus by parser.option(           ArgType.Boolean,       shortName = "Ap",  fullName = "a_plus",              description = "A Plus input")                  .default(false)
-        val aInverses by parser.option(         ArgType.Boolean,       shortName = "Av",  fullName = "a_inverses",          description = "Generate inverse relations")    .default(false)
+        val aInverses by parser.option(         ArgType.Boolean,       shortName = "Ar",  fullName = "a_inverses",          description = "Generate inverse relations")    .default(false)
 
         val inB1 by parser.argument(            ArgType.String,                                                             description = "B Input dir or file")
         val inB2 by parser.option(              ArgType.String,        shortName = "Bi2", fullName = "b_in2",               description = "B Extra input dir or file")     .default("")
@@ -62,7 +62,7 @@ object Compare {
         val inBJson by parser.option(           jsonMethodArg,         shortName = "Bij", fullName = "b_in_json",           description = "B JSON input method")           .default(JsonMethod.JSON_ELEMENT)
         val inBOne by parser.option(            ArgType.Boolean,       shortName = "Bi1", fullName = "b_in_one",            description = "Input one file")                .default(false)
         val inBPlus by parser.option(           ArgType.Boolean,       shortName = "Bp",  fullName = "b_plus",              description = "B Plus input")                  .default(false)
-        val bInverses by parser.option(         ArgType.Boolean,       shortName = "Bv",  fullName = "b_inverses",          description = "Generate inverse relations")    .default(false)
+        val bInverses by parser.option(         ArgType.Boolean,       shortName = "Br",  fullName = "b_inverses",          description = "Generate inverse relations")    .default(false)
 
         val doNotThrow by parser.option(        ArgType.Boolean,       shortName = "nt", fullName = "no_throw",             description = "Do not throw")                  .default(true)
         val verbose by parser.option(           ArgType.Boolean,       shortName = "v",  fullName = "verbose",              description = "Verbose output")                .default(false)
