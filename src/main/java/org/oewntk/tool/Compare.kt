@@ -74,6 +74,7 @@ object Compare {
         if (verbose) {
             System.err.println("A in: $inA1")
             System.err.println("A in2: $inA2")
+            System.err.println("A inv: $aInverses")
             System.err.println("A plus: $inAPlus")
             System.err.println("A in format: $inAFormat")
             System.err.println("A in serialization: $inASerialization")
@@ -81,6 +82,7 @@ object Compare {
 
             System.err.println("B in: $inB1")
             System.err.println("B in2: $inB2")
+            System.err.println("B inv: $bInverses")
             System.err.println("B plus: $inBPlus")
             System.err.println("B in format: $inBFormat")
             System.err.println("B in serialization: $inBSerialization")
