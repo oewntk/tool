@@ -136,7 +136,7 @@ object Find {
             ?.forEach {
                 it?.forEach { lex ->
                     if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.partOfSpeech.value} ${lex.discriminant}")
-                    lex.dump(model, outFormat, outSerialization, outJson, outYaml)
+                    lex.dump(model, outFormat, outSerialization, outJson, outYaml, prettyPrint = !outCompact)
                 }
             }
 
@@ -148,7 +148,7 @@ object Find {
             ?.forEach {
                 it?.forEach { lex ->
                     if (verbose) Tracing.psInfo.println("# [LEX] ${lex.lemma} ${lex.partOfSpeech.value} ${lex.discriminant}")
-                    lex.dump(model, outFormat, outSerialization, outJson, outYaml)
+                    lex.dump(model, outFormat, outSerialization, outJson, outYaml, prettyPrint = !outCompact)
                 }
             }
 
@@ -157,7 +157,7 @@ object Find {
             ?.map { model.synsetFinder(SynsetId(it)) }
             ?.forEach {
                 if (verbose) Tracing.psInfo.println("# [SYNSET] ${it?.synsetId}")
-                it?.dump(model, outFormat, outSerialization, outJson, outYaml)
+                it?.dump(model, outFormat, outSerialization, outJson, outYaml, prettyPrint = !outCompact)
             }
 
         senseIds2.ifEmpty { null }
@@ -174,7 +174,7 @@ object Find {
         progress("end", startTime, verbose = verbose)
     }
 
-    fun Any.dump(model: CoreModel, outFormat: Format, outSerialization: SerializationMode, jsonMethod: JsonMethod, outYaml: YamlDumpMode, prettyPrint: Boolean = true, noCast: Boolean = false) {
+    fun Any.dump(model: CoreModel, outFormat: Format, outSerialization: SerializationMode, jsonMethod: JsonMethod, outYaml: YamlDumpMode, prettyPrint: Boolean = true, noCast: Boolean = true) {
         when (outFormat) {
             Format.YAML -> YamlObjectConsumer(mode = outSerialization, dumperOptions = outYaml.options, noCast = noCast, ps = System.out).accept(this, model)
             Format.JSON -> JsonObjectConsumer(mode = outSerialization, jsonMethod = jsonMethod, prettyPrint = prettyPrint, ps = System.out).accept(this, model)
