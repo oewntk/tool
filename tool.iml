@@ -17,6 +17,13 @@
       <excludeFolder url="file://$MODULE_DIR$/yaml" />
       <excludeFolder url="file://$MODULE_DIR$/yaml2" />
       <excludeFolder url="file://$MODULE_DIR$/yamlplus" />
+      <excludeFolder url="file://$MODULE_DIR$/_out-plus_nids" />
+      <excludeFolder url="file://$MODULE_DIR$/_out_nids" />
+      <excludeFolder url="file://$MODULE_DIR$/legal" />
+      <excludeFolder url="file://$MODULE_DIR$/plus.log" />
+      <excludeFolder url="file://$MODULE_DIR$/tool.iml" />
+      <excludeFolder url="file://$MODULE_DIR$/tool-3.0.1-SNAPSHOT-uber.jar" />
+      <excludeFolder url="file://$MODULE_DIR$/tool-3.0.1-uber.jar" />
     </content>
   </component>
 </module>
