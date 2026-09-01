@@ -2,6 +2,10 @@ package org.oewntk.tool
 
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.*
+import org.oewntk.model.LemmaImpl.Companion.isLemma
+import org.oewntk.model.LexIdImpl.Companion.isLexId
+import org.oewntk.model.SenseKeyImpl.Companion.isSenseKey
+import org.oewntk.model.SynsetIdImpl.Companion.isSynsetId
 import org.oewntk.tool.Args.Format
 import org.oewntk.yaml.`in`.FactoryPlus
 import java.io.File
