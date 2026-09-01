@@ -143,14 +143,12 @@ object Compare {
         val modelRelationsA = ModelInfo.relations(modelA)
         val modelInfo2A = "$modelInfoA\n$modelCountsA\n$modelRelationsA"
         Tracing.psInfo.println("Model A $modelA")
-        //Tracing.psInfo.println(modelInfo2A)
 
         val modelInfoB = modelB.info()
         val modelCountsB = ModelInfo.counts(modelB)
         val modelRelationsB = ModelInfo.relations(modelB)
         val modelInfo2B = "$modelInfoB\n$modelCountsB\n$modelRelationsB"
         Tracing.psInfo.println("Model B $modelB")
-        //Tracing.psInfo.println(modelInfo2B)
 
         if (modelInfo2A != modelInfo2B) {
             Tracing.psErr.println("[E] Model A $modelA and B $modelB don't have the same info")
@@ -159,7 +157,13 @@ object Compare {
             Tracing.psInfo.println("diff:")
             val diff = diff(modelInfo2A, modelInfo2B)
             Tracing.psInfo.println(diff)
-        } else Tracing.psInfo.println("[I] Model A and B have the same info")
+        } else {
+            if (verbose) {
+                Tracing.psInfo.println(modelInfo2A)
+                //Tracing.psInfo.println(modelInfo2B)
+            }
+            Tracing.psInfo.println("[I] Model A and B have the same info")
+        }
 
         val areEqual = modelA == modelB
         val ret = if (!areEqual) {
