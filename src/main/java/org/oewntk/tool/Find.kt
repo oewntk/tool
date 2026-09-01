@@ -143,7 +143,7 @@ object Find {
         lexIds2.ifEmpty { null }
             ?.also { if (verbose) Tracing.psInfo.println("# [LEXES] $it") }
             ?.map { it.split(",") }
-            ?.map { (lemma, key2) -> key2 to model.lexFinder(Lemma(lemma)) }
+            ?.map { (lemma, key2) -> Key2(key2) to model.lexFinder(Lemma(lemma)) }
             ?.map { (key2, lexes) -> lexes?.filter { lex -> lex.key2 == key2 } }
             ?.forEach {
                 it?.forEach { lex ->
