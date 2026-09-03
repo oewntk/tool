@@ -60,7 +60,7 @@ object Find {
         val synsetIds by parser.option(        ArgType.String,        shortName = "y",  fullName = "synset",             description = "Synset ID").multiple()
         val lexIds by parser.option(           ArgType.String,        shortName = "x",  fullName = "lex",                description = "Lex ID").multiple()
         val lemmas by parser.option(           ArgType.String,        shortName = "l",  fullName = "lemma",              description = "Lemma").multiple()
-        val inverses by parser.option(         ArgType.Boolean,       shortName = "r",  fullName = "inverses",           description = "Generate inverse relations")    .default(false)
+        val inverses by parser.option(         ArgType.Boolean,       shortName = "r",  fullName = "inverses",           description = "Generate inverse relations")      .default(false)
         val doNotThrow by parser.option(       ArgType.Boolean,       shortName = "nt", fullName = "no_throw",           description = "Do not throw")                    .default(false)
         val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",            description = "Verbose output")                  .default(false)
 
