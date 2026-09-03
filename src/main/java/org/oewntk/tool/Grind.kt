@@ -70,6 +70,7 @@ object Grind {
         val outJson by parser.option(          jsonMethodArg,         shortName = "oj", fullName = "out_json",           description = "JSON output method")              .default(JsonMethod.JSON_ELEMENT)
         val outCompact by parser.option(       ArgType.Boolean,       shortName = "oc", fullName = "out_compact",        description = "JSON compact print")              .default(false)
         val outInfo by parser.option(          ArgType.String,        shortName = "oi", fullName = "out_info",           description = "Info output")                     .default("")
+        val skipInverses by parser.option(     ArgType.Boolean,       shortName = "ni", fullName = "skip inverses",      description = "Skip inverse relations")          .default(false)
         val doNotThrow by parser.option(       ArgType.Boolean,       shortName = "nt", fullName = "no_throw",           description = "Do not throw")                    .default(false)
         val verbose by parser.option(          ArgType.Boolean,       shortName = "v",  fullName = "verbose",            description = "Verbose output")                  .default(false)
 
@@ -138,7 +139,7 @@ object Grind {
 
             when (outFormat) {
                 Format.SER -> SerModelConsumer(outFile).accept(model)
-                Format.SQL -> SqlModelConsumer(outFile).accept(model)
+                Format.SQL -> SqlModelConsumer(outFile, skipInverses = skipInverses).accept(model)
                 Format.WNDB -> WndbModelConsumer(outFile, wndbFlags(wndCompatPointers, wndCompatLexId, wndCompatVFrames)).accept(model)
                 Format.YAML -> {
                     if (outMerge)
