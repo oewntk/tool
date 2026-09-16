@@ -1,9 +1,9 @@
-<p align="center">
-<img width="256" src="images/oewntk.png" alt="OEWNTK">
-</p>
-<p align="center">
-<img width="150" src="images/mavencentral.png" alt="Maven Central">
-</p>
+<div style="text-align: center;">
+  <img src="images/oewntk.png" alt="OEWNTK" width="256">
+</div>
+<div style="text-align: center;">
+  <img width="150" src="images/mavencentral.png" alt="MavenCentral">
+</div>
 
 # Open English Wordnet grind
 
