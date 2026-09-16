@@ -67,4 +67,4 @@ This project chains suppliers and consumers of Open English Wordnet models.
 
 ## Dependencies
 
-![Dependencies](images/grind.png  "Dataflow")
+![Dependencies](images/tool.png  "Dataflow")
