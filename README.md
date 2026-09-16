@@ -63,7 +63,7 @@ This project chains suppliers and consumers of Open English Wordnet models.
 
 		<groupId>io.github.oewntk</groupId>
 		<artifactId>grind</artifactId>
-		<version>3.0.1</version>
+		<version>3.0.2</version>
 
 ## Dependencies
 
