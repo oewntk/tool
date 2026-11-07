@@ -6,7 +6,7 @@
 
 set -e
 
-graph=grind
+graph=tool
 todir=images/
 
 mvn dependency:tree \

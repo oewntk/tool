@@ -1,9 +1,9 @@
-<p align="center">
-<img width="256" src="images/oewntk.png" alt="OEWNTK">
-</p>
-<p align="center">
-<img width="150" src="images/mavencentral.png" alt="Maven Central">
-</p>
+<div style="text-align: center;">
+  <img src="images/oewntk.png" alt="OEWNTK" width="256">
+</div>
+<div style="text-align: center;">
+  <img width="150" src="images/mavencentral.png" alt="MavenCentral">
+</div>
 
 # Open English Wordnet grind
 
@@ -63,8 +63,8 @@ This project chains suppliers and consumers of Open English Wordnet models.
 
 		<groupId>io.github.oewntk</groupId>
 		<artifactId>grind</artifactId>
-		<version>3.0.1</version>
+		<version>3.0.2</version>
 
 ## Dependencies
 
-![Dependencies](images/grind.png  "Dataflow")
+![Dependencies](images/tool.png  "Dataflow")
