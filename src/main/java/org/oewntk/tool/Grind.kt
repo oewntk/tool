@@ -138,9 +138,9 @@ object Grind {
             progress("before model is consumed", startTime, verbose = verbose)
 
             when (outFormat) {
-                Format.SER -> SerModelConsumer(outFile).accept(model)
-                Format.SQL -> SqlModelConsumer(outFile, skipInverses = skipInverses).accept(model)
-                Format.WNDB -> WndbModelConsumer(outFile, wndbFlags(wndCompatPointers, wndCompatLexId, wndCompatVFrames)).accept(model)
+                Format.SER -> SerModelConsumer(outFile, verbose = verbose).accept(model)
+                Format.SQL -> SqlModelConsumer(outFile, skipInverses = skipInverses, verbose = verbose).accept(model)
+                Format.WNDB -> WndbModelConsumer(outFile, wndbFlags(wndCompatPointers, wndCompatLexId, wndCompatVFrames), verbose = verbose).accept(model)
                 Format.YAML -> {
                     if (outMerge)
                         File(outFile, "entries-generated.yaml").delete()
