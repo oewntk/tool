@@ -25,6 +25,8 @@
       <excludeFolder url="file://$MODULE_DIR$/tool-3.0.1-SNAPSHOT-uber.jar" />
       <excludeFolder url="file://$MODULE_DIR$/tool-3.0.1-uber.jar" />
       <excludeFolder url="file://$MODULE_DIR$/pr" />
+      <excludeFolder url="file://$MODULE_DIR$/out-pr" />
+      <excludeFolder url="file://$MODULE_DIR$/pr_1456" />
     </content>
   </component>
 </module>
