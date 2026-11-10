@@ -1,5 +1,6 @@
 package org.oewntk.tool
 
+import org.oewntk.json.`in`.Tracing
 import org.oewntk.json.out.JsonMethod
 import org.oewntk.model.*
 import org.oewntk.model.Lemma.Companion.isLemma
@@ -46,7 +47,7 @@ object Utils {
     ): Model {
         val inputFile = File(input)
         val inputFile2: File? = input2?.takeIf(String::isNotEmpty)?.let { File(it) }
-        return if (inPlus)
+        val model = if (inPlus)
             FactoryPlus(inputFile, inputFile2!!, inverses = inverses, verbose = verbose).get()!!
         else when (inFormat) {
             Format.SER -> SerFactory(inputFile).get()!!
@@ -63,5 +64,16 @@ object Utils {
 
             else -> throw IllegalArgumentException("Unsupported A input format")
         }
+        if (verbose) {
+            Tracing.psInfo.printf("[CoreModel] %s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n", model.source,
+                model.info(),
+                ModelInfo.counts(model),
+                ModelInfo.xCounts(model),
+                ModelInfo.relationCounts(model),
+                ModelInfo.endogenousRelationCounts(model),
+                ModelInfo.crossRelationCounts(model),
+                ModelInfo.relations(model))
+        }
+        return model
     }
 }
